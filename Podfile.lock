@@ -1,0 +1,46 @@
+PODS:
+  - AFNetworking (2.2.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.2.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.4):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.4)
+  - AFNetworking/Security (2.2.4)
+  - AFNetworking/Serialization (2.2.4)
+  - AFNetworking/UIKit (2.2.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - Bolts (1.1.0)
+  - CocoaLumberjack (1.6.2)
+  - Facebook-iOS-SDK (3.14.1):
+    - Bolts
+  - Parse (1.2.19):
+    - Facebook-iOS-SDK (~> 3.11)
+  - VLBCameraView (2.0):
+    - CocoaLumberjack (= 1.6.2)
+    - VLBFoundation
+  - VLBFoundation (1.0)
+
+DEPENDENCIES:
+  - AFNetworking
+  - Parse
+  - VLBCameraView
+
+SPEC CHECKSUMS:
+  AFNetworking: 01aa7c3aa9a200b94943e54072a4373f14b3d219
+  Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
+  CocoaLumberjack: 19dceba2d0360ed383cba983bc3ef0dd089c42a1
+  Facebook-iOS-SDK: 97e68fb37468bee2d90201fd0c9e4dccce5683d9
+  Parse: 3739f0b211c49115bad96d6b0969b804d4da2f24
+  VLBCameraView: 5749f4cd711c2f1a19cbd08019d724bf74d98660
+  VLBFoundation: d63da5c0ff0e877734502fa866197c4243378649
+
+COCOAPODS: 0.32.1
