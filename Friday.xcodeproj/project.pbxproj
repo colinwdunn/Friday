@@ -9,6 +9,16 @@
 /* Begin PBXBuildFile section */
 		427F76A319286F8700CF30F2 /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427F76A119286F8700CF30F2 /* SplashViewController.m */; };
 		427F76A419286F8700CF30F2 /* SplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 427F76A219286F8700CF30F2 /* SplashViewController.xib */; };
+		427F76A8192896AE00CF30F2 /* PostSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427F76A6192896AE00CF30F2 /* PostSplashViewController.m */; };
+		427F76A9192896AE00CF30F2 /* PostSplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 427F76A7192896AE00CF30F2 /* PostSplashViewController.xib */; };
+		427F76AD1928972600CF30F2 /* AddPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427F76AB1928972600CF30F2 /* AddPeopleViewController.m */; };
+		427F76AE1928972600CF30F2 /* AddPeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 427F76AC1928972600CF30F2 /* AddPeopleViewController.xib */; };
+		427F76B21928973700CF30F2 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427F76B01928973700CF30F2 /* PeopleViewController.m */; };
+		427F76B31928973700CF30F2 /* PeopleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 427F76B11928973700CF30F2 /* PeopleViewController.xib */; };
+		427F76BA192897B000CF30F2 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427F76B8192897B000CF30F2 /* CameraViewController.m */; };
+		427F76BB192897B000CF30F2 /* CameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 427F76B9192897B000CF30F2 /* CameraViewController.xib */; };
+		427F76BF192897BC00CF30F2 /* RollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427F76BD192897BC00CF30F2 /* RollViewController.m */; };
+		427F76C0192897BC00CF30F2 /* RollViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 427F76BE192897BC00CF30F2 /* RollViewController.xib */; };
 		429B71221928698D00BAAE20 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429B71211928698D00BAAE20 /* Foundation.framework */; };
 		429B71241928698D00BAAE20 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429B71231928698D00BAAE20 /* CoreGraphics.framework */; };
 		429B71261928698D00BAAE20 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429B71251928698D00BAAE20 /* UIKit.framework */; };
@@ -38,6 +48,21 @@
 		427F76A019286F8700CF30F2 /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
 		427F76A119286F8700CF30F2 /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
 		427F76A219286F8700CF30F2 /* SplashViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplashViewController.xib; sourceTree = "<group>"; };
+		427F76A5192896AE00CF30F2 /* PostSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSplashViewController.h; sourceTree = "<group>"; };
+		427F76A6192896AE00CF30F2 /* PostSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSplashViewController.m; sourceTree = "<group>"; };
+		427F76A7192896AE00CF30F2 /* PostSplashViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostSplashViewController.xib; sourceTree = "<group>"; };
+		427F76AA1928972600CF30F2 /* AddPeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPeopleViewController.h; sourceTree = "<group>"; };
+		427F76AB1928972600CF30F2 /* AddPeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPeopleViewController.m; sourceTree = "<group>"; };
+		427F76AC1928972600CF30F2 /* AddPeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPeopleViewController.xib; sourceTree = "<group>"; };
+		427F76AF1928973700CF30F2 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
+		427F76B01928973700CF30F2 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
+		427F76B11928973700CF30F2 /* PeopleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeopleViewController.xib; sourceTree = "<group>"; };
+		427F76B7192897B000CF30F2 /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
+		427F76B8192897B000CF30F2 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
+		427F76B9192897B000CF30F2 /* CameraViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraViewController.xib; sourceTree = "<group>"; };
+		427F76BC192897BC00CF30F2 /* RollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollViewController.h; sourceTree = "<group>"; };
+		427F76BD192897BC00CF30F2 /* RollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollViewController.m; sourceTree = "<group>"; };
+		427F76BE192897BC00CF30F2 /* RollViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollViewController.xib; sourceTree = "<group>"; };
 		429B711E1928698D00BAAE20 /* Friday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		429B71211928698D00BAAE20 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		429B71231928698D00BAAE20 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -86,11 +111,50 @@
 		427F769F19286F7200CF30F2 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				427F76B41928977F00CF30F2 /* Splash */,
+				427F76B51928978900CF30F2 /* People */,
+				427F76B61928979B00CF30F2 /* Camera */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		427F76B41928977F00CF30F2 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
 				427F76A019286F8700CF30F2 /* SplashViewController.h */,
 				427F76A119286F8700CF30F2 /* SplashViewController.m */,
 				427F76A219286F8700CF30F2 /* SplashViewController.xib */,
+				427F76A5192896AE00CF30F2 /* PostSplashViewController.h */,
+				427F76A6192896AE00CF30F2 /* PostSplashViewController.m */,
+				427F76A7192896AE00CF30F2 /* PostSplashViewController.xib */,
 			);
-			name = "View Controllers";
+			name = Splash;
+			sourceTree = "<group>";
+		};
+		427F76B51928978900CF30F2 /* People */ = {
+			isa = PBXGroup;
+			children = (
+				427F76AA1928972600CF30F2 /* AddPeopleViewController.h */,
+				427F76AB1928972600CF30F2 /* AddPeopleViewController.m */,
+				427F76AC1928972600CF30F2 /* AddPeopleViewController.xib */,
+				427F76AF1928973700CF30F2 /* PeopleViewController.h */,
+				427F76B01928973700CF30F2 /* PeopleViewController.m */,
+				427F76B11928973700CF30F2 /* PeopleViewController.xib */,
+			);
+			name = People;
+			sourceTree = "<group>";
+		};
+		427F76B61928979B00CF30F2 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				427F76B7192897B000CF30F2 /* CameraViewController.h */,
+				427F76B8192897B000CF30F2 /* CameraViewController.m */,
+				427F76B9192897B000CF30F2 /* CameraViewController.xib */,
+				427F76BC192897BC00CF30F2 /* RollViewController.h */,
+				427F76BD192897BC00CF30F2 /* RollViewController.m */,
+				427F76BE192897BC00CF30F2 /* RollViewController.xib */,
+			);
+			name = Camera;
 			sourceTree = "<group>";
 		};
 		429B71151928698D00BAAE20 = {
@@ -243,9 +307,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				427F76BB192897B000CF30F2 /* CameraViewController.xib in Resources */,
 				429B712C1928698D00BAAE20 /* InfoPlist.strings in Resources */,
+				427F76B31928973700CF30F2 /* PeopleViewController.xib in Resources */,
+				427F76AE1928972600CF30F2 /* AddPeopleViewController.xib in Resources */,
+				427F76A9192896AE00CF30F2 /* PostSplashViewController.xib in Resources */,
 				427F76A419286F8700CF30F2 /* SplashViewController.xib in Resources */,
 				429B71341928698D00BAAE20 /* Images.xcassets in Resources */,
+				427F76C0192897BC00CF30F2 /* RollViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,8 +367,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				429B71321928698D00BAAE20 /* AppDelegate.m in Sources */,
+				427F76AD1928972600CF30F2 /* AddPeopleViewController.m in Sources */,
+				427F76A8192896AE00CF30F2 /* PostSplashViewController.m in Sources */,
+				427F76B21928973700CF30F2 /* PeopleViewController.m in Sources */,
 				429B712E1928698D00BAAE20 /* main.m in Sources */,
+				427F76BA192897B000CF30F2 /* CameraViewController.m in Sources */,
 				427F76A319286F8700CF30F2 /* SplashViewController.m in Sources */,
+				427F76BF192897BC00CF30F2 /* RollViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
