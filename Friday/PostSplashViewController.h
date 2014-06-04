@@ -10,4 +10,6 @@
 
 @interface PostSplashViewController : UIViewController
 
+- (id)initWithImage:(UIImage *)image processedImage:(UIImage *)processedImage;
+
 @end

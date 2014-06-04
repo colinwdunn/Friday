@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SplashViewController">
             <connections>
+                <outlet property="cameraView" destination="TZg-f3-CcN" id="Al1-0q-h5G"/>
                 <outlet property="takePhotoButton" destination="wCh-zy-1TJ" id="kQt-mA-lZh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -45,6 +46,9 @@ camera.</string>
                                 <color key="titleColor" red="0.98431372549019602" green="0.82745098039215681" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="onTakePhotoButton:" destination="-1" eventType="touchUpInside" id="3dn-in-2sm"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
