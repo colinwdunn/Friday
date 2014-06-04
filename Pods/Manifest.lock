@@ -24,6 +24,7 @@ PODS:
     - Bolts
   - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
+  - UIImageEffects (0.0.1)
   - VLBCameraView (2.0):
     - CocoaLumberjack (= 1.6.2)
     - VLBFoundation
@@ -32,6 +33,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - Parse
+  - UIImageEffects
   - VLBCameraView
 
 SPEC CHECKSUMS:
@@ -40,6 +42,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 19dceba2d0360ed383cba983bc3ef0dd089c42a1
   Facebook-iOS-SDK: 97e68fb37468bee2d90201fd0c9e4dccce5683d9
   Parse: 3739f0b211c49115bad96d6b0969b804d4da2f24
+  UIImageEffects: e1059bcd4c1766f72a78ae6ade359e3f9ee31063
   VLBCameraView: 5749f4cd711c2f1a19cbd08019d724bf74d98660
   VLBFoundation: d63da5c0ff0e877734502fa866197c4243378649
 
