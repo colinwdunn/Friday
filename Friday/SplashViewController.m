@@ -9,11 +9,13 @@
 #import "SplashViewController.h"
 #import "PostSplashViewController.h"
 #import "UIImage+ImageEffects.h"
+#import <AVFoundation/AVFoundation.h>
+#import <ImageIO/CGImageProperties.h>
 
 @interface SplashViewController ()
 
-@property (weak, nonatomic) IBOutlet VLBCameraView *cameraView;
 @property (weak, nonatomic) IBOutlet UIButton *takePhotoButton;
+@property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 
 - (IBAction)onTakePhotoButton:(id)sender;
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion;
@@ -34,11 +36,38 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.cameraView.delegate = self;
+    
     
     self.takePhotoButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.takePhotoButton.layer.borderWidth = 3;
     self.takePhotoButton.layer.cornerRadius = 20;
+    
+    AVCaptureSession *session = [[AVCaptureSession alloc] init];
+    session.sessionPreset = AVCaptureSessionPresetHigh;
+    
+    AVCaptureDevice *inputDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
+    NSError *error = nil;
+    AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:inputDevice error:&error];
+    
+    if ([session canAddInput:deviceInput]) {
+        [session addInput:deviceInput];
+    }
+    
+    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
+    [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    
+    CALayer *rootLayer = self.view.layer;
+    rootLayer.masksToBounds = YES;
+    previewLayer.frame = CGRectMake(0, 0, rootLayer.bounds.size.width, rootLayer.bounds.size.height);
+    [rootLayer insertSublayer:previewLayer atIndex:0];
+    
+    self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG, AVVideoCodecKey,nil];
+    [self.stillImageOutput setOutputSettings:outputSettings];
+    [session addOutput:self.stillImageOutput];
+    
+    [session startRunning];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,7 +105,7 @@
 }
 
 - (IBAction)onTakePhotoButton:(id)sender {
-    [self.cameraView takePicture];
+    //[self.cameraView takePicture];
     
     self.takePhotoButton.enabled = NO;
 }
