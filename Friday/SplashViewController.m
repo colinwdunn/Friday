@@ -37,11 +37,25 @@
 {
     [super viewDidLoad];
     
-    
+    // Style Photo button
     self.takePhotoButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.takePhotoButton.layer.borderWidth = 3;
     self.takePhotoButton.layer.cornerRadius = 20;
     
+    //Setup AVCaptureSession for input video feed as background, and output still image
+    [self startCameraLiveFeed];
+
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - AVFoundation methods
+
+- (void)startCameraLiveFeed {
     AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetHigh;
     
@@ -70,34 +84,10 @@
     [session startRunning];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma VLBCameraView delegate methods
-
--(void)cameraView:(VLBCameraView*)cameraView didFinishTakingPicture:(UIImage *)image withInfo:(NSDictionary*)info meta:(NSDictionary *)meta {
-    self.takePhotoButton.enabled = YES;
-    
-    NSLog(@"info: %@", info);
-    NSLog(@"meta: %@", meta);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self processImage:image completion:^(UIImage *image, UIImage *processedImage) {
-            PostSplashViewController *vc = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
-            [self presentViewController:vc animated:NO completion:nil];
-        }];
-    });
-}
-
--(void)cameraView:(VLBCameraView *)cameraView didErrorOnTakePicture:(NSError *)error {
-    self.takePhotoButton.enabled = YES;
-}
-
 #pragma mark - Private methods
 
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion {
+    //TODO (Joe): Figure out how to process the image and add blur
     UIImage *processedImage = nil; // [image applyExtraLightEffect];
     dispatch_async(dispatch_get_main_queue(), ^{
         completion(image, processedImage);
@@ -105,7 +95,43 @@
 }
 
 - (IBAction)onTakePhotoButton:(id)sender {
-    //[self.cameraView takePicture];
+    
+    //TODO: Refactor code so it is simpler
+    AVCaptureConnection *videoConnection = nil;
+    for (AVCaptureConnection *connection in self.stillImageOutput.connections) {
+        for (AVCaptureInputPort *port in [connection inputPorts]) {
+            if ([[port mediaType] isEqual:AVMediaTypeVideo]) {
+                videoConnection = connection;
+                break;
+            }
+        }
+        if (videoConnection) {
+            break;
+        }
+    }
+    
+    NSLog(@"about to request a capture from: %@", self.stillImageOutput);
+    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+        CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+        if (exifAttachments) {
+            // Do something with the attachments
+            NSLog(@"attachments: %@", exifAttachments);
+        } else {
+            // No attachments
+        }
+        NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+        UIImage *image = [UIImage imageWithData:imageData];
+        
+        //TODO (Yousra): Create PFFile and save image object to Parse
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [self processImage:image completion:^(UIImage *image, UIImage *processedImage) {
+                PostSplashViewController *vc = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
+                [self presentViewController:vc animated:NO completion:nil];
+            }];
+        });
+    }];
+
     
     self.takePhotoButton.enabled = NO;
 }
