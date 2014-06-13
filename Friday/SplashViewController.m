@@ -9,6 +9,7 @@
 #import "SplashViewController.h"
 #import "PostSplashViewController.h"
 #import "UIImage+ImageEffects.h"
+#import <Parse/Parse.h>
 
 @interface SplashViewController ()
 
