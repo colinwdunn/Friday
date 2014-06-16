@@ -15,14 +15,16 @@
 #import "RollViewController.h"
 
 
-static NSInteger MaxNumberOfPhotosInRoll = 4;
+static NSInteger MaxNumberOfPhotosInRoll = 15;
 
 @interface SplashViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *takePhotoButton;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
-@property (assign) NSInteger rollCount;
+@property (nonatomic) NSNumber *rollCount;
 @property (nonatomic, strong) NSMutableArray* photoArray;
+
+@property (nonatomic, strong) PostSplashViewController *vc;
 
 - (IBAction)onTakePhotoButton:(id)sender;
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion;
@@ -31,17 +33,15 @@ static NSInteger MaxNumberOfPhotosInRoll = 4;
 
 @implementation SplashViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     // Style Photo button
@@ -49,22 +49,15 @@ static NSInteger MaxNumberOfPhotosInRoll = 4;
     self.takePhotoButton.layer.borderWidth = 3;
     self.takePhotoButton.layer.cornerRadius = 20;
     
-    self.rollCount = 0;
-    
     //Setup AVCaptureSession for input video feed as background, and output still image
     [self startCameraLiveFeed];
 
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - AVFoundation methods
 
 - (void)startCameraLiveFeed {
+    
     AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetHigh;
     
@@ -96,9 +89,11 @@ static NSInteger MaxNumberOfPhotosInRoll = 4;
 #pragma mark - Private methods
 
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion {
+    
     //TODO (Joe): Figure out how to process the image and add blur
     UIImage *processedImage = nil; // [image applyExtraLightEffect];
-    dispatch_async(dispatch_get_main_queue(), ^{
+    
+    dispatch_async(dispatch_get_main_queue(), ^ {
         completion(image, processedImage);
     });
 }
@@ -123,15 +118,16 @@ static NSInteger MaxNumberOfPhotosInRoll = 4;
     
     __weak typeof(self) weakself = self;
     
-    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error)
-    {
+    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
         CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+        
         if (exifAttachments) {
             // Do something with the attachments
             NSLog(@"attachments: %@", exifAttachments);
         } else {
             // No attachments
         }
+        
         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
         UIImage *image = [UIImage imageWithData:imageData];
         
@@ -141,8 +137,8 @@ static NSInteger MaxNumberOfPhotosInRoll = 4;
         PFObject *photo = [PFObject objectWithClassName:@"photo"];
         photo[@"imageName"] = @"My trip to Hawaii!";
         photo[@"imageFile"] = imageFile;
-        [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
-        {
+        
+        [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             [weakself downloadImages];
         }];
     
@@ -150,70 +146,65 @@ static NSInteger MaxNumberOfPhotosInRoll = 4;
     }];
 }
 
-- (void)developRoll: (NSArray*)photoArray
-{
-    RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
-    rollvc.photosArray = self.photoArray;
-    [self presentViewController:rollvc animated:YES completion:nil];
+- (void)showImage:(UIImage *)image {
+    __weak typeof(self) weakself = self;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+        [weakself processImage:image completion:^(UIImage *image, UIImage *processedImage) {
+            PostSplashViewController *vc = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
+            self.vc = vc;
+            [self presentViewController:self.vc animated:NO completion:nil];
+        }];
+    });
 }
 
-- (void)showImage:(UIImage *)image
-{
-     __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
-                   {
-                       [weakself processImage:image completion:^(UIImage *image, UIImage *processedImage)
-                        {
-                            //  PostSplashViewController *vc = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
-                            
-                            //if (self.rollCount >= MaxNumberOfPhotosInRoll) {
-                            //[weakself developRoll:weakself.photoArray];
-                            //}
-                            //                            else{
-                            //                                [self presentViewController:vc animated:NO completion:nil];
-                            //                            }
-                        }];
-                   });
-}
-
-- (void)downloadImages
-{
-    if (self.photoArray == nil){
+- (void)downloadImages {
+    
+    if (self.photoArray == nil) {
         self.photoArray = [NSMutableArray array];
     }
     
     PFQuery *query = [PFQuery queryWithClassName:@"photo"];
     __weak typeof(self) weakself = self;
     
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
-    {
-        if (!error)
-        {
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
             // The find succeeded.
-            NSLog(@"Successfully retrieved %lu scores.", (unsigned long)objects.count);
-            // Do something with the found objects
-            for (PFObject *object in objects)
-            {
-                NSLog(@"%@", object.objectId);
-                
-                PFFile *imageFile = [object objectForKey:@"imageFile"];
-                NSData *data = [imageFile getData];
-                UIImage *image = [UIImage imageWithData:data];
-                
-                if (image != nil) {
-                    [weakself.photoArray addObject:image];
-                }
-                
-            }
+            NSLog(@"Successfully retrieved %lu images.", (unsigned long)objects.count);
             
-            [weakself developRoll:weakself.photoArray];
-        }
-        else
-        {
-            // Log details of the failure
+            [weakself setRollCount:[NSNumber numberWithInteger:objects.count]];
+            
+                if ([self.rollCount integerValue] >= MaxNumberOfPhotosInRoll) {
+                    for (PFObject *object in objects) {
+                        NSLog(@"%@", object.objectId);
+                
+                        PFFile *imageFile = [object objectForKey:@"imageFile"];
+                        NSData *data = [imageFile getData];
+                        UIImage *image = [UIImage imageWithData:data];
+                
+                        if (image != nil) {
+                            [weakself.photoArray addObject:image];
+                        }
+                
+                    }
+                    
+                    [weakself developRoll:weakself.photoArray];
+                }
+        } else {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
 }
+
+- (void)developRoll: (NSArray*)photoArray {
+    //TODO: optamize.
+    [self.vc dismissViewControllerAnimated:YES completion:^ {
+         RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
+         rollvc.photosArray = self.photoArray;
+         [self presentViewController:rollvc animated:YES completion:nil];
+     }];
+    
+}
+
 
 @end

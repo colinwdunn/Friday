@@ -16,7 +16,7 @@
 
 @implementation PhotoGalleryCell
 
-- (void)setPhotoImage:(UIImage *)photo{
+- (void)setPhotoImage:(UIImage *)photo {
     self.photoImageView.image = photo;
 }
 

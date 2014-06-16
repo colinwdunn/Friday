@@ -158,9 +158,9 @@
 				427F76BC192897BC00CF30F2 /* RollViewController.h */,
 				427F76BD192897BC00CF30F2 /* RollViewController.m */,
 				427F76BE192897BC00CF30F2 /* RollViewController.xib */,
-				45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */,
 				45971B31194DFEE900BAD5E9 /* PhotoGalleryCell.h */,
 				45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */,
+				45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
