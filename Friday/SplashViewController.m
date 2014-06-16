@@ -12,11 +12,17 @@
 #import <Parse/Parse.h>
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/CGImageProperties.h>
+#import "RollViewController.h"
+
+
+static NSInteger MaxNumberOfPhotosInRoll = 4;
 
 @interface SplashViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *takePhotoButton;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
+@property (assign) NSInteger rollCount;
+@property (nonatomic, strong) NSMutableArray* photoArray;
 
 - (IBAction)onTakePhotoButton:(id)sender;
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion;
@@ -42,6 +48,8 @@
     self.takePhotoButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.takePhotoButton.layer.borderWidth = 3;
     self.takePhotoButton.layer.cornerRadius = 20;
+    
+    self.rollCount = 0;
     
     //Setup AVCaptureSession for input video feed as background, and output still image
     [self startCameraLiveFeed];
@@ -112,7 +120,11 @@
     }
     
     NSLog(@"about to request a capture from: %@", self.stillImageOutput);
-    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+    
+    __weak typeof(self) weakself = self;
+    
+    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error)
+    {
         CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
         if (exifAttachments) {
             // Do something with the attachments
@@ -123,18 +135,85 @@
         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
         UIImage *image = [UIImage imageWithData:imageData];
         
-        //TODO (Yousra): Create PFFile and save image object to Parse
+        [weakself showImage:image];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            [self processImage:image completion:^(UIImage *image, UIImage *processedImage) {
-                PostSplashViewController *vc = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
-                [self presentViewController:vc animated:NO completion:nil];
-            }];
-        });
-    }];
-
+        PFFile *imageFile = [PFFile fileWithData:imageData];
+        PFObject *photo = [PFObject objectWithClassName:@"photo"];
+        photo[@"imageName"] = @"My trip to Hawaii!";
+        photo[@"imageFile"] = imageFile;
+        [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
+        {
+            [weakself downloadImages];
+        }];
     
-    self.takePhotoButton.enabled = NO;
+        weakself.takePhotoButton.enabled = NO;
+    }];
+}
+
+- (void)developRoll: (NSArray*)photoArray
+{
+    RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
+    rollvc.photosArray = self.photoArray;
+    [self presentViewController:rollvc animated:YES completion:nil];
+}
+
+- (void)showImage:(UIImage *)image
+{
+     __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
+                   {
+                       [weakself processImage:image completion:^(UIImage *image, UIImage *processedImage)
+                        {
+                            //  PostSplashViewController *vc = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
+                            
+                            //if (self.rollCount >= MaxNumberOfPhotosInRoll) {
+                            //[weakself developRoll:weakself.photoArray];
+                            //}
+                            //                            else{
+                            //                                [self presentViewController:vc animated:NO completion:nil];
+                            //                            }
+                        }];
+                   });
+}
+
+- (void)downloadImages
+{
+    if (self.photoArray == nil){
+        self.photoArray = [NSMutableArray array];
+    }
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"photo"];
+    __weak typeof(self) weakself = self;
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error)
+    {
+        if (!error)
+        {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %lu scores.", (unsigned long)objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects)
+            {
+                NSLog(@"%@", object.objectId);
+                
+                PFFile *imageFile = [object objectForKey:@"imageFile"];
+                NSData *data = [imageFile getData];
+                UIImage *image = [UIImage imageWithData:data];
+                
+                if (image != nil) {
+                    [weakself.photoArray addObject:image];
+                }
+                
+            }
+            
+            [weakself developRoll:weakself.photoArray];
+        }
+        else
+        {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
 }
 
 @end

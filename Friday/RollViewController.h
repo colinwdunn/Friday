@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RollViewController : UIViewController
+@interface RollViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (nonatomic, strong) NSMutableArray *photosArray;
 
 @end

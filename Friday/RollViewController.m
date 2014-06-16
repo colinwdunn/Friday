@@ -7,8 +7,13 @@
 //
 
 #import "RollViewController.h"
+#import <Parse/Parse.h>
+#import "PhotoGalleryCell.h"
 
 @interface RollViewController ()
+
+@property (weak, nonatomic) IBOutlet UICollectionView *rollCollectionView;
+@property (nonatomic, copy, readonly) NSString *photoGalleryCellClassName;
 
 @end
 
@@ -18,21 +23,50 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
+}
+
+- (NSString* )photoGalleryCellClassName{
+    return NSStringFromClass([PhotoGalleryCell class]);
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    [self setupCollectionView];
+    [self loadData];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
 }
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return self.photosArray.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+
+    PhotoGalleryCell *photoCell = [collectionView dequeueReusableCellWithReuseIdentifier:self.photoGalleryCellClassName forIndexPath:indexPath];
+    [photoCell setPhotoImage:self.photosArray[indexPath.item]];
+    
+    return photoCell;
+    
+}
+
+- (void)setupCollectionView {
+    
+    UINib *nib = [UINib nibWithNibName:self.photoGalleryCellClassName bundle:nil];
+    [self.rollCollectionView registerNib:nib forCellWithReuseIdentifier:self.photoGalleryCellClassName];
+}
+
+- (void)loadData
+{
+    
+}
+
+
 
 @end
