@@ -15,7 +15,7 @@
 #import "RollViewController.h"
 
 
-static NSInteger MaxNumberOfPhotosInRoll = 15;
+static NSInteger MaxNumberOfPhotosInRoll = 36;
 
 @interface SplashViewController ()
 
@@ -142,7 +142,7 @@ static NSInteger MaxNumberOfPhotosInRoll = 15;
             [weakself downloadImages];
         }];
     
-        weakself.takePhotoButton.enabled = NO;
+       // weakself.takePhotoButton.enabled = NO;
     }];
 }
 

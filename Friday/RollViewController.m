@@ -61,6 +61,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     
+    //TODO: below code for testing. Remove when done.
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
