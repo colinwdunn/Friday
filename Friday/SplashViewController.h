@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VLBCameraView.h"
 
-@interface SplashViewController : UIViewController <VLBCameraViewDelegate>
+@interface SplashViewController : UIViewController
 
 @end

@@ -51,10 +51,8 @@
     self.imageView.image = self.image;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+//TODO: below code for testing. Remove when done.
+- (IBAction)takeMorePhotos:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 @end

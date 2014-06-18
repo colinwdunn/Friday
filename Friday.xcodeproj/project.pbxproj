@@ -31,6 +31,8 @@
 		429B713D1928698D00BAAE20 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429B71251928698D00BAAE20 /* UIKit.framework */; };
 		429B71451928698D00BAAE20 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 429B71431928698D00BAAE20 /* InfoPlist.strings */; };
 		429B71471928698D00BAAE20 /* FridayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 429B71461928698D00BAAE20 /* FridayTests.m */; };
+		45971B30194DFE8C00BAD5E9 /* PhotoGalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */; };
+		45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */; };
 		6A776A8540FD4AB39818DF6F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C9A0E9FEF846ECA2BF7C69 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +81,9 @@
 		429B71421928698D00BAAE20 /* FridayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FridayTests-Info.plist"; sourceTree = "<group>"; };
 		429B71441928698D00BAAE20 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		429B71461928698D00BAAE20 /* FridayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FridayTests.m; sourceTree = "<group>"; };
+		45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoGalleryCell.xib; sourceTree = "<group>"; };
+		45971B31194DFEE900BAD5E9 /* PhotoGalleryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoGalleryCell.h; sourceTree = "<group>"; };
+		45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoGalleryCell.m; sourceTree = "<group>"; };
 		80C9A0E9FEF846ECA2BF7C69 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C21D44EAA3A4A4EBB309DB0 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,6 +158,9 @@
 				427F76BC192897BC00CF30F2 /* RollViewController.h */,
 				427F76BD192897BC00CF30F2 /* RollViewController.m */,
 				427F76BE192897BC00CF30F2 /* RollViewController.xib */,
+				45971B31194DFEE900BAD5E9 /* PhotoGalleryCell.h */,
+				45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */,
+				45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
@@ -307,6 +315,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45971B30194DFE8C00BAD5E9 /* PhotoGalleryCell.xib in Resources */,
 				427F76BB192897B000CF30F2 /* CameraViewController.xib in Resources */,
 				429B712C1928698D00BAAE20 /* InfoPlist.strings in Resources */,
 				427F76B31928973700CF30F2 /* PeopleViewController.xib in Resources */,
@@ -370,6 +379,7 @@
 				427F76AD1928972600CF30F2 /* AddPeopleViewController.m in Sources */,
 				427F76A8192896AE00CF30F2 /* PostSplashViewController.m in Sources */,
 				427F76B21928973700CF30F2 /* PeopleViewController.m in Sources */,
+				45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */,
 				429B712E1928698D00BAAE20 /* main.m in Sources */,
 				427F76BA192897B000CF30F2 /* CameraViewController.m in Sources */,
 				427F76A319286F8700CF30F2 /* SplashViewController.m in Sources */,
