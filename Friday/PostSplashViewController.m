@@ -7,6 +7,7 @@
 //
 
 #import "PostSplashViewController.h"
+#import "CameraViewController.h"
 
 @interface PostSplashViewController ()
 
@@ -15,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *useContactsButton;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *processedImage;
+- (IBAction)contactsButtonDidPress:(id)sender;
 
 @end
 
@@ -55,4 +57,10 @@
 - (IBAction)takeMorePhotos:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (IBAction)contactsButtonDidPress:(id)sender {
+    CameraViewController *cameraViewController = [[CameraViewController alloc] init];
+    [self presentViewController:cameraViewController animated:YES completion:nil];
+}
+
 @end
