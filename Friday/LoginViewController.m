@@ -40,6 +40,7 @@
 - (IBAction)loginDidPress:(id)sender {
     
     NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
+    [PFFacebookUtils initializeFacebook];
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         
         if (!user) {
@@ -53,6 +54,12 @@
             NSLog(@"User with facebook signed up and logged in");
         } else {
             NSLog(@"User with facebook logged in");
+            FBRequest *request = [FBRequest requestForMe];
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                NSDictionary *userData = (NSDictionary *)result;
+                
+                NSLog(@"users name: %@", userData[@"name"]);
+            }];
         }
         
     }];

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "SplashViewController.h"
+#import "LoginViewController.h"
 #import <Parse/Parse.h>
 #import <FacebookSDK.h>
 
@@ -23,7 +24,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    self.window.rootViewController = [[SplashViewController alloc] init];
+    self.window.rootViewController = [[LoginViewController alloc] init];//[[SplashViewController alloc] init];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
