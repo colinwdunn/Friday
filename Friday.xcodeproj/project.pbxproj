@@ -35,6 +35,7 @@
 		429B71471928698D00BAAE20 /* FridayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 429B71461928698D00BAAE20 /* FridayTests.m */; };
 		451836861958744C00594C07 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 451836851958744C00594C07 /* User.m */; };
 		45183689195875F900594C07 /* Roll.m in Sources */ = {isa = PBXBuildFile; fileRef = 45183688195875F900594C07 /* Roll.m */; };
+		4518368F1958926D00594C07 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4518368E1958926D00594C07 /* Photo.m */; };
 		45971B30194DFE8C00BAD5E9 /* PhotoGalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */; };
 		45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */; };
 		6A776A8540FD4AB39818DF6F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C9A0E9FEF846ECA2BF7C69 /* libPods.a */; };
@@ -92,6 +93,8 @@
 		451836851958744C00594C07 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		45183687195875F900594C07 /* Roll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Roll.h; sourceTree = "<group>"; };
 		45183688195875F900594C07 /* Roll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Roll.m; sourceTree = "<group>"; };
+		4518368D1958926D00594C07 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		4518368E1958926D00594C07 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoGalleryCell.xib; sourceTree = "<group>"; };
 		45971B31194DFEE900BAD5E9 /* PhotoGalleryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoGalleryCell.h; sourceTree = "<group>"; };
 		45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoGalleryCell.m; sourceTree = "<group>"; };
@@ -268,6 +271,8 @@
 				451836851958744C00594C07 /* User.m */,
 				45183687195875F900594C07 /* Roll.h */,
 				45183688195875F900594C07 /* Roll.m */,
+				4518368D1958926D00594C07 /* Photo.h */,
+				4518368E1958926D00594C07 /* Photo.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -410,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4518368F1958926D00594C07 /* Photo.m in Sources */,
 				451836861958744C00594C07 /* User.m in Sources */,
 				429B71321928698D00BAAE20 /* AppDelegate.m in Sources */,
 				427F76AD1928972600CF30F2 /* AddPeopleViewController.m in Sources */,

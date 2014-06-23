@@ -6,8 +6,16 @@
 //  Copyright (c) 2014 codepath. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Parse/Parse.h>
 
-@interface Roll : NSObject
+@interface Roll : PFObject <PFSubclassing>
+
++ (NSString *)parseClassName;
+
+@property (retain) NSString *rollName;
+//@property PFFile *photosFile;
+@property int ownerId;
+@property int maxPhotos;
+@property int photosCount;
 
 @end

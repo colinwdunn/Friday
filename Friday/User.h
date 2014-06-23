@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 codepath. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Parse/Parse.h>
 
-@interface User : NSObject
+@interface User : PFUser <PFSubclassing>
+
 
 @end

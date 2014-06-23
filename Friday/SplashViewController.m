@@ -15,7 +15,7 @@
 #import "RollViewController.h"
 
 
-static NSInteger MaxNumberOfPhotosInRoll = 5;
+static NSInteger MaxNumberOfPhotosInRoll = 2;
 
 @interface SplashViewController ()
 
@@ -139,7 +139,7 @@ static NSInteger MaxNumberOfPhotosInRoll = 5;
         [weakself showImage:image];
         
         PFFile *imageFile = [PFFile fileWithData:imageData];
-        PFObject *photo = [PFObject objectWithClassName:@"photo"];
+        PFObject *photo = [PFObject objectWithClassName:@"Photo"];
         photo[@"imageName"] = @"My trip to Hawaii!";
         photo[@"imageFile"] = imageFile;
         
@@ -165,23 +165,18 @@ static NSInteger MaxNumberOfPhotosInRoll = 5;
 
 - (void)downloadImages {
 
-    PFQuery *query = [PFQuery queryWithClassName:@"photo"];
+    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     __weak typeof(self) weakself = self;
-    
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            NSLog(@"Successfully retrieved %lu images.", (unsigned long)objects.count);
-            
             [weakself setRollCount:[NSNumber numberWithInteger:objects.count]];
-            
                 if ([self.rollCount integerValue] >= MaxNumberOfPhotosInRoll) {
                     for (PFObject *object in objects) {
                         if (object != nil) {
                             [weakself.photoArray addObject:object];
                         }
                     }
-                
-                [weakself developRoll:weakself.photoArray];
+                    [weakself developRoll:weakself.photoArray];
                 }
         } else {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
@@ -190,11 +185,10 @@ static NSInteger MaxNumberOfPhotosInRoll = 5;
 }
 
 - (void)developRoll: (NSArray*)photoArray {
-    //TODO: optamize.
     [self.vc dismissViewControllerAnimated:YES completion:^ {
-         RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
-         rollvc.photosArray = self.photoArray;
-         [self presentViewController:rollvc animated:YES completion:nil];
+        RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
+        rollvc.photosArray = self.photoArray;
+        [self presentViewController:rollvc animated:YES completion:nil];
      }];
     
 }

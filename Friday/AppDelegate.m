@@ -11,6 +11,9 @@
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
 #import <FacebookSDK.h>
+#import "User.h"
+#import "Roll.h"
+#import "Photo.h"
 
 @implementation AppDelegate
 
@@ -18,13 +21,16 @@
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
+    [User registerSubclass];
+    [Roll registerSubclass];
+    [Photo registerSubclass];
+    
     [Parse setApplicationId:@"7WlikSk0LVU1NrT9CCNQXbB30QSTsEo2umDCky86"
                   clientKey:@"UGx1Vym8ZDBa5nEJpluEb3VQs8LE6KISvAM48T5o"];
     
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    self.window.rootViewController = [[LoginViewController alloc] init];//[[SplashViewController alloc] init];
+
+    self.window.rootViewController = [[SplashViewController alloc] init];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
