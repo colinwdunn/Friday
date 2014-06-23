@@ -13,6 +13,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/CGImageProperties.h>
 #import "RollViewController.h"
+#import "FridayCamera.h"
 
 
 static NSInteger MaxNumberOfPhotosInRoll = 2;
@@ -23,6 +24,7 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic) NSNumber *rollCount;
 @property (nonatomic, strong) NSMutableArray* photoArray;
+@property (nonatomic) FridayCamera *camera;
 
 @property (nonatomic, strong) PostSplashViewController *vc;
 
@@ -50,45 +52,9 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
     self.takePhotoButton.layer.cornerRadius = 20;
     
     //Setup AVCaptureSession for input video feed as background, and output still image
-    [self startCameraLiveFeed];
-    
-    //initalize photo array
-    if (self.photoArray == nil) {
-        self.photoArray = [NSMutableArray array];
-    }
+    self.camera = [[FridayCamera alloc] init];
+    [self.camera startRunningCameraSessionWithView:self];
 
-}
-
-#pragma mark - AVFoundation methods
-
-- (void)startCameraLiveFeed {
-    
-    AVCaptureSession *session = [[AVCaptureSession alloc] init];
-    session.sessionPreset = AVCaptureSessionPresetHigh;
-    
-    AVCaptureDevice *inputDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    
-    NSError *error = nil;
-    AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:inputDevice error:&error];
-    
-    if ([session canAddInput:deviceInput]) {
-        [session addInput:deviceInput];
-    }
-    
-    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
-    [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-    
-    CALayer *rootLayer = self.view.layer;
-    rootLayer.masksToBounds = YES;
-    previewLayer.frame = CGRectMake(0, 0, rootLayer.bounds.size.width, rootLayer.bounds.size.height);
-    [rootLayer insertSublayer:previewLayer atIndex:0];
-    
-    self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG, AVVideoCodecKey,nil];
-    [self.stillImageOutput setOutputSettings:outputSettings];
-    [session addOutput:self.stillImageOutput];
-    
-    [session startRunning];
 }
 
 #pragma mark - Private methods
@@ -106,48 +72,20 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
 - (IBAction)onTakePhotoButton:(id)sender {
     
     //TODO: Refactor code so it is simpler
-    AVCaptureConnection *videoConnection = nil;
-    for (AVCaptureConnection *connection in self.stillImageOutput.connections) {
-        for (AVCaptureInputPort *port in [connection inputPorts]) {
-            if ([[port mediaType] isEqual:AVMediaTypeVideo]) {
-                videoConnection = connection;
-                break;
-            }
-        }
-        if (videoConnection) {
-            break;
-        }
-    }
-    
-    NSLog(@"about to request a capture from: %@", self.stillImageOutput);
-    
     __weak typeof(self) weakself = self;
     
-    [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
-        CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+    [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
+        [weakself showImage:takenPhoto];
         
-        if (exifAttachments) {
-            // Do something with the attachments
-            NSLog(@"attachments: %@", exifAttachments);
-        } else {
-            // No attachments
-        }
-        
-        NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-        UIImage *image = [UIImage imageWithData:imageData];
-        
-        [weakself showImage:image];
-        
-        PFFile *imageFile = [PFFile fileWithData:imageData];
+        PFFile *imageFile = [PFFile fileWithData:photoData];
         PFObject *photo = [PFObject objectWithClassName:@"Photo"];
         photo[@"imageName"] = @"My trip to Hawaii!";
         photo[@"imageFile"] = imageFile;
         
         [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [weakself downloadImages];
+            //[weakself downloadImages];
         }];
-    
-       // weakself.takePhotoButton.enabled = NO;
+
     }];
 }
 
