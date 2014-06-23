@@ -15,7 +15,7 @@
 #import "RollViewController.h"
 
 
-static NSInteger MaxNumberOfPhotosInRoll = 36;
+static NSInteger MaxNumberOfPhotosInRoll = 5;
 
 @interface SplashViewController ()
 
@@ -51,6 +51,11 @@ static NSInteger MaxNumberOfPhotosInRoll = 36;
     
     //Setup AVCaptureSession for input video feed as background, and output still image
     [self startCameraLiveFeed];
+    
+    //initalize photo array
+    if (self.photoArray == nil) {
+        self.photoArray = [NSMutableArray array];
+    }
 
 }
 
@@ -159,36 +164,24 @@ static NSInteger MaxNumberOfPhotosInRoll = 36;
 }
 
 - (void)downloadImages {
-    
-    if (self.photoArray == nil) {
-        self.photoArray = [NSMutableArray array];
-    }
-    
+
     PFQuery *query = [PFQuery queryWithClassName:@"photo"];
     __weak typeof(self) weakself = self;
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            // The find succeeded.
             NSLog(@"Successfully retrieved %lu images.", (unsigned long)objects.count);
             
             [weakself setRollCount:[NSNumber numberWithInteger:objects.count]];
             
                 if ([self.rollCount integerValue] >= MaxNumberOfPhotosInRoll) {
                     for (PFObject *object in objects) {
-                        NSLog(@"%@", object.objectId);
-                
-                        PFFile *imageFile = [object objectForKey:@"imageFile"];
-                        NSData *data = [imageFile getData];
-                        UIImage *image = [UIImage imageWithData:data];
-                
-                        if (image != nil) {
-                            [weakself.photoArray addObject:image];
+                        if (object != nil) {
+                            [weakself.photoArray addObject:object];
                         }
-                
                     }
-                    
-                    [weakself developRoll:weakself.photoArray];
+                
+                [weakself developRoll:weakself.photoArray];
                 }
         } else {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
