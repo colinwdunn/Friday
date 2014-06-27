@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Roll.h"
 
 @interface SplashViewController : UIViewController
+
+@property (nonatomic, strong) Roll *roll;
 
 @end

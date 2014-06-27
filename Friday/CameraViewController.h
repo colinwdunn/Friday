@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Roll.h"
 
 @interface CameraViewController : UIViewController
+
+@property (strong, nonatomic) Roll *roll;
 
 @end

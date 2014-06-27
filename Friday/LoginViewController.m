@@ -7,7 +7,10 @@
 //
 
 #import "LoginViewController.h"
+#import "SplashViewController.h"
+#import "CameraViewController.h"
 #import <Parse/Parse.h>
+#import "Roll.h"
 
 @interface LoginViewController ()
 - (IBAction)loginDidPress:(id)sender;
@@ -52,17 +55,63 @@
             }
         } else if (user.isNew) {
             NSLog(@"User with facebook signed up and logged in");
-        } else {
-            NSLog(@"User with facebook logged in");
             FBRequest *request = [FBRequest requestForMe];
             [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 NSDictionary *userData = (NSDictionary *)result;
+                PFUser *user = [PFUser currentUser];
+                user.username = userData[@"name"];
+                user.email = userData[@"email"];
                 
-                NSLog(@"users name: %@", userData[@"name"]);
+                [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    //[self getRollData];
+                    PFObject *firstRoll = [PFObject objectWithClassName:@"Roll"];
+                    firstRoll[@"userId"] = [[PFUser currentUser] objectId];
+                    [firstRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        PFObject *userRoll = [PFObject objectWithClassName:@"UserRolls"];
+                        userRoll[@"userId"] = [[PFUser currentUser] objectId];
+                        userRoll[@"rollId"] = firstRoll.objectId;
+                        userRoll[@"status"] = @"accepted";
+                        [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                            SplashViewController *splashVC = [[SplashViewController alloc] init];
+                            Roll *roll = [[Roll alloc] init];
+                            roll.rollId = firstRoll.objectId;
+                            splashVC.roll = roll;
+                            [self presentViewController:splashVC animated:YES completion:nil];
+                        }];
+                    }];
+                }];
+                
             }];
+
+        } else {
+            NSLog(@"User with facebook logged in");
+            PFQuery *query = [PFQuery queryWithClassName:@"Roll"];
+            [query whereKey:@"userId" equalTo:[[PFUser currentUser] objectId]];
+            [query orderByDescending:@"createdAt"];
+            query.limit = 1;
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                CameraViewController *cameraVC = [[CameraViewController alloc] init];
+                Roll *roll = [[Roll alloc] init];
+                PFObject *currentRoll = objects[0];
+                roll.rollId = currentRoll.objectId;
+                cameraVC.roll = roll;
+                
+                [self presentViewController:cameraVC animated:YES completion:nil];
+            }];
+            // Present splash view controller if user hasnt taken photo
+            // else present camera view controller
         }
+        
+        
         
     }];
     
 }
+
+
+//- (*NSArray)getRollData {
+//    PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
+//    [query whereKey:@"userId" equalTo:[[PFUser currentUser] objectId]];
+//    
+//}
 @end

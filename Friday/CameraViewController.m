@@ -8,10 +8,13 @@
 
 #import "CameraViewController.h"
 #import "FridayCamera.h"
+#import <Parse/Parse.h>
 
 @interface CameraViewController ()
 
 @property (nonatomic) FridayCamera *camera;
+@property (nonatomic, assign) NSInteger photosCount;
+
 - (IBAction)takePhotoDidPress:(id)sender;
 @property (strong, nonatomic) IBOutlet UIButton *currentPhotoCountButton;
 
@@ -35,6 +38,9 @@
     NSLog(@"In the camera view");
     self.camera = [[FridayCamera alloc] init];
     [self.camera startRunningCameraSessionWithView:self];
+    
+    [self updatePhotoCount];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,18 +50,30 @@
 }
 
 - (IBAction)takePhotoDidPress:(id)sender {
+    
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
-        PFFile *imageFile = [PFFile fileWithData:photoData];
-        PFObject *photo = [PFObject objectWithClassName:@"photo"];
+        NSData *smallerImageData = UIImageJPEGRepresentation(takenPhoto, 0.5f);
+        PFFile *imageFile = [PFFile fileWithData:smallerImageData];
+        PFObject *photo = [PFObject objectWithClassName:@"Photo"];
         photo[@"imageName"] = @"My trip to Hawaii!";
+        photo[@"rollId"] = self.roll.rollId;
         photo[@"imageFile"] = imageFile;
         
         [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            //[weakself downloadImages];
+            [self updatePhotoCount];
         }];
     }];
-    int currentPhotoCount = [self.currentPhotoCountButton.titleLabel.text intValue];
-    currentPhotoCount--;
-    [self.currentPhotoCountButton setTitle:[@(currentPhotoCount) stringValue] forState:UIControlStateNormal];
 }
+
+- (void)updatePhotoCount{
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+    [query whereKey:@"rollId" equalTo:self.roll.rollId];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        self.photosCount = 36 - objects.count;
+        [self.currentPhotoCountButton setTitle:[@(self.photosCount) stringValue] forState:UIControlStateNormal];
+    }];
+}
+
+
 @end

@@ -16,7 +16,6 @@
 @interface FridayCamera : NSObject
 
 - (void)startRunningCameraSessionWithView:(UIViewController *)viewController;
-
 - (void)photoOnCompletion:(void (^)(UIImage *takenPhoto, NSData *photoData))onCompletion;
 
 @end

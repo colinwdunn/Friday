@@ -46,6 +46,8 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
     
     [super viewDidLoad];
     
+    NSLog(@"Here is your Roll id: %@", self.roll.rollId);
+    
     // Style Photo button
     self.takePhotoButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.takePhotoButton.layer.borderWidth = 3;
@@ -54,6 +56,8 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
     //Setup AVCaptureSession for input video feed as background, and output still image
     self.camera = [[FridayCamera alloc] init];
     [self.camera startRunningCameraSessionWithView:self];
+    
+    self.photoArray = [NSMutableArray array];
 
 }
 
@@ -77,13 +81,15 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
         [weakself showImage:takenPhoto];
         
-        PFFile *imageFile = [PFFile fileWithData:photoData];
+        NSData *imageData = UIImageJPEGRepresentation(takenPhoto, 0.5f);
+        PFFile *imageFile = [PFFile fileWithData:imageData];
         PFObject *photo = [PFObject objectWithClassName:@"Photo"];
         photo[@"imageName"] = @"My trip to Hawaii!";
+        photo[@"rollId"] = self.roll.rollId;
         photo[@"imageFile"] = imageFile;
         
         [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            //[weakself downloadImages];
+            [weakself downloadImages];
         }];
 
     }];

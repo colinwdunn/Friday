@@ -11,6 +11,13 @@
 
 @implementation Roll
 
+
+@dynamic rollName;
+//@dynamic PFFile *photosFile;
+@dynamic ownerId;
+@dynamic maxPhotos;
+@dynamic photosCount;
+
 + (NSString *)parseClassName{
     return @"Roll";
 }
@@ -22,11 +29,7 @@
 //    return
 //}
 
-@dynamic rollName;
-//@property PFFile *photosFile;
-@dynamic ownerId;
-@dynamic maxPhotos;
-@dynamic photosCount;
+
 
 
 
