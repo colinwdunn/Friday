@@ -17,7 +17,6 @@
 @implementation PhotoGalleryCell
 
 - (void)setPhotoImage:(PFObject *)photos {
-    
     self.photoImageView.file = [photos objectForKey:@"imageFile"];
     [self.photoImageView loadInBackground];
 }

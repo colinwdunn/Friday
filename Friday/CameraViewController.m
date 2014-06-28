@@ -7,6 +7,7 @@
 //
 
 #import "CameraViewController.h"
+#import "RollViewController.h"
 #import "FridayCamera.h"
 #import <Parse/Parse.h>
 
@@ -14,6 +15,7 @@
 
 @property (nonatomic) FridayCamera *camera;
 @property (nonatomic, assign) NSInteger photosCount;
+@property (nonatomic, strong) NSArray* photoArrayOfPFObjects;
 
 - (IBAction)takePhotoDidPress:(id)sender;
 @property (strong, nonatomic) IBOutlet UIButton *currentPhotoCountButton;
@@ -70,10 +72,46 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     [query whereKey:@"rollId" equalTo:self.roll.rollId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        self.photosCount = 36 - objects.count;
-        [self.currentPhotoCountButton setTitle:[@(self.photosCount) stringValue] forState:UIControlStateNormal];
+        self.photosCount = 6 - objects.count;
+        if (self.photosCount == 0) {
+            UIButton *showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            showRollButton.frame = CGRectMake(120, 200, 100, 40);
+            showRollButton.titleLabel.text = @"Show Roll";
+            showRollButton.backgroundColor = [UIColor redColor];
+            [showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:showRollButton];
+        } else {
+            [self.currentPhotoCountButton setTitle:[@(self.photosCount) stringValue] forState:UIControlStateNormal];
+        }
     }];
 }
+
+- (void)showRoll {
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+    [query whereKey:@"rollId" equalTo:self.roll.rollId];
+    __weak typeof(self) weakself = self;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            weakself.photoArrayOfPFObjects = [NSArray array];
+            weakself.photoArrayOfPFObjects = objects;
+            
+            [weakself developRoll:weakself.photoArrayOfPFObjects];
+            
+        } else {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
+- (void)developRoll: (NSArray*)photoArray {
+    RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
+    rollvc.photosArray = self.photoArrayOfPFObjects;
+    [self presentViewController:rollvc animated:YES completion:nil];
+    
+}
+
+
 
 
 @end

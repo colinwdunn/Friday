@@ -10,6 +10,6 @@
 
 @interface RollViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *photosArray;
+@property (nonatomic, strong) NSArray *photosArray;
 
 @end

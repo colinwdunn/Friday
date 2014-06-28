@@ -23,7 +23,6 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
 @property (weak, nonatomic) IBOutlet UIButton *takePhotoButton;
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (nonatomic) NSNumber *rollCount;
-@property (nonatomic, strong) NSMutableArray* photoArray;
 @property (nonatomic) FridayCamera *camera;
 
 @property (nonatomic, strong) PostSplashViewController *vc;
@@ -56,8 +55,6 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
     //Setup AVCaptureSession for input video feed as background, and output still image
     self.camera = [[FridayCamera alloc] init];
     [self.camera startRunningCameraSessionWithView:self];
-    
-    self.photoArray = [NSMutableArray array];
 
 }
 
@@ -89,7 +86,6 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
         photo[@"imageFile"] = imageFile;
         
         [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [weakself downloadImages];
         }];
 
     }];
@@ -106,36 +102,5 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
         }];
     });
 }
-
-- (void)downloadImages {
-
-    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-    __weak typeof(self) weakself = self;
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            [weakself setRollCount:[NSNumber numberWithInteger:objects.count]];
-                if ([self.rollCount integerValue] >= MaxNumberOfPhotosInRoll) {
-                    for (PFObject *object in objects) {
-                        if (object != nil) {
-                            [weakself.photoArray addObject:object];
-                        }
-                    }
-                    [weakself developRoll:weakself.photoArray];
-                }
-        } else {
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
-    }];
-}
-
-- (void)developRoll: (NSArray*)photoArray {
-    [self.vc dismissViewControllerAnimated:YES completion:^ {
-        RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
-        rollvc.photosArray = self.photoArray;
-        [self presentViewController:rollvc animated:YES completion:nil];
-     }];
-    
-}
-
 
 @end
