@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Roll.h"
 
 @interface PostSplashViewController : UIViewController
+
+@property (nonatomic, strong) Roll *roll;
 
 - (id)initWithImage:(UIImage *)image processedImage:(UIImage *)processedImage;
 

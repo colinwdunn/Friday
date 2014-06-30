@@ -19,29 +19,7 @@
 
 @implementation LoginViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)loginDidPress:(id)sender {
-    
     NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
     [PFFacebookUtils initializeFacebook];
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
@@ -63,7 +41,6 @@
                 user.email = userData[@"email"];
                 
                 [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    //[self getRollData];
                     PFObject *firstRoll = [PFObject objectWithClassName:@"Roll"];
                     firstRoll[@"userId"] = [[PFUser currentUser] objectId];
                     [firstRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -108,10 +85,4 @@
     
 }
 
-
-//- (*NSArray)getRollData {
-//    PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
-//    [query whereKey:@"userId" equalTo:[[PFUser currentUser] objectId]];
-//    
-//}
 @end

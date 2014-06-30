@@ -13,10 +13,8 @@
 + (NSString *)parseClassName;
 
 @property (nonatomic, strong) NSString *rollName;
-//@property PFFile *photosFile;
 @property (nonatomic, strong) NSString *rollId;
 @property int ownerId;
-
 @property int maxPhotos;
 @property int photosCount;
 

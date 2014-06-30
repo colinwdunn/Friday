@@ -11,9 +11,8 @@
 
 @implementation Roll
 
-
 @dynamic rollName;
-//@dynamic PFFile *photosFile;
+@dynamic rollId;
 @dynamic ownerId;
 @dynamic maxPhotos;
 @dynamic photosCount;

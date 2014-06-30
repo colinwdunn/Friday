@@ -53,13 +53,9 @@
     self.imageView.image = self.image;
 }
 
-//TODO: below code for testing. Remove when done.
-- (IBAction)takeMorePhotos:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (IBAction)contactsButtonDidPress:(id)sender {
     CameraViewController *cameraViewController = [[CameraViewController alloc] init];
+    cameraViewController.roll = self.roll;
     [self presentViewController:cameraViewController animated:YES completion:nil];
 }
 

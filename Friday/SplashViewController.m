@@ -16,7 +16,7 @@
 #import "FridayCamera.h"
 
 
-static NSInteger MaxNumberOfPhotosInRoll = 2;
+//static NSInteger MaxNumberOfPhotosInRoll = 2;
 
 @interface SplashViewController ()
 
@@ -86,6 +86,9 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
         photo[@"imageFile"] = imageFile;
         
         [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                NSLog(@"image saved");
+            }
         }];
 
     }];
@@ -96,8 +99,9 @@ static NSInteger MaxNumberOfPhotosInRoll = 2;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
         [weakself processImage:image completion:^(UIImage *image, UIImage *processedImage) {
-            PostSplashViewController *vc = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
-            self.vc = vc;
+            PostSplashViewController *postVC = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
+            postVC.roll = self.roll;
+            self.vc = postVC;
             [self presentViewController:self.vc animated:NO completion:nil];
         }];
     });

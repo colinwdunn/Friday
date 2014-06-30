@@ -41,17 +41,17 @@
     self.camera = [[FridayCamera alloc] init];
     [self.camera startRunningCameraSessionWithView:self];
     
-    [self updatePhotoCount];
-    
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)takePhotoDidPress:(id)sender {
+    UIView *shutterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    shutterView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:shutterView];
+    [UIView animateWithDuration:.5 animations:^{
+        shutterView.alpha = 0;
+    } completion:^(BOOL finished) {
+        [shutterView removeFromSuperview];
+    }];
     
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
         NSData *smallerImageData = UIImageJPEGRepresentation(takenPhoto, 0.5f);
@@ -68,18 +68,23 @@
 }
 
 - (void)updatePhotoCount{
-    
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     [query whereKey:@"rollId" equalTo:self.roll.rollId];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        self.photosCount = 6 - objects.count;
+        self.photosCount = 4 - objects.count;
         if (self.photosCount == 0) {
+            self.currentPhotoCountButton.hidden = YES;
             UIButton *showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            showRollButton.frame = CGRectMake(120, 200, 100, 40);
-            showRollButton.titleLabel.text = @"Show Roll";
-            showRollButton.backgroundColor = [UIColor redColor];
+            showRollButton.frame = CGRectMake(120, 500, 100, 40);
+            showRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+            showRollButton.layer.borderWidth = 3;
+            showRollButton.layer.cornerRadius = 20;
+            showRollButton.layer.opaque = YES;
+            [showRollButton setTitle: @"Show Roll" forState:UIControlStateNormal];
+            showRollButton.titleLabel.textColor = [UIColor yellowColor];
             [showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:showRollButton];
+        
         } else {
             [self.currentPhotoCountButton setTitle:[@(self.photosCount) stringValue] forState:UIControlStateNormal];
         }
@@ -87,7 +92,6 @@
 }
 
 - (void)showRoll {
-    
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     [query whereKey:@"rollId" equalTo:self.roll.rollId];
     __weak typeof(self) weakself = self;
@@ -108,7 +112,7 @@
     RollViewController *rollvc = [[RollViewController alloc] initWithNibName:@"RollViewController" bundle:nil];
     rollvc.photosArray = self.photoArrayOfPFObjects;
     [self presentViewController:rollvc animated:YES completion:nil];
-    
+   
 }
 
 
