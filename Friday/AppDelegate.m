@@ -20,13 +20,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
-    [User registerSubclass];
+
     [Roll registerSubclass];
     [Photo registerSubclass];
     
     [Parse setApplicationId:@"7WlikSk0LVU1NrT9CCNQXbB30QSTsEo2umDCky86"
                   clientKey:@"UGx1Vym8ZDBa5nEJpluEb3VQs8LE6KISvAM48T5o"];
+    
+    PFUser *currentUser = [PFUser currentUser];
+    NSLog(@"current user: %@", currentUser);
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
