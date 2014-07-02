@@ -13,11 +13,35 @@
 #import "Roll.h"
 
 @interface LoginViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *nameField;
+
+- (IBAction)onLoginButton:(id)sender;
 - (IBAction)loginDidPress:(id)sender;
+
+- (void)presentCameraViewController;
 
 @end
 
 @implementation LoginViewController
+
+- (IBAction)onLoginButton:(id)sender {
+    NSString *name = self.nameField.text;
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" equalTo:name];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (objects.count > 0) {
+            PFUser *user = objects[0];
+            NSLog(@"user: %@", user);
+            
+            [PFUser logInWithUsernameInBackground:name password:@"asdf" block:^(PFUser *user, NSError *error) {
+                NSLog(@"I've cracked the user credentials!");
+                [self presentCameraViewController];
+            }];
+        }
+    }];
+    
+}
 
 - (IBAction)loginDidPress:(id)sender {
     NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
@@ -62,27 +86,39 @@
 
         } else {
             NSLog(@"User with facebook logged in");
-            PFQuery *query = [PFQuery queryWithClassName:@"Roll"];
-            [query whereKey:@"userId" equalTo:[[PFUser currentUser] objectId]];
-            [query orderByDescending:@"createdAt"];
-            query.limit = 1;
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                CameraViewController *cameraVC = [[CameraViewController alloc] init];
-                Roll *roll = [[Roll alloc] init];
-                PFObject *currentRoll = objects[0];
-                roll.rollId = currentRoll.objectId;
-                cameraVC.roll = roll;
-                
-                [self presentViewController:cameraVC animated:YES completion:nil];
-            }];
-            // Present splash view controller if user hasnt taken photo
-            // else present camera view controller
+            
+            [self presentCameraViewController];
         }
         
         
         
     }];
     
+}
+
+- (void)presentCameraViewController {
+    PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
+    [query whereKey:@"userId" equalTo:[[PFUser currentUser] objectId]];
+    [query orderByDescending:@"createdAt"];
+    query.limit = 1;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        PFObject *userRoll = objects[0];
+        
+        // This goes away once you have real references
+        PFQuery *rollQuery = [Roll query];
+        [rollQuery whereKey:@"objectId" equalTo:userRoll[@"rollId"]];
+        [rollQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            CameraViewController *cameraVC = [[CameraViewController alloc] init];
+            Roll *currentRoll = objects[0];
+            
+            // TODO: Update roll status to accepted
+            
+            cameraVC.roll = currentRoll;
+            
+            [self presentViewController:cameraVC animated:YES completion:nil];
+        }];
+        
+    }];
 }
 
 @end
