@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "SplashViewController.h"
 #import "LoginViewController.h"
+#import "AddPeopleViewController.h"
 #import <Parse/Parse.h>
 #import <FacebookSDK.h>
 #import "User.h"
@@ -23,6 +24,7 @@
 
     [Roll registerSubclass];
     [Photo registerSubclass];
+    [User registerSubclass];
     
     [Parse setApplicationId:@"7WlikSk0LVU1NrT9CCNQXbB30QSTsEo2umDCky86"
                   clientKey:@"UGx1Vym8ZDBa5nEJpluEb3VQs8LE6KISvAM48T5o"];

@@ -54,70 +54,50 @@
                 NSLog(@"User canceled the facebook login");
             } else {
                 NSLog(@"An error occured* %@", error);
-            }
+                }
+        
         } else if (user.isNew) {
             NSLog(@"User with facebook signed up and logged in");
             FBRequest *request = [FBRequest requestForMe];
+            
             [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 NSDictionary *userData = (NSDictionary *)result;
                 PFUser *user = [PFUser currentUser];
                 user.username = userData[@"name"];
                 user.email = userData[@"email"];
                 
-                [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    PFObject *firstRoll = [PFObject objectWithClassName:@"Roll"];
-                    firstRoll[@"userId"] = [[PFUser currentUser] objectId];
-                    [firstRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                        PFObject *userRoll = [PFObject objectWithClassName:@"UserRolls"];
-                        userRoll[@"userId"] = [[PFUser currentUser] objectId];
-                        userRoll[@"rollId"] = firstRoll.objectId;
-                        userRoll[@"status"] = @"accepted";
-                        [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        [[[Roll alloc] init] getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
                             SplashViewController *splashVC = [[SplashViewController alloc] init];
-                            Roll *roll = [[Roll alloc] init];
-                            roll.rollId = firstRoll.objectId;
-                            splashVC.roll = roll;
+                            splashVC.roll = currentRoll;
                             [self presentViewController:splashVC animated:YES completion:nil];
+                        } andFailure:^(NSError *error) {
+                        //FAILED
                         }];
                     }];
-                }];
-                
             }];
 
-        } else {
-            NSLog(@"User with facebook logged in");
-            
-            [self presentCameraViewController];
-        }
-        
-        
-        
+            } else {
+                NSLog(@"User with facebook logged in");
+                [self presentCameraViewController];
+            }
     }];
     
 }
 
 - (void)presentCameraViewController {
     PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
-    [query whereKey:@"userId" equalTo:[[PFUser currentUser] objectId]];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query orderByDescending:@"createdAt"];
     query.limit = 1;
+    [query includeKey:@"roll"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         PFObject *userRoll = objects[0];
-        
-        // This goes away once you have real references
-        PFQuery *rollQuery = [Roll query];
-        [rollQuery whereKey:@"objectId" equalTo:userRoll[@"rollId"]];
-        [rollQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            CameraViewController *cameraVC = [[CameraViewController alloc] init];
-            Roll *currentRoll = objects[0];
-            
-            // TODO: Update roll status to accepted
-            
-            cameraVC.roll = currentRoll;
-            
-            [self presentViewController:cameraVC animated:YES completion:nil];
-        }];
-        
+        PFObject *currentRoll = [userRoll objectForKey:@"roll"];
+        CameraViewController *cameraVC = [[CameraViewController alloc] init];
+        // TODO: Update roll status to accepted
+        cameraVC.roll = currentRoll;
+        [self presentViewController:cameraVC animated:YES completion:nil];
     }];
 }
 

@@ -8,6 +8,7 @@
 
 #import "PostSplashViewController.h"
 #import "CameraViewController.h"
+#import "AddPeopleViewController.h"
 
 @interface PostSplashViewController ()
 
@@ -54,9 +55,15 @@
 }
 
 - (IBAction)contactsButtonDidPress:(id)sender {
+    AddPeopleViewController *addPeopleVC = [[AddPeopleViewController alloc] init];
+    [self presentViewController:addPeopleVC animated:YES completion:nil];
+}
+
+- (IBAction)takeMorePhotos:(id)sender {
     CameraViewController *cameraViewController = [[CameraViewController alloc] init];
     cameraViewController.roll = self.roll;
     [self presentViewController:cameraViewController animated:YES completion:nil];
 }
+
 
 @end

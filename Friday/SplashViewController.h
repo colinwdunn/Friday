@@ -11,6 +11,6 @@
 
 @interface SplashViewController : UIViewController
 
-@property (nonatomic, strong) Roll *roll;
+@property (nonatomic, strong) PFObject *roll;
 
 @end

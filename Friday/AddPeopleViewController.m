@@ -7,9 +7,18 @@
 //
 
 #import "AddPeopleViewController.h"
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
+#import "User.h"
+#import "Roll.h"
+
 
 @interface AddPeopleViewController ()
 
+@property (nonatomic) NSMutableArray *myContacts;
+@property (weak, nonatomic) IBOutlet UITableView *contactTableView;
+@property (nonatomic) NSMutableArray *selectedContacts;
+@property (nonatomic, strong) Roll *theRoll;
 @end
 
 @implementation AddPeopleViewController
@@ -26,13 +35,145 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [self getContactsList];
+    
+    [self.contactTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+    
+    self.selectedContacts = [NSMutableArray array];
+    
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.myContacts.count;
 }
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:@"ContactCell"];
+    cell.textLabel.text = [self.myContacts[indexPath.row] firstName];
+    cell.detailTextLabel.text = [self.myContacts[indexPath.row] emailBaby];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    User *person = self.myContacts[indexPath.row];
+    [self.selectedContacts addObject:person];
+    NSLog(@"You selected these contacts: %@", self.selectedContacts);
+}
+
+- (void)getContactsList {
+
+    self.myContacts = [NSMutableArray array];
+    
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+    __block BOOL userDidGrantAddressBookAccess;
+    CFErrorRef addressBookError = NULL;
+    
+    if ( ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined ||
+        ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized )
+    {
+        addressBook = ABAddressBookCreateWithOptions(NULL, &addressBookError);
+        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error){
+            userDidGrantAddressBookAccess = granted;
+            dispatch_semaphore_signal(sema);
+            
+            if (addressBook !=nil) {
+                NSArray *allContacts = (__bridge_transfer NSArray*)ABAddressBookCopyArrayOfAllPeople(addressBook);
+                NSUInteger i = 0;
+                for (i = 0; i<[allContacts count]; i++)
+                {
+                    User *person = [[User alloc] init];
+                    ABRecordRef contactPerson = (__bridge ABRecordRef)allContacts[i];
+                    NSString *firstName = (__bridge_transfer NSString*)ABRecordCopyValue(contactPerson, kABPersonFirstNameProperty);
+                    
+                    ABMultiValueRef email = ABRecordCopyValue(contactPerson, kABPersonEmailProperty);
+                    CFStringRef emailRef = ABMultiValueCopyValueAtIndex(email, 0);
+                    NSString *emailFromMulti = (__bridge NSString *) emailRef;
+                    
+                    ABMultiValueRef phoneNumber = ABRecordCopyValue(contactPerson, kABPersonPhoneProperty);
+                    CFStringRef phoneRef = ABMultiValueCopyValueAtIndex(phoneNumber, 0);
+                    NSString *phoneFromMulti = (__bridge NSString *) phoneRef;
+                    
+                    person.firstName = firstName;
+                    person.emailBaby = emailFromMulti;
+                    person.phoneNumber = phoneFromMulti;
+                    
+                    [self.myContacts addObject:person];
+                    
+                }
+                NSLog(@"Contacts:%@", self.myContacts);
+                [self.contactTableView reloadData];
+            }
+            
+        });
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    }
+    else
+    {
+        if ( ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusDenied ||
+            ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusRestricted )
+        {
+            // Display an error.
+        }
+    }
+    
+}
+
+
+- (IBAction)onAddSelectedContactsButton:(id)sender {
+    
+    //fetching current user's last roll
+    Roll *initializedRoll = [[Roll alloc] init];
+    [initializedRoll getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
+        NSLog(@"%@", currentRoll);
+        self.theRoll = currentRoll;
+    } andFailure:^(NSError *error) {
+        NSLog(@"OH Noes error: %@", error);
+    }];
+        
+    
+        
+        
+      [[User currentUser] getInvitedUser:self.selectedContacts withSuccess:^(User *invitedUser) {
+          NSLog(@"%@", invitedUser);
+          PFObject *userRollWithInvitedUser = [PFObject objectWithClassName:@"UserRolls"];
+          userRollWithInvitedUser[@"roll"] = self.theRoll;
+          userRollWithInvitedUser[@"user"] = invitedUser;
+          userRollWithInvitedUser[@"status"] = @"invited";
+          
+          
+          //adding invited user to the UserRolls Tabel
+          [userRollWithInvitedUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+              MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+              if([MFMessageComposeViewController canSendText])
+              {
+                  controller.body = @"Go to your Friday app! It is Friday!";
+                  controller.recipients = [NSArray arrayWithObjects:[self.selectedContacts[0] phoneNumber], nil];
+                  controller.messageComposeDelegate = self;
+                  [self presentViewController:controller animated:YES completion:nil];
+              }
+              
+          }];
+      } andFailure:^(NSError *error) {
+          
+      }];
+        
+
+        
+        
+        
+        
+    
+            
+        
+    
+
+}
+
+
 
 @end

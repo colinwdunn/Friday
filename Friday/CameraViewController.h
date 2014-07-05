@@ -11,6 +11,6 @@
 
 @interface CameraViewController : UIViewController
 
-@property (strong, nonatomic) Roll *roll;
+@property (strong, nonatomic) PFObject *roll;
 
 @end

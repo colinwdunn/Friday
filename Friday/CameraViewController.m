@@ -58,7 +58,7 @@
         PFFile *imageFile = [PFFile fileWithData:smallerImageData];
         PFObject *photo = [PFObject objectWithClassName:@"Photo"];
         photo[@"imageName"] = @"My trip to Hawaii!";
-        photo[@"rollId"] = self.roll.rollId;
+        photo[@"roll"] = self.roll;
         photo[@"imageFile"] = imageFile;
         
         [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -69,7 +69,7 @@
 
 - (void)updatePhotoCount{
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-    [query whereKey:@"rollId" equalTo:self.roll.rollId];
+    [query whereKey:@"roll" equalTo:self.roll];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         self.photosCount = 4 - objects.count;
         if (self.photosCount == 0) {
@@ -93,7 +93,7 @@
 
 - (void)showRoll {
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-    [query whereKey:@"rollId" equalTo:self.roll.rollId];
+    [query whereKey:@"roll" equalTo:self.roll];
     __weak typeof(self) weakself = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
