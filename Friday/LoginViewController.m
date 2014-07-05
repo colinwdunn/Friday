@@ -27,14 +27,14 @@
 
 - (IBAction)onLoginButton:(id)sender {
     NSString *name = self.nameField.text;
-    PFQuery *query = [PFUser query];
+    PFQuery *query = [User query];
     [query whereKey:@"username" equalTo:name];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (objects.count > 0) {
-            PFUser *user = objects[0];
+            User *user = objects[0];
             NSLog(@"user: %@", user);
-            
-            [PFUser logInWithUsernameInBackground:name password:@"asdf" block:^(PFUser *user, NSError *error) {
+        
+            [User logInWithUsernameInBackground:name password:@"asdf" block:^(PFUser *user, NSError *error) {
                 NSLog(@"I've cracked the user credentials!");
                 [self presentCameraViewController];
             }];
@@ -87,7 +87,7 @@
 
 - (void)presentCameraViewController {
     PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
-    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    [query whereKey:@"user" equalTo:[User currentUser]];
     [query orderByDescending:@"createdAt"];
     query.limit = 1;
     [query includeKey:@"roll"];

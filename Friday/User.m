@@ -19,7 +19,7 @@
 
 - (void)getInvitedUser:(NSMutableArray *)invitedUsers  withSuccess:(void (^) (User *invitedUser))successBlock andFailure: (void (^) (NSError *error))failureBlock {
     PFQuery *fetchInvitedUser = [User query];
-    [fetchInvitedUser whereKey:@"username" equalTo:@"Joseph"];
+    [fetchInvitedUser whereKey:@"username" equalTo:@"Joseph Anderson"];
     
     [fetchInvitedUser findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
         if (!error) {
