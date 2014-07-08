@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+
+@protocol RollViewControllerDelegate <NSObject>
+
+- (void)didDismissRollViewController;
+
+@end
+
 @interface RollViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) NSArray *photosArray;
+@property (weak, nonatomic) id <RollViewControllerDelegate> delegate;
 
 @end

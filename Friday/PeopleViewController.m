@@ -7,10 +7,14 @@
 //
 
 #import "PeopleViewController.h"
+#import "AddPeopleViewController.h"
+
 
 @interface PeopleViewController ()
 @property (strong, nonatomic) IBOutlet UILabel *rollMemberListLabel;
 @property (nonatomic) NSArray *groupMemberList;
+- (IBAction)closeButtonDidPress:(id)sender;
+- (IBAction)addContactDidPress:(id)sender;
 
 @end
 
@@ -40,10 +44,12 @@
     NSLog(@"%@", self.groupMemberList);
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (IBAction)closeButtonDidPress:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)addContactDidPress:(id)sender {
+    AddPeopleViewController *addPeopleVC = [[AddPeopleViewController alloc] init];
+    [self presentViewController:addPeopleVC animated:YES completion:nil];
+}
 @end

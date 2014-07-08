@@ -213,10 +213,7 @@
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
     if (result == MessageComposeResultCancelled) {
         NSLog(@"Canceled the message: %d", result);
-        [self dismissViewControllerAnimated:YES completion:^{
-            PeopleViewController *peopleViewController = [[PeopleViewController alloc] initWithMembersList:self.selectedContacts];
-            [self presentViewController:peopleViewController animated:YES completion:NULL];
-        }];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     if (result == MessageComposeResultSent) {
         NSLog(@"Message was sent");

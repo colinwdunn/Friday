@@ -59,7 +59,10 @@
 }
 
 - (IBAction)createNewRoll:(id)sender {
-    NSLog(@"New Roll button pressed");
+    if (self.delegate !=nil) {
+        [self.delegate didDismissRollViewController];
+    }
+    
 }
 
 

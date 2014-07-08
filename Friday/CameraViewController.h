@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Roll.h"
+#import "RollViewController.h"
 
-@interface CameraViewController : UIViewController
+@interface CameraViewController : UIViewController <RollViewControllerDelegate>
 
 @property (strong, nonatomic) PFObject *roll;
 

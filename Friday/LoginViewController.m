@@ -66,6 +66,7 @@
                 user.username = userData[@"name"];
                 user.email = userData[@"email"];
                 
+                
                     [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         [[[Roll alloc] init] getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
                             SplashViewController *splashVC = [[SplashViewController alloc] init];
