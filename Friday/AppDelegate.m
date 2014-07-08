@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "SplashViewController.h"
 #import "LoginViewController.h"
+#import "CameraViewController.h"
 #import "AddPeopleViewController.h"
 #import <Parse/Parse.h>
 #import <FacebookSDK.h>
@@ -33,8 +34,12 @@
     NSLog(@"current user: %@", currentUser);
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    self.window.rootViewController = [[LoginViewController alloc] init];
+    if (currentUser) {
+        self.window.rootViewController = [[CameraViewController alloc] init];
+    } else {
+        self.window.rootViewController = [[LoginViewController alloc] init];
+    }
+    
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *contactTableView;
 @property (nonatomic) NSMutableArray *selectedContacts;
 @property (nonatomic, strong) Roll *theRoll;
+- (IBAction)cancelButtonDidPress:(id)sender;
 @end
 
 @implementation AddPeopleViewController
@@ -64,6 +65,19 @@
     NSLog(@"You selected these contacts: %@", self.selectedContacts);
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Remove this contact from self.selectedContacts array if their email is equal to an email of someone in the array
+    User *person = self.myContacts[indexPath.row];
+    User *thisPerson;
+    for (thisPerson in self.selectedContacts) {
+        if (thisPerson.emailBaby == person.emailBaby) {
+            [self.selectedContacts removeObject:thisPerson];
+        }
+    }
+    
+    NSLog(@"New selected contacts: %@", self.selectedContacts);
+}
+
 - (void)getContactsList {
 
     self.myContacts = [NSMutableArray array];
@@ -102,8 +116,12 @@
                     person.emailBaby = emailFromMulti;
                     person.phoneNumber = phoneFromMulti;
                     
-                    [self.myContacts addObject:person];
-                    
+                    // Check if person has phone number, if they do add them.
+                    // TODO: Fix for case when just have email
+                    if (person.phoneNumber) {
+                        [self.myContacts addObject:person];
+
+                    }
                 }
                 NSLog(@"Contacts:%@", self.myContacts);
                 [self.contactTableView reloadData];
@@ -127,43 +145,60 @@
 - (IBAction)onAddSelectedContactsButton:(id)sender {
     
     //fetching current user's last roll
-    Roll *initializedRoll = [[Roll alloc] init];
-    [initializedRoll getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
-        NSLog(@"%@", currentRoll);
-        self.theRoll = currentRoll;
-    } andFailure:^(NSError *error) {
-        NSLog(@"OH Noes error: %@", error);
-    }];
-        
+//    Roll *initializedRoll = [[Roll alloc] init];
+//    [initializedRoll getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
+//        NSLog(@"%@", currentRoll);
+//        self.theRoll = currentRoll;
+//    } andFailure:^(NSError *error) {
+//        NSLog(@"OH Noes error: %@", error);
+//    }];
+//        
+//    
+//        
+//        
+//      [[User currentUser] getInvitedUser:self.selectedContacts withSuccess:^(User *invitedUser) {
+//          NSLog(@"%@", invitedUser);
+//          PFObject *userRollWithInvitedUser = [PFObject objectWithClassName:@"UserRolls"];
+//          userRollWithInvitedUser[@"roll"] = self.theRoll;
+//          userRollWithInvitedUser[@"user"] = invitedUser;
+//          userRollWithInvitedUser[@"status"] = @"invited";
+//          
+//          
+//          //adding invited user to the UserRolls Tabel
+//          [userRollWithInvitedUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//              MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+//              if([MFMessageComposeViewController canSendText])
+//              {
+//                  controller.body = @"Go to your Friday app! It is Friday!";
+//                  controller.recipients = [NSArray arrayWithObjects:[self.selectedContacts[0] phoneNumber], nil];
+//                  controller.messageComposeDelegate = self;
+//                  [self presentViewController:controller animated:YES completion:nil];
+//              }
+//              
+//          }];
+//      } andFailure:^(NSError *error) {
+//          
+//      }];
     
-        
-        
-      [[User currentUser] getInvitedUser:self.selectedContacts withSuccess:^(User *invitedUser) {
-          NSLog(@"%@", invitedUser);
-          PFObject *userRollWithInvitedUser = [PFObject objectWithClassName:@"UserRolls"];
-          userRollWithInvitedUser[@"roll"] = self.theRoll;
-          userRollWithInvitedUser[@"user"] = invitedUser;
-          userRollWithInvitedUser[@"status"] = @"invited";
+    //
+    MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
+      if([MFMessageComposeViewController canSendText])
+      {
+          NSMutableArray *inviteNumbers = [NSMutableArray array];
+          for (User *person in self.selectedContacts) {
+              [inviteNumbers addObject:person.phoneNumber];
+          }
+          // Need to account for case when they don't have phone numbers
+          NSLog(@"%@", inviteNumbers);
+          controller.body = @"Go to your Friday app! It is Friday!";
+          controller.recipients = inviteNumbers;
+          controller.messageComposeDelegate = self;
+          [self presentViewController:controller animated:YES completion:nil];
           
-          
-          //adding invited user to the UserRolls Tabel
-          [userRollWithInvitedUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-              MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
-              if([MFMessageComposeViewController canSendText])
-              {
-                  controller.body = @"Go to your Friday app! It is Friday!";
-                  controller.recipients = [NSArray arrayWithObjects:[self.selectedContacts[0] phoneNumber], nil];
-                  controller.messageComposeDelegate = self;
-                  [self presentViewController:controller animated:YES completion:nil];
-              }
-              
-          }];
-      } andFailure:^(NSError *error) {
-          
-      }];
-        
+          // On send,
+      }
 
-        
+
         
         
         
@@ -174,6 +209,21 @@
 
 }
 
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+    if (result == MessageComposeResultCancelled) {
+        NSLog(@"Canceled the message: %d", result);
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
+    if (result == MessageComposeResultSent) {
+        NSLog(@"Message was sent");
+    }
+    if (result == MessageComposeResultFailed) {
+        NSLog(@"Message failed");
+    }
+}
 
 
+- (IBAction)cancelButtonDidPress:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 @end

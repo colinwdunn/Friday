@@ -8,6 +8,7 @@
 
 #import "CameraViewController.h"
 #import "RollViewController.h"
+#import "AddPeopleViewController.h"
 #import "FridayCamera.h"
 #import <Parse/Parse.h>
 
@@ -19,6 +20,7 @@
 
 - (IBAction)takePhotoDidPress:(id)sender;
 @property (strong, nonatomic) IBOutlet UIButton *currentPhotoCountButton;
+- (IBAction)addPeopleButtonDidPress:(id)sender;
 
 @end
 
@@ -115,7 +117,8 @@
    
 }
 
-
-
-
+- (IBAction)addPeopleButtonDidPress:(id)sender {
+    AddPeopleViewController *addPeopleVC = [[AddPeopleViewController alloc] init];
+    [self presentViewController:addPeopleVC animated:YES completion:nil];
+}
 @end
