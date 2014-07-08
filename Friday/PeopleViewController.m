@@ -9,6 +9,8 @@
 #import "PeopleViewController.h"
 
 @interface PeopleViewController ()
+@property (strong, nonatomic) IBOutlet UILabel *rollMemberListLabel;
+@property (nonatomic) NSArray *groupMemberList;
 
 @end
 
@@ -23,10 +25,19 @@
     return self;
 }
 
+- (id)initWithMembersList:(NSArray *)groupMembers {
+    self = [super self];
+    if (self) {
+        self.groupMemberList = groupMembers;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    NSLog(@"%@", self.groupMemberList);
 }
 
 - (void)didReceiveMemoryWarning

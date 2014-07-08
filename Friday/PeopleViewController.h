@@ -10,4 +10,5 @@
 
 @interface PeopleViewController : UIViewController
 
+- (id)initWithMembersList:(NSArray *)groupMembers;
 @end
