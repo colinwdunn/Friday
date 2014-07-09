@@ -26,20 +26,44 @@
 @implementation LoginViewController
 
 - (IBAction)onLoginButton:(id)sender {
-    NSString *name = self.nameField.text;
-    PFQuery *query = [User query];
-    [query whereKey:@"username" equalTo:name];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (objects.count > 0) {
-            User *user = objects[0];
-            NSLog(@"user: %@", user);
-        
-            [User logInWithUsernameInBackground:name password:@"asdf" block:^(PFUser *user, NSError *error) {
-                NSLog(@"I've cracked the user credentials!");
-                [self presentCameraViewController];
+//    NSString *name = self.nameField.text;
+//    PFQuery *query = [User query];
+//    [query whereKey:@"username" equalTo:name];
+//    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        if (objects.count > 0) {
+//            User *user = objects[0];
+//            NSLog(@"user: %@", user);
+//        
+//            [User logInWithUsernameInBackground:name password:@"asdf" block:^(PFUser *user, NSError *error) {
+//                NSLog(@"I've cracked the user credentials!");
+//                [self presentCameraViewController];
+//            }];
+//        }
+//    }];
+    
+    //login with phone number flow
+    NSString *phoneNumber = self.nameField.text;
+    PFUser *newUser = [PFUser user];
+    newUser.username = @"Shell User";
+    newUser.password = @"asdf";
+    [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
+            [query whereKey:@"phoneNumber" equalTo:phoneNumber];
+            [query includeKey:@"roll"];
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                PFObject *userRoll = [objects firstObject];
+                PFObject *currentRoll = [userRoll objectForKey:@"roll"];
+                userRoll[@"user"] = [PFUser currentUser];
+                [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    SplashViewController *splashVC = [[SplashViewController alloc] init];
+                    splashVC.roll = currentRoll;
+                    [self presentViewController:splashVC animated:YES completion:nil];
+                }];
             }];
         }
     }];
+    
     
 }
 

@@ -19,7 +19,8 @@
 @property (nonatomic) NSMutableArray *myContacts;
 @property (weak, nonatomic) IBOutlet UITableView *contactTableView;
 @property (nonatomic) NSMutableArray *selectedContacts;
-@property (nonatomic, strong) Roll *theRoll;
+@property (nonatomic, strong) Roll *currentRoll;
+
 - (IBAction)cancelButtonDidPress:(id)sender;
 @end
 
@@ -42,7 +43,19 @@
     [self.contactTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
     
     self.selectedContacts = [NSMutableArray array];
+    [self getCurrentRoll];
     
+}
+
+- (void)getCurrentRoll {
+    //fetching current user's last roll
+    Roll *initializedRoll = [[Roll alloc] init];
+    [initializedRoll getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
+        NSLog(@"%@", currentRoll);
+        self.currentRoll = currentRoll;
+    } andFailure:^(NSError *error) {
+        NSLog(@"OH Noes error: %@", error);
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -68,14 +81,16 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Remove this contact from self.selectedContacts array if their email is equal to an email of someone in the array
+    NSMutableArray *removeInvites = [NSMutableArray array];
     User *person = self.myContacts[indexPath.row];
     User *thisPerson;
     for (thisPerson in self.selectedContacts) {
         if (thisPerson.emailBaby == person.emailBaby) {
-            [self.selectedContacts removeObject:thisPerson];
+            [removeInvites addObject:thisPerson];
         }
     }
-    
+    [self.selectedContacts removeObjectsInArray:removeInvites];
+
     NSLog(@"New selected contacts: %@", self.selectedContacts);
 }
 
@@ -145,15 +160,7 @@
 
 - (IBAction)onAddSelectedContactsButton:(id)sender {
     
-    //fetching current user's last roll
-//    Roll *initializedRoll = [[Roll alloc] init];
-//    [initializedRoll getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
-//        NSLog(@"%@", currentRoll);
-//        self.theRoll = currentRoll;
-//    } andFailure:^(NSError *error) {
-//        NSLog(@"OH Noes error: %@", error);
-//    }];
-//        
+//
 //    
 //        
 //        
@@ -189,6 +196,8 @@
           for (User *person in self.selectedContacts) {
               [inviteNumbers addObject:person.phoneNumber];
           }
+          
+          
           // Need to account for case when they don't have phone numbers
           NSLog(@"%@", inviteNumbers);
           controller.body = @"Go to your Friday app! It is Friday!";
@@ -198,21 +207,12 @@
           
           // On send,
       }
-
-
-        
-        
-        
-    
-            
-        
-    
-
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
     if (result == MessageComposeResultCancelled) {
         NSLog(@"Canceled the message: %d", result);
+        [self didInviteUsers];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
     if (result == MessageComposeResultSent) {
@@ -224,6 +224,17 @@
     }
 }
 
+- (void)didInviteUsers {
+    for (User *user in self.selectedContacts) {
+        PFObject *invite = [PFObject objectWithClassName:@"UserRolls"];
+        invite[@"phoneNumber"] = user.phoneNumber;
+        invite[@"invitedUsername"] = user.firstName;
+        invite[@"roll"] = self.currentRoll;
+        [invite saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            NSLog(@"Shell user created");
+        }];
+    }
+}
 
 - (IBAction)cancelButtonDidPress:(id)sender {
     [self dismissViewControllerAnimated:YES completion:NULL];
