@@ -105,7 +105,6 @@
             self.showRollButton.titleLabel.textColor = [UIColor yellowColor];
             [self.showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:self.showRollButton];
-        
         } else {
             self.showRollButton.hidden = YES;
             self.currentPhotoCountButton.hidden= NO;
