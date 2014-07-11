@@ -30,6 +30,12 @@
     [Parse setApplicationId:@"7WlikSk0LVU1NrT9CCNQXbB30QSTsEo2umDCky86"
                   clientKey:@"UGx1Vym8ZDBa5nEJpluEb3VQs8LE6KISvAM48T5o"];
     
+    // Register for push notifications
+    [application registerForRemoteNotificationTypes:
+     UIRemoteNotificationTypeBadge |
+     UIRemoteNotificationTypeAlert |
+     UIRemoteNotificationTypeSound];
+    
     PFUser *currentUser = [PFUser currentUser];
     NSLog(@"current user: %@", currentUser);
     
@@ -81,6 +87,17 @@
     return [FBAppCall handleOpenURL:url
                   sourceApplication:sourceApplication
                         withSession:[PFFacebookUtils session]];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
+    // Store the deviceToken in the current installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:newDeviceToken];
+    [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [PFPush handlePush:userInfo];
 }
 
 @end
