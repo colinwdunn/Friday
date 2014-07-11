@@ -34,7 +34,7 @@
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="geg-rW-4qJ">
                     <rect key="frame" x="96" y="37" width="128" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                     <state key="normal" title="New Roll">
                         <color key="titleColor" red="1" green="0.86666673419999996" blue="0.24313727020000001" alpha="1" colorSpace="deviceRGB"/>
                     </state>

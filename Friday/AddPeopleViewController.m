@@ -69,7 +69,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:@"ContactCell"];
     cell.textLabel.text = [self.myContacts[indexPath.row] firstName];
-    cell.detailTextLabel.text = [self.myContacts[indexPath.row] emailBaby];
+    cell.detailTextLabel.text = [self.myContacts[indexPath.row] phoneNumber];
     return cell;
 }
 
@@ -85,7 +85,7 @@
     User *person = self.myContacts[indexPath.row];
     User *thisPerson;
     for (thisPerson in self.selectedContacts) {
-        if (thisPerson.emailBaby == person.emailBaby) {
+        if (thisPerson.phoneNumber == person.phoneNumber) {
             [removeInvites addObject:thisPerson];
         }
     }
@@ -139,10 +139,12 @@
 
                     }
                 }
+                
                 NSLog(@"Contacts:%@", self.myContacts);
+                dispatch_async(dispatch_get_main_queue(), ^{
                 [self.contactTableView reloadData];
+                 });
             }
-            
         });
         dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
     }
@@ -230,6 +232,7 @@
         invite[@"phoneNumber"] = user.phoneNumber;
         invite[@"invitedUsername"] = user.firstName;
         invite[@"roll"] = self.currentRoll;
+        invite[@"status"] = @"invited";
         [invite saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             NSLog(@"Shell user created");
         }];

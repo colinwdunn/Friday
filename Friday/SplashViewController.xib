@@ -37,7 +37,7 @@ camera.</string>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                             <state key="normal" title="Take a photo">
-                                <color key="titleColor" red="1" green="0.86666673421859741" blue="0.24313727021217346" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="titleColor" red="1" green="0.88627457618713379" blue="0.13333334028720856" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
