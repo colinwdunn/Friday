@@ -42,14 +42,14 @@
 //    }];
     
     //login with phone number flow
-    NSString *phoneNumber = self.nameField.text;
+    NSString *username = self.nameField.text;
     PFUser *newUser = [PFUser user];
-    newUser.username = @"Shell User";
+    newUser.username = username;
     newUser.password = @"asdf";
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
             PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
-            [query whereKey:@"phoneNumber" equalTo:phoneNumber];
+            [query whereKey:@"invitedUsername" equalTo:username];
             [query includeKey:@"roll"];
             [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                 PFObject *userRoll = [objects firstObject];

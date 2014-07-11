@@ -38,6 +38,11 @@ static Roll *currentRoll = nil;
             if (!error) {
                 Roll *currentRoll = [[Roll alloc] init];
                 currentRoll = [[objects firstObject] objectForKey:@"roll"];
+                
+                PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+                [currentInstallation addUniqueObject:currentRoll.objectId forKey:@"channels"];
+                [currentInstallation saveInBackground];
+                
                 successBlock(currentRoll);
             } else {
                 failureBlock(error);
