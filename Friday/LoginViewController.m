@@ -55,6 +55,15 @@
                 PFObject *userRoll = [objects firstObject];
                 PFObject *currentRoll = [userRoll objectForKey:@"roll"];
                 userRoll[@"user"] = [PFUser currentUser];
+                
+                //push notifications:
+                NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"has joined.", @"message", username, @"name",  nil];
+                
+                PFPush *push = [[PFPush alloc] init];
+                [push setChannel:currentRoll.objectId];
+                [push setData:data];    
+                [push sendPushInBackground];
+                
                 [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                     SplashViewController *splashVC = [[SplashViewController alloc] init];
                     splashVC.roll = currentRoll;

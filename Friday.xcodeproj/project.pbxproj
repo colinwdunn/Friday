@@ -37,6 +37,8 @@
 		451836861958744C00594C07 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 451836851958744C00594C07 /* User.m */; };
 		45183689195875F900594C07 /* Roll.m in Sources */ = {isa = PBXBuildFile; fileRef = 45183688195875F900594C07 /* Roll.m */; };
 		4518368F1958926D00594C07 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4518368E1958926D00594C07 /* Photo.m */; };
+		453413451970B05D00C6A2FE /* NotificationsCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 453413441970B05D00C6A2FE /* NotificationsCustomView.m */; };
+		453413471970B07D00C6A2FE /* NotificationsCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453413461970B07D00C6A2FE /* NotificationsCustomView.xib */; };
 		45971B30194DFE8C00BAD5E9 /* PhotoGalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */; };
 		45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */; };
 		45EC14A6196754610049D518 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45EC14A5196754610049D518 /* ContactCell.xib */; };
@@ -100,6 +102,9 @@
 		45183688195875F900594C07 /* Roll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Roll.m; sourceTree = "<group>"; };
 		4518368D1958926D00594C07 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		4518368E1958926D00594C07 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		453413431970B05D00C6A2FE /* NotificationsCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCustomView.h; sourceTree = "<group>"; };
+		453413441970B05D00C6A2FE /* NotificationsCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsCustomView.m; sourceTree = "<group>"; };
+		453413461970B07D00C6A2FE /* NotificationsCustomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsCustomView.xib; sourceTree = "<group>"; };
 		45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoGalleryCell.xib; sourceTree = "<group>"; };
 		45971B31194DFEE900BAD5E9 /* PhotoGalleryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoGalleryCell.h; sourceTree = "<group>"; };
 		45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoGalleryCell.m; sourceTree = "<group>"; };
@@ -301,6 +306,9 @@
 			isa = PBXGroup;
 			children = (
 				45EC14A5196754610049D518 /* ContactCell.xib */,
+				453413431970B05D00C6A2FE /* NotificationsCustomView.h */,
+				453413441970B05D00C6A2FE /* NotificationsCustomView.m */,
+				453413461970B07D00C6A2FE /* NotificationsCustomView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -385,6 +393,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				453413471970B07D00C6A2FE /* NotificationsCustomView.xib in Resources */,
 				45EC14A6196754610049D518 /* ContactCell.xib in Resources */,
 				331B640F1956816600844EBA /* LoginViewController.xib in Resources */,
 				45971B30194DFE8C00BAD5E9 /* PhotoGalleryCell.xib in Resources */,
@@ -455,6 +464,7 @@
 				33AED5AE1958AA49004C0E82 /* FridayCamera.m in Sources */,
 				427F76B21928973700CF30F2 /* PeopleViewController.m in Sources */,
 				331B640E1956816600844EBA /* LoginViewController.m in Sources */,
+				453413451970B05D00C6A2FE /* NotificationsCustomView.m in Sources */,
 				45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */,
 				429B712E1928698D00BAAE20 /* main.m in Sources */,
 				427F76BA192897B000CF30F2 /* CameraViewController.m in Sources */,

@@ -52,6 +52,12 @@
     self.currentPhotoCountButton.hidden = YES;
     
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:) name:@"userJoined" object:nil];
+    
+}
+
+- (void)displayNotificationView:(NSNotification *)notification {
+    NSLog(@"WOOHOO %@", notification.userInfo[@"name"]);
 }
 
 - (void)setCurrentRoll {
