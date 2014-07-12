@@ -13,6 +13,7 @@
 #import "FridayCamera.h"
 #import <Parse/Parse.h>
 #import "Roll.h"
+#import "NotificationsCustomView.h"
 
 @interface CameraViewController ()
 
@@ -51,13 +52,17 @@
     [self setCurrentRoll];
     self.currentPhotoCountButton.hidden = YES;
     
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:) name:@"userJoined" object:nil];
+    
+    
     
 }
 
 - (void)displayNotificationView:(NSNotification *)notification {
-    NSLog(@"WOOHOO %@", notification.userInfo[@"name"]);
+    
+    NotificationsCustomView *notificationView = [[NotificationsCustomView alloc] initWithFrame:CGRectMake(20, 70, 200, 50)];
+    notificationView.notificationsCustomLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
+    [self.view addSubview:notificationView];
 }
 
 - (void)setCurrentRoll {

@@ -11,7 +11,7 @@
 @interface NotificationsCustomView : UIView
 
 
-@property (weak, nonatomic) IBOutlet UILabel *notificationsCustomView;
+@property (weak, nonatomic) IBOutlet UILabel *notificationsCustomLabel;
 
 
 @end

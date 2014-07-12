@@ -22,7 +22,7 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="notificationsCustomView" destination="Ze0-hK-tAg" id="iFw-o0-ddx"/>
+                <outlet property="notificationsCustomLabel" destination="Ze0-hK-tAg" id="tdJ-Ar-FfH"/>
             </connections>
         </view>
     </objects>
