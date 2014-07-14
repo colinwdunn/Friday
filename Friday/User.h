@@ -8,12 +8,15 @@
 
 #import <Parse/Parse.h>
 
+@class Roll;
+
 @interface User : PFUser <PFSubclassing>
 
 @property (nonatomic) NSString *userId;
 @property (nonatomic, strong) NSString *firstName;
 @property (nonatomic, strong) NSString *emailBaby;
 @property (nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, strong) Roll *currentRoll;
 
 - (id)initWithPFObject:(PFObject *)PFObjectUser;
 

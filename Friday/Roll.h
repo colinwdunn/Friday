@@ -16,10 +16,12 @@
 - (void)getCurrentRoll:(User *)currentUser withSuccess:(void (^) (Roll *currentRoll))successBlock andFailure:(void (^) (NSError *error))failureBlock;
 
 + (Roll *)currentRoll;
+
 @property (nonatomic, strong) User *rollOwner;
 @property (nonatomic, weak) NSString *rollId;
 @property (nonatomic, strong) NSString *rollName;
 @property int maxPhotos;
 @property int photosCount;
+@property (readonly) int photosRemaining;
 
 @end

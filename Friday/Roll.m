@@ -17,6 +17,7 @@ static Roll *currentRoll = nil;
 @dynamic rollName;
 @dynamic maxPhotos;
 @dynamic photosCount;
+@dynamic photosRemaining;
 
 + (NSString *)parseClassName{
     return @"Roll";
@@ -69,34 +70,35 @@ static Roll *currentRoll = nil;
 }
 
 + (Roll *)currentRoll {
-    if (currentRoll == nil) {
-        PFQuery *fetchLastRoll = [PFQuery queryWithClassName:@"UserRolls"];
-        [fetchLastRoll whereKey:@"user" equalTo:[PFUser currentUser]];
-        [fetchLastRoll orderByDescending:@"createdAt"];
-        [fetchLastRoll includeKey:@"roll"];
-        [fetchLastRoll getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-            if (object != nil) {
-                PFObject *parseObjectRoll = [object objectForKey:@"roll"];
-                currentRoll = [[Roll alloc] initWithPFObject:parseObjectRoll];
-            } else {
-                // Create a new roll
-                PFObject *firstRoll = [PFObject objectWithClassName:@"Roll"];
-                firstRoll[@"user"] = [PFUser currentUser];
-                [firstRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    PFObject *userRoll = [PFObject objectWithClassName:@"UserRolls"];
-                    userRoll[@"user"] = [PFUser currentUser];
-                    userRoll[@"roll"] = firstRoll;
-                    userRoll[@"status"] = @"accepted";
-                    [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                        currentRoll = [[Roll alloc] initWithPFObject:firstRoll];
-                    }];
-                }];
-                
-            }
-
-        }];
-    }
-    return currentRoll;
+    return [User currentUser].currentRoll;
+//    if (currentRoll == nil) {
+//        PFQuery *fetchLastRoll = [PFQuery queryWithClassName:@"UserRolls"];
+//        [fetchLastRoll whereKey:@"user" equalTo:[PFUser currentUser]];
+//        [fetchLastRoll orderByDescending:@"createdAt"];
+//        [fetchLastRoll includeKey:@"roll"];
+//        [fetchLastRoll getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+//            if (object != nil) {
+//                PFObject *parseObjectRoll = [object objectForKey:@"roll"];
+//                currentRoll = [[Roll alloc] initWithPFObject:parseObjectRoll];
+//            } else {
+//                // Create a new roll
+//                PFObject *firstRoll = [PFObject objectWithClassName:@"Roll"];
+//                firstRoll[@"user"] = [PFUser currentUser];
+//                [firstRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//                    PFObject *userRoll = [PFObject objectWithClassName:@"UserRolls"];
+//                    userRoll[@"user"] = [PFUser currentUser];
+//                    userRoll[@"roll"] = firstRoll;
+//                    userRoll[@"status"] = @"accepted";
+//                    [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//                        currentRoll = [[Roll alloc] initWithPFObject:firstRoll];
+//                    }];
+//                }];
+//                
+//            }
+//
+//        }];
+//    }
+//    return currentRoll;
 }
 //- (UIImageView *)photoFile {
 //    PFImageView *imageView = [[PFImageView alloc] init];
@@ -105,7 +107,9 @@ static Roll *currentRoll = nil;
 //    return
 //}
 
-
+- (int)photosRemaining {
+    return self.maxPhotos - self.photosCount;
+}
 
 
 

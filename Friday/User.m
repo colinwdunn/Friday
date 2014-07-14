@@ -10,6 +10,7 @@
 #import <Parse/PFObject+Subclass.h>
 
 @implementation User
+@dynamic currentRoll;
 
 - (id)initWithPFObject:(PFObject *)PFObjectUser{
     self.userId = PFObjectUser.objectId;

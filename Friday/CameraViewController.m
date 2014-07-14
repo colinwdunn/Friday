@@ -104,35 +104,34 @@
         photo[@"roll"] = self.roll;
         photo[@"imageFile"] = imageFile;
         
-        [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [self updatePhotoCount];
-        }];
+        [photo saveInBackground];
     }];
+    
+    [self updatePhotoCount];
 }
 
 - (void)updatePhotoCount{
-    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-    [query whereKey:@"roll" equalTo:self.roll];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        self.photosCount = 4 - objects.count;
-        if (self.photosCount <= 0) {
-            self.currentPhotoCountButton.hidden = YES;
-            self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            self.showRollButton.frame = CGRectMake(120, 500, 100, 40);
-            self.showRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
-            self.showRollButton.layer.borderWidth = 3;
-            self.showRollButton.layer.cornerRadius = 20;
-            self.showRollButton.layer.opaque = YES;
-            [self.showRollButton setTitle: @"Show Roll" forState:UIControlStateNormal];
-            self.showRollButton.titleLabel.textColor = [UIColor yellowColor];
-            [self.showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
-            [self.view addSubview:self.showRollButton];
-        } else {
-            self.showRollButton.hidden = YES;
-            self.currentPhotoCountButton.hidden= NO;
-            [self.currentPhotoCountButton setTitle:[@(self.photosCount) stringValue] forState:UIControlStateNormal];
-        }
-    }];
+    Roll *currentRoll = [Roll currentRoll];
+    currentRoll.photosCount++;
+    [currentRoll saveInBackground];
+
+    if (currentRoll.photosRemaining <= 0) {
+        self.currentPhotoCountButton.hidden = YES;
+        self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        self.showRollButton.frame = CGRectMake(120, 500, 100, 40);
+        self.showRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+        self.showRollButton.layer.borderWidth = 3;
+        self.showRollButton.layer.cornerRadius = 20;
+        self.showRollButton.layer.opaque = YES;
+        [self.showRollButton setTitle: @"Show Roll" forState:UIControlStateNormal];
+        self.showRollButton.titleLabel.textColor = [UIColor yellowColor];
+        [self.showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.showRollButton];
+    } else {
+        self.showRollButton.hidden = YES;
+        self.currentPhotoCountButton.hidden= NO;
+        [self.currentPhotoCountButton setTitle:[@(currentRoll.photosRemaining) stringValue] forState:UIControlStateNormal];
+    }
 }
 
 - (void)showRoll {

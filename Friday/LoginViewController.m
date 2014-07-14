@@ -56,6 +56,9 @@
                 PFObject *currentRoll = [userRoll objectForKey:@"roll"];
                 userRoll[@"user"] = [PFUser currentUser];
                 
+                [User currentUser].currentRoll = (Roll *)currentRoll;
+                [[User currentUser] saveInBackground];
+                
                 //push notifications:
                 NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"has joined.", @"message", username, @"name",  nil];
                 
@@ -112,8 +115,10 @@
             }];
 
             } else {
-                NSLog(@"User with facebook logged in");
-                [self presentCameraViewController];
+                [[User currentUser].currentRoll fetchIfNeededInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                    NSLog(@"User with facebook logged in");
+                    [self presentCameraViewController];
+                }];
             }
     }];
     
