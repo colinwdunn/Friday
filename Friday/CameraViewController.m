@@ -114,7 +114,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     [query whereKey:@"roll" equalTo:self.roll];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        self.photosCount = 15 - objects.count;
+        self.photosCount = 4 - objects.count;
         if (self.photosCount <= 0) {
             self.currentPhotoCountButton.hidden = YES;
             self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
