@@ -67,7 +67,6 @@
 - (void)displayNotificationView:(NSNotification *)notification {
 
     self.notificationsLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
-    
     self.notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.notificationView.layer.borderWidth = 3;
@@ -115,7 +114,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     [query whereKey:@"roll" equalTo:self.roll];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        self.photosCount = 4 - objects.count;
+        self.photosCount = 15 - objects.count;
         if (self.photosCount <= 0) {
             self.currentPhotoCountButton.hidden = YES;
             self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -189,9 +188,4 @@
     [self presentViewController:peopleVC animated:YES completion:nil];
 }
 
-// -(void)delegateFunction {
-//    create new roll
-//    set current roll to new roll THEN
-//    [self updatePhotoCount]
-//}
 @end

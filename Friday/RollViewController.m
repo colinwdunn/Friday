@@ -20,6 +20,8 @@
 
 @property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
 
+@property (strong, nonatomic) PFImageView *fullImageView;
+
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @end
 
@@ -70,10 +72,23 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    PFImageView *fullImageView = [[PFImageView alloc] initWithFrame:self.view.frame];
-    fullImageView.file = [self.photosArray[indexPath.item] objectForKey:@"imageFile"];
+    self.fullImageView = [[PFImageView alloc] initWithFrame:self.view.frame];
+    self.fullImageView.file = [self.photosArray[indexPath.item] objectForKey:@"imageFile"];
+    self.fullImageView.userInteractionEnabled = YES;
     
-    [self.rollCollectionView addSubview:fullImageView];
+    [self.view addSubview:self.fullImageView];
+    
+    //for testing
+    UIPanGestureRecognizer *panGestureRec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dismissImage:)];
+    [self.fullImageView addGestureRecognizer:panGestureRec];
+}
+
+- (void)dismissImage:(UIPanGestureRecognizer *)panGestureRecognizer {
+    [self.fullImageView removeFromSuperview];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -82,7 +97,7 @@
         UICollectionReusableView *reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"CollectionViewHeaderView" forIndexPath:indexPath];
         
         if (reusableview == nil) {
-            reusableview = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+            reusableview = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0, 0, self.rollCollectionView.frame.size.width, 50)];
         }
         
         return reusableview;
