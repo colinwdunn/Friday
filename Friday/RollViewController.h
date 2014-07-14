@@ -15,7 +15,7 @@
 
 @end
 
-@interface RollViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface RollViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) NSArray *photosArray;
 @property (weak, nonatomic) id <RollViewControllerDelegate> delegate;

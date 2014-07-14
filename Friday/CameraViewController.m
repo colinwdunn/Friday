@@ -23,6 +23,10 @@
 @property (nonatomic, strong) RollViewController *rollVC;
 @property (nonatomic, strong) UIButton *showRollButton;
 
+
+@property (nonatomic, strong) NotificationsCustomView *notificationView;
+@property (nonatomic, strong) IBOutlet UILabel *notificationsLabel;
+
 - (IBAction)takePhotoDidPress:(id)sender;
 @property (strong, nonatomic) IBOutlet UIButton *currentPhotoCountButton;
 - (IBAction)addPeopleButtonDidPress:(id)sender;
@@ -54,15 +58,23 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:) name:@"userJoined" object:nil];
     
+    UINib *nib = [UINib nibWithNibName:@"NotificationsCustomView" bundle:nil];
+    NSArray *views = [nib instantiateWithOwner:self options:nil];
     
-    
+    self.notificationView = views[0];
 }
 
 - (void)displayNotificationView:(NSNotification *)notification {
+
+    self.notificationsLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
     
-    NotificationsCustomView *notificationView = [[NotificationsCustomView alloc] initWithFrame:CGRectMake(20, 70, 200, 50)];
-    notificationView.notificationsCustomLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
-    [self.view addSubview:notificationView];
+    self.notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+    self.notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+    self.notificationView.layer.borderWidth = 3;
+    self.notificationView.layer.cornerRadius = 20;
+    self.notificationView.frame = CGRectMake(20, 70, 200, 50);
+
+        [self.view addSubview:self.notificationView];
 }
 
 - (void)setCurrentRoll {

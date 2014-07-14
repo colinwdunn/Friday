@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
 @interface PhotoGalleryCell : UICollectionViewCell
 
-- (void)setPhotoImage:(UIImage *)photo;
+- (void)setPhotoImage:(PFObject *)photo;
 
 @end

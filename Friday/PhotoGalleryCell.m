@@ -7,7 +7,6 @@
 //
 
 #import "PhotoGalleryCell.h"
-#import <Parse/Parse.h>
 
 @interface PhotoGalleryCell ()
 
@@ -16,7 +15,10 @@
 
 @implementation PhotoGalleryCell
 
-- (void)setPhotoImage:(PFObject *)photos {
+- (void)setPhotoImage:(PFObject *)photos
+{
+    self.photoImageView.frame = CGRectMake(0, 0, 100, 100);
+    self.photoImageView.backgroundColor = [UIColor whiteColor];
     self.photoImageView.file = [photos objectForKey:@"imageFile"];
     [self.photoImageView loadInBackground];
 }

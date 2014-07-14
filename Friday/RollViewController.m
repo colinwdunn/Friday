@@ -10,13 +10,17 @@
 #import <Parse/Parse.h>
 #import "PhotoGalleryCell.h"
 #import "SplashViewController.h"
+#import "PhotoGalleryCollectionViewFlowLayout.h"
 
 @interface RollViewController ()
 
-@property (weak, nonatomic) IBOutlet UICollectionView *rollCollectionView;
+@property (strong, nonatomic) IBOutlet UICollectionView *rollCollectionView;
 @property (nonatomic, copy, readonly) NSString *photoGalleryCellClassName;
 @property (weak, nonatomic) IBOutlet UIButton *startNewRollButton;
 
+@property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
+
+@property (weak, nonatomic) IBOutlet UIView *topView;
 @end
 
 @implementation RollViewController
@@ -25,14 +29,29 @@
     return NSStringFromClass([PhotoGalleryCell class]);
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.startNewRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.startNewRollButton.layer.borderWidth = 3;
     self.startNewRollButton.layer.cornerRadius = 20;
-    
     [self setupCollectionView];
+    self.topView.layer.cornerRadius = 20;
+}
+
+- (void)setupCollectionView {
+    self.mainCollectionViewFlowLayout = [[PhotoGalleryCollectionViewFlowLayout alloc] init];
+    self.rollCollectionView = [self.rollCollectionView initWithFrame:CGRectZero collectionViewLayout:self.mainCollectionViewFlowLayout];
+    
+    UINib *nib = [UINib nibWithNibName:self.photoGalleryCellClassName bundle:nil];
+    [self.rollCollectionView registerNib:nib forCellWithReuseIdentifier:self.photoGalleryCellClassName];
+    
+    [self.mainCollectionViewFlowLayout invalidateLayout];
+    [self.rollCollectionView setCollectionViewLayout:self.mainCollectionViewFlowLayout animated:YES];
+    
+    //setup collectioview header
+    [self.rollCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"CollectionViewHeaderView"];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -44,26 +63,45 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    PhotoGalleryCell *photoCell = [collectionView dequeueReusableCellWithReuseIdentifier:self.photoGalleryCellClassName forIndexPath:indexPath];
+    PhotoGalleryCell *photoCell = (PhotoGalleryCell *)[collectionView dequeueReusableCellWithReuseIdentifier:self.photoGalleryCellClassName forIndexPath:indexPath];
     [photoCell setPhotoImage:self.photosArray[indexPath.item]];
     
     return photoCell;
 }
 
-- (void)setupCollectionView {
-    UINib *nib = [UINib nibWithNibName:self.photoGalleryCellClassName bundle:nil];
-    [self.rollCollectionView registerNib:nib forCellWithReuseIdentifier:self.photoGalleryCellClassName];
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    PFImageView *fullImageView = [[PFImageView alloc] initWithFrame:self.view.frame];
+    fullImageView.file = [self.photosArray[indexPath.item] objectForKey:@"imageFile"];
+    
+    [self.rollCollectionView addSubview:fullImageView];
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    
+    if (kind == UICollectionElementKindSectionHeader) {
+        UICollectionReusableView *reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"CollectionViewHeaderView" forIndexPath:indexPath];
+        
+        if (reusableview == nil) {
+            reusableview = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        }
+        
+        return reusableview;
+    }
+    return nil;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(self.rollCollectionView.frame.size.width, 50);
 }
 
 - (IBAction)createNewRoll:(id)sender {
     if (self.delegate !=nil) {
         [self.delegate didDismissRollViewController];
     }
-    
 }
 
+- (void)setupGestureRecognizers {
+    
+}
 
 @end
