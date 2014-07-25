@@ -70,6 +70,9 @@
 
 - (IBAction)onTakePhotoButton:(id)sender {
     
+    Roll *currentRoll = [Roll currentRoll];
+    currentRoll.photosCount++;
+    
     //TODO: Refactor code so it is simpler
     __weak typeof(self) weakself = self;
     

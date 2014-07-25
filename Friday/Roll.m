@@ -51,6 +51,8 @@ static Roll *currentRoll = nil;
         } else {
             Roll *newRoll = [Roll object];
             newRoll[@"user"] = [User currentUser];
+            newRoll[@"photosCount"] = @(0);
+            newRoll[@"maxPhotos"] = @(6);
             [newRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                     PFObject *parseObjectRoll = [PFObject objectWithClassName:@"UserRolls"];
                     parseObjectRoll[@"user"] = [PFUser currentUser];

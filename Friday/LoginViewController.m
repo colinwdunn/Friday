@@ -25,6 +25,12 @@
 
 @implementation LoginViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.nameField becomeFirstResponder];
+}
+
 - (IBAction)onLoginButton:(id)sender {
 //    NSString *name = self.nameField.text;
 //    PFQuery *query = [User query];
@@ -46,33 +52,43 @@
     PFUser *newUser = [PFUser user];
     newUser.username = username;
     newUser.password = @"asdf";
+    
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
-            PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
-            [query whereKey:@"invitedUsername" equalTo:username];
-            [query includeKey:@"roll"];
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                PFObject *userRoll = [objects firstObject];
-                PFObject *currentRoll = [userRoll objectForKey:@"roll"];
-                userRoll[@"user"] = [PFUser currentUser];
-                
-                [User currentUser].currentRoll = (Roll *)currentRoll;
-                [[User currentUser] saveInBackground];
-                
-                //push notifications:
-                NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"has joined.", @"message", username, @"name",  nil];
-                
-                PFPush *push = [[PFPush alloc] init];
-                [push setChannel:currentRoll.objectId];
-                [push setData:data];    
-                [push sendPushInBackground];
-                
-                [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    SplashViewController *splashVC = [[SplashViewController alloc] init];
-                    splashVC.roll = currentRoll;
-                    [self presentViewController:splashVC animated:YES completion:nil];
-                }];
+            [[[Roll alloc] init] getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
+                [User currentUser].currentRoll = currentRoll;
+                SplashViewController *splashVC = [[SplashViewController alloc] init];
+                splashVC.roll = currentRoll;
+                [self presentViewController:splashVC animated:YES completion:nil];
+            } andFailure:^(NSError *error) {
+                //FAILED
             }];
+            
+//            PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
+//            [query whereKey:@"invitedUsername" equalTo:username];
+//            [query includeKey:@"roll"];
+//            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                PFObject *userRoll = [objects firstObject];
+//                PFObject *currentRoll = [userRoll objectForKey:@"roll"];
+//                userRoll[@"user"] = [PFUser currentUser];
+//                
+//                [User currentUser].currentRoll = (Roll *)currentRoll;
+//                [[User currentUser] saveInBackground];
+//                
+//                //push notifications:
+//                NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"has joined.", @"message", username, @"name",  nil];
+//                
+//                PFPush *push = [[PFPush alloc] init];
+//                [push setChannel:currentRoll.objectId];
+//                [push setData:data];    
+//                [push sendPushInBackground];
+//                
+//                [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//                    SplashViewController *splashVC = [[SplashViewController alloc] init];
+//                    splashVC.roll = currentRoll;
+//                    [self presentViewController:splashVC animated:YES completion:nil];
+//                }];
+//            }];
         }
     }];
     

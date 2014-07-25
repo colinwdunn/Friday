@@ -107,14 +107,15 @@
         [photo saveInBackground];
     }];
     
+    Roll *currentRoll = [Roll currentRoll];
+    currentRoll.photosCount++;
+    [currentRoll saveInBackground];
+    
     [self updatePhotoCount];
 }
 
 - (void)updatePhotoCount{
     Roll *currentRoll = [Roll currentRoll];
-    currentRoll.photosCount++;
-    [currentRoll saveInBackground];
-
     if (currentRoll.photosRemaining <= 0) {
         self.currentPhotoCountButton.hidden = YES;
         self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -162,19 +163,22 @@
 - (void)didDismissRollViewController {
     Roll *newRoll = [Roll object];
     newRoll[@"user"] = [User currentUser];
+    newRoll[@"photosCount"] = @(0);
+    newRoll[@"maxPhotos"] = @(6);
     [newRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         PFObject *parseObjectRoll = [PFObject objectWithClassName:@"UserRolls"];
         parseObjectRoll[@"user"] = [PFUser currentUser];
         parseObjectRoll[@"roll"] = newRoll;
         parseObjectRoll[@"status"] = @"accepted";
         [parseObjectRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [User currentUser].currentRoll = newRoll;
             self.roll = newRoll;
             [self updatePhotoCount];
             //Hide show roll button
             //Show photo count button
+            [self.rollVC dismissViewControllerAnimated:YES completion:nil];
         }];
     }];
-    [self.rollVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)addPeopleButtonDidPress:(id)sender {
