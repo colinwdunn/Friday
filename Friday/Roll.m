@@ -29,7 +29,39 @@ static Roll *currentRoll = nil;
     return self;
 }
 
+
+- (void)getInvitedToRoll {
+    
+    PFQuery *inviteCheckQuery = [PFQuery queryWithClassName:@"UserRolls"];
+    [inviteCheckQuery orderByDescending:@"createdAt"];
+    [inviteCheckQuery whereKey:@"invitedUsername" equalTo:[User currentUser].username];
+    [inviteCheckQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (objects.count > 0) {
+            PFObject *userRoll = [objects firstObject];
+            userRoll[@"user"] = [User currentUser];
+            [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                [self getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
+                    [User currentUser].currentRoll = currentRoll;
+                    [[User currentUser] saveInBackground];
+                    NSLog(@"Succeeded");
+                } andFailure:^(NSError *error) {
+                    NSLog(@"Failed");
+                }];
+            }];
+        } else {
+            [self getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
+                [User currentUser].currentRoll = currentRoll;
+                [[User currentUser] saveInBackground];
+                NSLog(@"Succeeded2");
+            } andFailure:^(NSError *error) {
+                NSLog(@"Failed2");
+            }];
+        }
+    }];
+}
+
 - (void)getCurrentRoll:(User *)currentUser withSuccess:(void (^) (Roll *currentRoll))successBlock andFailure:(void (^) (NSError *error))failureBlock {
+    
     PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
     [query orderByDescending:@"createdAt"];
     [query whereKey:@"user" equalTo:currentUser];
@@ -39,6 +71,8 @@ static Roll *currentRoll = nil;
             if (!error) {
                 Roll *currentRoll = [[Roll alloc] init];
                 currentRoll = [[objects firstObject] objectForKey:@"roll"];
+                [User currentUser].currentRoll = currentRoll;
+                [[User currentUser] saveInBackground];
                 
                 PFInstallation *currentInstallation = [PFInstallation currentInstallation];
                 [currentInstallation addUniqueObject:currentRoll.objectId forKey:@"channels"];
@@ -59,14 +93,12 @@ static Roll *currentRoll = nil;
                     parseObjectRoll[@"roll"] = newRoll;
                     parseObjectRoll[@"status"] = @"accepted";
                 [parseObjectRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    [User currentUser].currentRoll = currentRoll;
+                    [[User currentUser] saveInBackground];
                     successBlock(newRoll);
                 }];
                 
             }];
-            
-            
-            // Create a new roll
-            // Create new row in UserRolls table
         }
     }];
 }

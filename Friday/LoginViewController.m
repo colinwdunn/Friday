@@ -55,14 +55,15 @@
     
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
-            [[[Roll alloc] init] getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
-                [User currentUser].currentRoll = currentRoll;
-                SplashViewController *splashVC = [[SplashViewController alloc] init];
-                splashVC.roll = currentRoll;
-                [self presentViewController:splashVC animated:YES completion:nil];
-            } andFailure:^(NSError *error) {
-                //FAILED
-            }];
+            [[[Roll alloc] init] getInvitedToRoll];
+//            [[[Roll alloc] init] getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
+//                [User currentUser].currentRoll = currentRoll;
+//                SplashViewController *splashVC = [[SplashViewController alloc] init];
+//                splashVC.roll = currentRoll;
+//                [self presentViewController:splashVC animated:YES completion:nil];
+//            } andFailure:^(NSError *error) {
+//                //FAILED
+//            }];
             
 //            PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
 //            [query whereKey:@"invitedUsername" equalTo:username];

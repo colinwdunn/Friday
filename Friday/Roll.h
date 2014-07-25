@@ -15,6 +15,8 @@
 - (id)initWithPFObject:(PFObject *)PFObjectRoll;
 - (void)getCurrentRoll:(User *)currentUser withSuccess:(void (^) (Roll *currentRoll))successBlock andFailure:(void (^) (NSError *error))failureBlock;
 
+- (void)getInvitedToRoll;
+
 + (Roll *)currentRoll;
 
 @property (nonatomic, strong) User *rollOwner;
