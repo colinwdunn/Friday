@@ -14,7 +14,7 @@
 #import <ImageIO/CGImageProperties.h>
 #import "RollViewController.h"
 #import "FridayCamera.h"
-
+#import "UIImage+Resize.h"
 
 //static NSInteger MaxNumberOfPhotosInRoll = 2;
 
@@ -60,8 +60,10 @@
 
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion {
     
+    UIImage *resizedImage = [image resizedImage:self.view.frame.size interpolationQuality:kCGInterpolationLow];
+    
     //TODO (Joe): Figure out how to process the image and add blur
-    UIImage *processedImage = nil; // [image applyExtraLightEffect];
+    UIImage *processedImage = [resizedImage applyBlurWithRadius:20 tintColor:nil saturationDeltaFactor:1.8 maskImage:nil];
     
     dispatch_async(dispatch_get_main_queue(), ^ {
         completion(image, processedImage);

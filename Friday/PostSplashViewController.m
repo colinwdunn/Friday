@@ -50,8 +50,8 @@
     self.useContactsButton.layer.borderWidth = 3;
     self.useContactsButton.layer.cornerRadius = 20;
     
-//    self.imageView.image = self.processedImage;
-    self.imageView.image = self.image;
+    self.imageView.image = self.processedImage;
+//    self.imageView.image = self.image;
 }
 
 - (IBAction)contactsButtonDidPress:(id)sender {
