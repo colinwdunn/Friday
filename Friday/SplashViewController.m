@@ -61,8 +61,6 @@
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion {
     
     UIImage *resizedImage = [image resizedImage:self.view.frame.size interpolationQuality:kCGInterpolationLow];
-    
-    //TODO (Joe): Figure out how to process the image and add blur
     UIImage *processedImage = [resizedImage applyBlurWithRadius:20 tintColor:nil saturationDeltaFactor:1.8 maskImage:nil];
     
     dispatch_async(dispatch_get_main_queue(), ^ {
@@ -72,10 +70,6 @@
 
 - (IBAction)onTakePhotoButton:(id)sender {
     
-    Roll *currentRoll = [Roll currentRoll];
-    currentRoll.photosCount++;
-    
-    //TODO: Refactor code so it is simpler
     __weak typeof(self) weakself = self;
     
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
@@ -85,12 +79,15 @@
         PFFile *imageFile = [PFFile fileWithData:imageData];
         PFObject *photo = [PFObject objectWithClassName:@"Photo"];
         photo[@"imageName"] = @"My trip to Hawaii!";
-        photo[@"roll"] = self.roll;
+        photo[@"roll"] = [Roll currentRoll];
         photo[@"imageFile"] = imageFile;
         
         [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 NSLog(@"image saved");
+                [Roll setCurrentRollWithBlock:^(NSError *error) {
+                    NSLog(@"Current Roll is set");
+                }];
             }
         }];
 
@@ -103,7 +100,6 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
         [weakself processImage:image completion:^(UIImage *image, UIImage *processedImage) {
             PostSplashViewController *postVC = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
-            postVC.roll = self.roll;
             self.vc = postVC;
             [self presentViewController:self.vc animated:NO completion:nil];
         }];

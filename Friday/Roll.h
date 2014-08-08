@@ -11,19 +11,21 @@
 
 @interface Roll : PFObject <PFSubclassing>
 
+@property NSString *rollId;
+@property NSInteger maxPhotos;
+@property NSInteger photosCount;
+@property NSString *userId;
+@property (readonly) NSInteger photosRemaining;
+
 + (NSString *)parseClassName;
-- (id)initWithPFObject:(PFObject *)PFObjectRoll;
-- (void)getCurrentRoll:(User *)currentUser withSuccess:(void (^) (Roll *currentRoll))successBlock andFailure:(void (^) (NSError *error))failureBlock;
 
-- (void)getInvitedToRoll;
+- (void)encodeWithCoder:(NSCoder *)encoder;
+- (id)decodeWithCoder:(NSCoder *)decoder;
+- (void)createPhoto:(UIImage *)image;
 
++ (void)createRollWithBlock: (void (^) (NSError *error))block;
++ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block;
++ (Roll *)setCurrentRollWithBlock: (void (^) (NSError *error))block;
 + (Roll *)currentRoll;
-
-@property (nonatomic, strong) User *rollOwner;
-@property (nonatomic, weak) NSString *rollId;
-@property (nonatomic, strong) NSString *rollName;
-@property int maxPhotos;
-@property int photosCount;
-@property (readonly) int photosRemaining;
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Roll.h"
 
 @protocol RollViewControllerDelegate <NSObject>
 
@@ -19,5 +19,7 @@
 
 @property (nonatomic, strong) NSArray *photosArray;
 @property (weak, nonatomic) id <RollViewControllerDelegate> delegate;
+
+- (id)initWithRoll:(Roll *)roll;
 
 @end

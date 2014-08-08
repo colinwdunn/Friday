@@ -11,13 +11,12 @@
 
 @implementation Photo
 
-+ (NSString *)parseClassName {
-    return @"Photo";
-}
-
 @dynamic user;
 @dynamic roll;
 @dynamic photoURL;
 
++ (NSString *)parseClassName {
+    return @"Photo";
+}
 
 @end

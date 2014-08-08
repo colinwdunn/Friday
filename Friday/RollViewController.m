@@ -31,6 +31,24 @@
     return NSStringFromClass([PhotoGalleryCell class]);
 }
 
+- (id)initWithRoll:(Roll *)roll {
+//    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+//    [query whereKey:@"roll" equalTo:[Roll currentRoll]];
+//    __weak typeof(self) weakself = self;
+//    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        if (!error) {
+//            weakself.photoArrayOfPFObjects = [NSArray array];
+//            weakself.photoArrayOfPFObjects = objects;
+//            
+//            [weakself developRoll:weakself.photoArrayOfPFObjects];
+//            
+//        } else {
+//            NSLog(@"Error: %@ %@", error, [error userInfo]);
+//        }
+//    }];
+    return nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

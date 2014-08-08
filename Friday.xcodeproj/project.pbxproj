@@ -37,6 +37,8 @@
 		429B713D1928698D00BAAE20 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 429B71251928698D00BAAE20 /* UIKit.framework */; };
 		429B71451928698D00BAAE20 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 429B71431928698D00BAAE20 /* InfoPlist.strings */; };
 		429B71471928698D00BAAE20 /* FridayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 429B71461928698D00BAAE20 /* FridayTests.m */; };
+		451467D71992177500E5CDF5 /* RollChoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 451467D51992177500E5CDF5 /* RollChoiceViewController.m */; };
+		451467D81992177500E5CDF5 /* RollChoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 451467D61992177500E5CDF5 /* RollChoiceViewController.xib */; };
 		451836861958744C00594C07 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 451836851958744C00594C07 /* User.m */; };
 		45183689195875F900594C07 /* Roll.m in Sources */ = {isa = PBXBuildFile; fileRef = 45183688195875F900594C07 /* Roll.m */; };
 		4518368F1958926D00594C07 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4518368E1958926D00594C07 /* Photo.m */; };
@@ -46,6 +48,7 @@
 		453413A219735D0E00C6A2FE /* NotificationsCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453413A119735D0E00C6A2FE /* NotificationsCustomView.xib */; };
 		45971B30194DFE8C00BAD5E9 /* PhotoGalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */; };
 		45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */; };
+		45C5EE7A19889CE900A0D538 /* UserRoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C5EE7919889CE900A0D538 /* UserRoll.m */; };
 		45EC14A6196754610049D518 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45EC14A5196754610049D518 /* ContactCell.xib */; };
 		45EC14A9196760450049D518 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45EC14A8196760440049D518 /* MessageUI.framework */; };
 		6A776A8540FD4AB39818DF6F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C9A0E9FEF846ECA2BF7C69 /* libPods.a */; };
@@ -107,6 +110,9 @@
 		429B71421928698D00BAAE20 /* FridayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FridayTests-Info.plist"; sourceTree = "<group>"; };
 		429B71441928698D00BAAE20 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		429B71461928698D00BAAE20 /* FridayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FridayTests.m; sourceTree = "<group>"; };
+		451467D41992177500E5CDF5 /* RollChoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RollChoiceViewController.h; sourceTree = "<group>"; };
+		451467D51992177500E5CDF5 /* RollChoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RollChoiceViewController.m; sourceTree = "<group>"; };
+		451467D61992177500E5CDF5 /* RollChoiceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RollChoiceViewController.xib; sourceTree = "<group>"; };
 		451836841958744C00594C07 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		451836851958744C00594C07 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		45183687195875F900594C07 /* Roll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Roll.h; sourceTree = "<group>"; };
@@ -122,6 +128,8 @@
 		45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoGalleryCell.xib; sourceTree = "<group>"; };
 		45971B31194DFEE900BAD5E9 /* PhotoGalleryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoGalleryCell.h; sourceTree = "<group>"; };
 		45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoGalleryCell.m; sourceTree = "<group>"; };
+		45C5EE7819889CE900A0D538 /* UserRoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRoll.h; sourceTree = "<group>"; };
+		45C5EE7919889CE900A0D538 /* UserRoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRoll.m; sourceTree = "<group>"; };
 		45EC14A5196754610049D518 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		45EC14A8196760440049D518 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		80C9A0E9FEF846ECA2BF7C69 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,6 +201,9 @@
 				427F76A5192896AE00CF30F2 /* PostSplashViewController.h */,
 				427F76A6192896AE00CF30F2 /* PostSplashViewController.m */,
 				427F76A7192896AE00CF30F2 /* PostSplashViewController.xib */,
+				451467D41992177500E5CDF5 /* RollChoiceViewController.h */,
+				451467D51992177500E5CDF5 /* RollChoiceViewController.m */,
+				451467D61992177500E5CDF5 /* RollChoiceViewController.xib */,
 				4237EF4719800C6A00230BB6 /* UIImage+Resize.h */,
 				4237EF4819800C6A00230BB6 /* UIImage+Resize.m */,
 				4237EF4A19800C9A00230BB6 /* UIImage+Alpha.h */,
@@ -315,6 +326,8 @@
 				45183688195875F900594C07 /* Roll.m */,
 				4518368D1958926D00594C07 /* Photo.h */,
 				4518368E1958926D00594C07 /* Photo.m */,
+				45C5EE7819889CE900A0D538 /* UserRoll.h */,
+				45C5EE7919889CE900A0D538 /* UserRoll.m */,
 				33AED5AB1958AA0C004C0E82 /* Camera */,
 			);
 			name = Models;
@@ -394,7 +407,7 @@
 				ORGANIZATIONNAME = codepath;
 				TargetAttributes = {
 					429B711D1928698D00BAAE20 = {
-						DevelopmentTeam = 86C6U2J5JU;
+						DevelopmentTeam = NMG62K97Z7;
 					};
 					429B71381928698D00BAAE20 = {
 						TestTargetID = 429B711D1928698D00BAAE20;
@@ -436,6 +449,7 @@
 				453413A219735D0E00C6A2FE /* NotificationsCustomView.xib in Resources */,
 				427F76A419286F8700CF30F2 /* SplashViewController.xib in Resources */,
 				429B71341928698D00BAAE20 /* Images.xcassets in Resources */,
+				451467D81992177500E5CDF5 /* RollChoiceViewController.xib in Resources */,
 				427F76C0192897BC00CF30F2 /* RollViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,10 +515,12 @@
 				331B640E1956816600844EBA /* LoginViewController.m in Sources */,
 				4534134E1971FCF500C6A2FE /* PhotoGalleryCollectionViewFlowLayout.m in Sources */,
 				45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */,
+				45C5EE7A19889CE900A0D538 /* UserRoll.m in Sources */,
 				429B712E1928698D00BAAE20 /* main.m in Sources */,
 				427F76BA192897B000CF30F2 /* CameraViewController.m in Sources */,
 				427F76A319286F8700CF30F2 /* SplashViewController.m in Sources */,
 				427F76BF192897BC00CF30F2 /* RollViewController.m in Sources */,
+				451467D71992177500E5CDF5 /* RollChoiceViewController.m in Sources */,
 				4237EF4919800C6A00230BB6 /* UIImage+Resize.m in Sources */,
 				45183689195875F900594C07 /* Roll.m in Sources */,
 			);
@@ -630,7 +646,7 @@
 				GCC_PREFIX_HEADER = "Friday/Friday-Prefix.pch";
 				INFOPLIST_FILE = "Friday/Friday-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "83182D24-F08F-4455-9C6B-FDC0EF67B98E";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -647,7 +663,7 @@
 				GCC_PREFIX_HEADER = "Friday/Friday-Prefix.pch";
 				INFOPLIST_FILE = "Friday/Friday-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "83182D24-F08F-4455-9C6B-FDC0EF67B98E";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

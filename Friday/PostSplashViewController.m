@@ -33,14 +33,6 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -61,7 +53,6 @@
 
 - (IBAction)takeMorePhotos:(id)sender {
     CameraViewController *cameraViewController = [[CameraViewController alloc] init];
-    cameraViewController.roll = self.roll;
     [self presentViewController:cameraViewController animated:YES completion:nil];
 }
 
