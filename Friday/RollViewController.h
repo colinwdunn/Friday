@@ -20,6 +20,4 @@
 @property (nonatomic, strong) NSArray *photosArray;
 @property (weak, nonatomic) id <RollViewControllerDelegate> delegate;
 
-- (id)initWithRoll:(Roll *)roll;
-
 @end

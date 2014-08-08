@@ -17,6 +17,7 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *rollCollectionView;
 @property (nonatomic, copy, readonly) NSString *photoGalleryCellClassName;
 @property (weak, nonatomic) IBOutlet UIButton *startNewRollButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *fetchingRollIndicator;
 
 @property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
 
@@ -31,24 +32,6 @@
     return NSStringFromClass([PhotoGalleryCell class]);
 }
 
-- (id)initWithRoll:(Roll *)roll {
-//    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-//    [query whereKey:@"roll" equalTo:[Roll currentRoll]];
-//    __weak typeof(self) weakself = self;
-//    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//        if (!error) {
-//            weakself.photoArrayOfPFObjects = [NSArray array];
-//            weakself.photoArrayOfPFObjects = objects;
-//            
-//            [weakself developRoll:weakself.photoArrayOfPFObjects];
-//            
-//        } else {
-//            NSLog(@"Error: %@ %@", error, [error userInfo]);
-//        }
-//    }];
-    return nil;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -58,6 +41,27 @@
     self.startNewRollButton.layer.cornerRadius = 20;
     [self setupCollectionView];
     self.topView.layer.cornerRadius = 20;
+    
+    [self fetchRollPhotos];
+}
+
+- (void)fetchRollPhotos{
+    
+    [self.fetchingRollIndicator startAnimating];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+    [query whereKey:@"roll" equalTo:[Roll currentRoll]];
+    __weak typeof(self) weakself = self;
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            weakself.photosArray = objects;
+            [self.rollCollectionView reloadData];
+            [self.fetchingRollIndicator stopAnimating];
+            
+        } else {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
 }
 
 - (void)setupCollectionView {

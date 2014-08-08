@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RollViewController">
             <connections>
+                <outlet property="fetchingRollIndicator" destination="DKU-ID-x7o" id="RhB-Xi-pHD"/>
                 <outlet property="rollCollectionView" destination="BFn-eB-O3J" id="6nd-Hh-3Xd"/>
                 <outlet property="startNewRollButton" destination="geg-rW-4qJ" id="Rsb-TN-Nbd"/>
                 <outlet property="topView" destination="fYw-Zp-Zxb" id="qE5-Wl-LYw"/>
@@ -58,6 +59,10 @@
                     </subviews>
                     <color key="backgroundColor" red="0.21960785984992981" green="0.36078432202339172" blue="0.56078433990478516" alpha="1" colorSpace="deviceRGB"/>
                 </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="DKU-ID-x7o">
+                    <rect key="frame" x="136" y="270" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.35686275362968445" green="0.5215686559677124" blue="0.7882353663444519" alpha="1" colorSpace="deviceRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

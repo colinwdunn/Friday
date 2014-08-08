@@ -17,12 +17,13 @@
 
 @interface CameraViewController ()
 
+
 @property (nonatomic) FridayCamera *camera;
 @property (nonatomic, assign) NSInteger photosCount;
-@property (nonatomic, strong) NSArray* photoArrayOfPFObjects;
+@property (nonatomic, strong) NSArray *photoArrayOfPFObjects;
 @property (nonatomic, strong) RollViewController *rollVC;
 @property (nonatomic, strong) UIButton *showRollButton;
-
+@property (nonatomic, assign) NSInteger currentCount;
 
 @property (nonatomic, strong) NotificationsCustomView *notificationView;
 @property (nonatomic, strong) IBOutlet UILabel *notificationsLabel;
@@ -46,6 +47,8 @@
     self.camera = [[FridayCamera alloc] init];
     [self.camera startRunningCameraSessionWithView:self];
     //self.currentPhotoCountButton.hidden = YES;
+    
+    self.currentCount = [Roll currentRoll].photosRemaining;
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:) name:@"userJoined" object:nil];
@@ -74,6 +77,9 @@
 }
 
 - (IBAction)takePhotoDidPress:(id)sender {
+    
+    [self updateCountSeamlessly];
+    
     UIView *shutterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     shutterView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:shutterView];
@@ -86,8 +92,29 @@
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
         [[Roll currentRoll] createPhoto:takenPhoto];
         
-        [self updatePhotoCountView];
     }];
+}
+
+- (void)updateCountSeamlessly {
+    self.currentCount--;
+    
+    if (self.currentCount <= 0) {
+        self.currentPhotoCountButton.hidden = YES;
+        self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        self.showRollButton.frame = CGRectMake(120, 500, 100, 40);
+        self.showRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+        self.showRollButton.layer.borderWidth = 3;
+        self.showRollButton.layer.cornerRadius = 20;
+        self.showRollButton.layer.opaque = YES;
+        [self.showRollButton setTitle: @"Show Roll" forState:UIControlStateNormal];
+        self.showRollButton.titleLabel.textColor = [UIColor yellowColor];
+        [self.showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.showRollButton];
+    } else {
+        self.showRollButton.hidden = YES;
+        self.currentPhotoCountButton.hidden= NO;
+        [self.currentPhotoCountButton setTitle:[@(self.currentCount) stringValue] forState:UIControlStateNormal];
+    }
 }
 
 - (void)updatePhotoCountView{
@@ -111,8 +138,9 @@
 }
 
 - (void)showRoll {
-    self.rollVC = [[RollViewController alloc] initWithRoll:[Roll currentRoll]];
+    self.rollVC = [[RollViewController alloc] init];
     self.rollVC.delegate = self;
+    [self presentViewController:self.rollVC animated:YES completion:nil];
 }
 
 - (void)didDismissRollViewController {
