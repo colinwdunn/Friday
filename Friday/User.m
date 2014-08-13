@@ -16,7 +16,33 @@
 @dynamic phoneNumber;
 @dynamic currentRoll;
 
++ (void)saveCurrentRoll:(Roll *)roll toCurrentUserWithBlock:(void (^)(NSError *))block {
+    [User currentUser].currentRoll = roll;
+    [[User currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        NSLog(@"Current Roll saved to Current User");
+        block(error);
+    }];
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //- (id)initWithPFObject:(PFObject *)PFObjectUser{

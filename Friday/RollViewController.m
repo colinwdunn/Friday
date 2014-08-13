@@ -18,9 +18,7 @@
 @property (nonatomic, copy, readonly) NSString *photoGalleryCellClassName;
 @property (weak, nonatomic) IBOutlet UIButton *startNewRollButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *fetchingRollIndicator;
-
 @property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
-
 @property (strong, nonatomic) PFImageView *fullImageView;
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
@@ -46,21 +44,11 @@
 }
 
 - (void)fetchRollPhotos{
-    
     [self.fetchingRollIndicator startAnimating];
-    
-    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-    [query whereKey:@"roll" equalTo:[Roll currentRoll]];
-    __weak typeof(self) weakself = self;
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            weakself.photosArray = objects;
-            [self.rollCollectionView reloadData];
-            [self.fetchingRollIndicator stopAnimating];
-            
-        } else {
-            NSLog(@"Error: %@ %@", error, [error userInfo]);
-        }
+    [Roll developRollWithBlock:^(NSError *error, NSArray *photosArray) {
+        self.photosArray = photosArray;
+        [self.rollCollectionView reloadData];
+        [self.fetchingRollIndicator stopAnimating];
     }];
 }
 

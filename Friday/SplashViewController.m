@@ -15,6 +15,7 @@
 #import "RollViewController.h"
 #import "FridayCamera.h"
 #import "UIImage+Resize.h"
+#import "Photo.h"
 
 //static NSInteger MaxNumberOfPhotosInRoll = 2;
 
@@ -25,21 +26,14 @@
 @property (nonatomic) NSNumber *rollCount;
 @property (nonatomic) FridayCamera *camera;
 
-@property (nonatomic, strong) PostSplashViewController *vc;
+- (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion;
 
 - (IBAction)onTakePhotoButton:(id)sender;
-- (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion;
+
 
 @end
 
 @implementation SplashViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     
@@ -59,7 +53,6 @@
 #pragma mark - Private methods
 
 - (void)processImage:(UIImage *)image completion:(void (^)(UIImage *image, UIImage *processedImage))completion {
-    
     UIImage *resizedImage = [image resizedImage:self.view.frame.size interpolationQuality:kCGInterpolationLow];
     UIImage *processedImage = [resizedImage applyBlurWithRadius:20 tintColor:nil saturationDeltaFactor:1.8 maskImage:nil];
     
@@ -69,39 +62,19 @@
 }
 
 - (IBAction)onTakePhotoButton:(id)sender {
-    
     __weak typeof(self) weakself = self;
-    
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
         [weakself showImage:takenPhoto];
-        
-        NSData *imageData = UIImageJPEGRepresentation(takenPhoto, 0.5f);
-        PFFile *imageFile = [PFFile fileWithData:imageData];
-        PFObject *photo = [PFObject objectWithClassName:@"Photo"];
-        photo[@"imageName"] = @"My trip to Hawaii!";
-        photo[@"roll"] = [Roll currentRoll];
-        photo[@"imageFile"] = imageFile;
-        
-        [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                NSLog(@"image saved");
-                [Roll setCurrentRollWithBlock:^(NSError *error) {
-                    NSLog(@"Current Roll is set");
-                }];
-            }
-        }];
-
+        [Photo createPhoto:takenPhoto];
     }];
 }
 
 - (void)showImage:(UIImage *)image {
     __weak typeof(self) weakself = self;
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
         [weakself processImage:image completion:^(UIImage *image, UIImage *processedImage) {
             PostSplashViewController *postVC = [[PostSplashViewController alloc] initWithImage:image processedImage:processedImage];
-            self.vc = postVC;
-            [self presentViewController:self.vc animated:NO completion:nil];
+            [self presentViewController:postVC animated:NO completion:nil];
         }];
     });
 }

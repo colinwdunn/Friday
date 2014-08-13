@@ -21,11 +21,12 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder;
 - (id)decodeWithCoder:(NSCoder *)decoder;
-- (void)createPhoto:(UIImage *)image;
 
 + (void)createRollWithBlock: (void (^) (NSError *error))block;
 + (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block;
-+ (Roll *)setCurrentRollWithBlock: (void (^) (NSError *error))block;
++ (void)setCurrentRollFromParseWithBlock: (void (^) (NSError *error))block;
++ (void)setCurrentRoll:(Roll *)roll;
++ (void)updatePhotoCountForCurrentRollWithBlock:(void (^) (NSError *error))block;
 + (Roll *)currentRoll;
-
++ (void)developRollWithBlock:(void (^) (NSError *error, NSArray *photosArray))block;
 @end

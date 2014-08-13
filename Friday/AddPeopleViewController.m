@@ -13,18 +13,33 @@
 #import "Roll.h"
 #import "UserRoll.h"
 #import "PeopleViewController.h"
+#import "CameraViewController.h"
 
 @interface AddPeopleViewController ()
 
 @property (nonatomic) NSMutableArray *myContacts;
 @property (weak, nonatomic) IBOutlet UITableView *contactTableView;
 @property (nonatomic) NSMutableArray *selectedContacts;
-//@property (nonatomic, strong) Roll *currentRoll;
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+
 
 - (IBAction)cancelButtonDidPress:(id)sender;
+
 @end
 
 @implementation AddPeopleViewController
+
+- (id)initWithImage:(UIImage *)image processedImage:(UIImage *)processedImage {
+    self = [super init];
+    if (self) {
+        self.image = image;
+        self.processedImage = processedImage;
+    }
+    
+    return self;
+}
+
 
 - (void)viewDidLoad
 {
@@ -34,6 +49,7 @@
     [self.contactTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
     self.selectedContacts = [NSMutableArray array];
     self.myContacts = [NSMutableArray array];
+    self.imageView.image = self.processedImage;
     
 }
 
@@ -62,16 +78,13 @@
                             CFStringRef phoneRef = ABMultiValueCopyValueAtIndex(phoneNumberValueRef, 0);
                             NSString *phoneNumber = (__bridge NSString *) phoneRef;
                             
-                            
-                            if (!([firstName isEqualToString:@""]) && !([phoneNumber isEqualToString:@""]) ) {
+                            if (phoneNumber != nil ){
                                 person.phoneNumber = phoneNumber;
                                 person.firstName = firstName;
                                 [self.myContacts addObject:person];
                             }
 
                         }
-                    
-                        NSLog(@"Contacts:%@", self.myContacts);
                     
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.contactTableView reloadData];
@@ -98,8 +111,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:@"ContactCell"];
-    cell.textLabel.text = [self.myContacts[indexPath.row] username];
-    cell.detailTextLabel.text = [self.myContacts[indexPath.row] phoneNumber];
+    cell.textLabel.text = [self.myContacts[indexPath.row] firstName];
     return cell;
 }
 
@@ -164,6 +176,8 @@
         invited.status = @"invited";
         [invited saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             NSLog(@"Shell user created");
+            CameraViewController *cameraViewController = [[CameraViewController alloc] init];
+            [self presentViewController:cameraViewController animated:YES completion:nil];
         }];
     }
 }

@@ -13,10 +13,10 @@
 @interface PostSplashViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
 @property (weak, nonatomic) IBOutlet UIButton *useContactsButton;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *processedImage;
+
 - (IBAction)contactsButtonDidPress:(id)sender;
 
 @end
@@ -48,6 +48,8 @@
 
 - (IBAction)contactsButtonDidPress:(id)sender {
     AddPeopleViewController *addPeopleVC = [[AddPeopleViewController alloc] init];
+    addPeopleVC.image = self.image;;
+    addPeopleVC.processedImage = self.processedImage;
     [self presentViewController:addPeopleVC animated:YES completion:nil];
 }
 

@@ -13,22 +13,21 @@
 #import "FridayCamera.h"
 #import <Parse/Parse.h>
 #import "Roll.h"
+#import "Photo.h"
 #import "NotificationsCustomView.h"
 
 @interface CameraViewController ()
 
-
 @property (nonatomic) FridayCamera *camera;
 @property (nonatomic, assign) NSInteger photosCount;
 @property (nonatomic, strong) NSArray *photoArrayOfPFObjects;
-@property (nonatomic, strong) RollViewController *rollVC;
 @property (nonatomic, strong) UIButton *showRollButton;
 @property (nonatomic, assign) NSInteger currentCount;
-
 @property (nonatomic, strong) NotificationsCustomView *notificationView;
 @property (nonatomic, strong) IBOutlet UILabel *notificationsLabel;
-
 @property (strong, nonatomic) IBOutlet UIButton *currentPhotoCountButton;
+
+@property (nonatomic, strong) RollViewController *rollVC;
 
 - (IBAction)takePhotoDidPress:(id)sender;
 - (IBAction)addPeopleButtonDidPress:(id)sender;
@@ -46,10 +45,6 @@
     NSLog(@"In the camera view");
     self.camera = [[FridayCamera alloc] init];
     [self.camera startRunningCameraSessionWithView:self];
-    //self.currentPhotoCountButton.hidden = YES;
-    
-    self.currentCount = [Roll currentRoll].photosRemaining;
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:) name:@"userJoined" object:nil];
     
@@ -61,7 +56,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self updatePhotoCountView];
+    self.currentCount = [Roll currentRoll].photosRemaining;
+    [self photoCountButtonControl];
 }
 
 - (void)displayNotificationView:(NSNotification *)notification {
@@ -77,7 +73,6 @@
 }
 
 - (IBAction)takePhotoDidPress:(id)sender {
-    
     [self updateCountSeamlessly];
     
     UIView *shutterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -90,14 +85,16 @@
     }];
     
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
-        [[Roll currentRoll] createPhoto:takenPhoto];
-        
+        [Photo createPhoto:takenPhoto];
     }];
 }
 
 - (void)updateCountSeamlessly {
     self.currentCount--;
-    
+    [self photoCountButtonControl];
+}
+
+- (void)photoCountButtonControl {
     if (self.currentCount <= 0) {
         self.currentPhotoCountButton.hidden = YES;
         self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -117,26 +114,6 @@
     }
 }
 
-- (void)updatePhotoCountView{
-    if ([Roll currentRoll].photosRemaining <= 0) {
-        self.currentPhotoCountButton.hidden = YES;
-        self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        self.showRollButton.frame = CGRectMake(120, 500, 100, 40);
-        self.showRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
-        self.showRollButton.layer.borderWidth = 3;
-        self.showRollButton.layer.cornerRadius = 20;
-        self.showRollButton.layer.opaque = YES;
-        [self.showRollButton setTitle: @"Show Roll" forState:UIControlStateNormal];
-        self.showRollButton.titleLabel.textColor = [UIColor yellowColor];
-        [self.showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:self.showRollButton];
-    } else {
-        self.showRollButton.hidden = YES;
-        self.currentPhotoCountButton.hidden= NO;
-        [self.currentPhotoCountButton setTitle:[@([Roll currentRoll].photosRemaining) stringValue] forState:UIControlStateNormal];
-    }
-}
-
 - (void)showRoll {
     self.rollVC = [[RollViewController alloc] init];
     self.rollVC.delegate = self;
@@ -145,8 +122,11 @@
 
 - (void)didDismissRollViewController {
     [Roll createRollWithBlock:^(NSError *error) {
-        [self updatePhotoCountView];
-        [self.rollVC dismissViewControllerAnimated:YES completion:nil];
+        self.currentCount = 6;
+        self.currentPhotoCountButton.hidden = NO;
+        self.showRollButton.hidden = YES;
+        [self photoCountButtonControl];
+         [self.rollVC dismissViewControllerAnimated:YES completion:nil];
     }];
 }
 
