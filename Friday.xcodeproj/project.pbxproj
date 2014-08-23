@@ -394,7 +394,7 @@
 				ORGANIZATIONNAME = codepath;
 				TargetAttributes = {
 					429B711D1928698D00BAAE20 = {
-						DevelopmentTeam = 86C6U2J5JU;
+						DevelopmentTeam = NMG62K97Z7;
 					};
 					429B71381928698D00BAAE20 = {
 						TestTargetID = 429B711D1928698D00BAAE20;
@@ -630,7 +630,7 @@
 				GCC_PREFIX_HEADER = "Friday/Friday-Prefix.pch";
 				INFOPLIST_FILE = "Friday/Friday-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "83182D24-F08F-4455-9C6B-FDC0EF67B98E";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -647,7 +647,7 @@
 				GCC_PREFIX_HEADER = "Friday/Friday-Prefix.pch";
 				INFOPLIST_FILE = "Friday/Friday-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "83182D24-F08F-4455-9C6B-FDC0EF67B98E";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
