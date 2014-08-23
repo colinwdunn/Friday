@@ -24,13 +24,13 @@
 + (void)createPhoto:(UIImage *)orignalPhoto {
     NSData *smallerImageData = UIImageJPEGRepresentation(orignalPhoto, 0.5f);
     PFFile *imageFile = [PFFile fileWithData:smallerImageData];
-    
     Photo *photo = [[Photo alloc] init];
     photo.imageName = @"My trip to Hawaii!";
     photo.roll = [Roll currentRoll];
     photo.imageFile = imageFile;
     
     [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        NSLog(@"Photo file was uploaded");
         [Roll updatePhotoCountForCurrentRollWithBlock:^(NSError *error) {
             
         }];

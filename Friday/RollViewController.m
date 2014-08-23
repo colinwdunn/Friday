@@ -21,6 +21,8 @@
 @property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
 @property (strong, nonatomic) PFImageView *fullImageView;
 
+@property (weak, nonatomic) NSTimer *rollTimer;
+
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @end
 
@@ -40,12 +42,23 @@
     [self setupCollectionView];
     self.topView.layer.cornerRadius = 20;
     
-    [self fetchRollPhotos];
+    self.rollTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                      target:self
+                                                    selector:@selector(allPhotosDidUpload)
+                                                    userInfo:nil
+                                                     repeats:YES];
+}
+
+- (void)allPhotosDidUpload {
+    [self.fetchingRollIndicator startAnimating];
+    if ([Roll currentRoll].photosRemaining == 0) {
+        [self.rollTimer invalidate];
+        [self fetchRollPhotos];
+    } 
 }
 
 - (void)fetchRollPhotos{
-    [self.fetchingRollIndicator startAnimating];
-    [Roll developRollWithBlock:^(NSError *error, NSArray *photosArray) {
+        [Roll getRollPhotosWithBlock:^(NSError *error, NSArray *photosArray) {
         self.photosArray = photosArray;
         [self.rollCollectionView reloadData];
         [self.fetchingRollIndicator stopAnimating];

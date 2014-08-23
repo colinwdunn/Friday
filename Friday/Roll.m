@@ -8,7 +8,11 @@
 
 #import "Roll.h"
 #import "UserRoll.h"
+#import "Photo.h"
 #import <Parse/PFObject+Subclass.h>
+
+//281-249-9718
+//Jim: 5742655062
 
 //#define kUserNameValue @"serNameKey" > Have a constant.h/.m file for these and import them when needed
 
@@ -40,7 +44,6 @@ const NSInteger kMaxPhotos = 6;
         self.userId = [decoder decodeObjectForKey:@"userId"];
         self.rollId = [decoder decodeObjectForKey:@"rollId"];
         self.objectId = [decoder decodeObjectForKey:@"objectId"];
-        //self.photosRemaining = [decoder decodeIntegerForKey:@"photosRemaining"];
     }
     return self;
 }
@@ -82,15 +85,19 @@ const NSInteger kMaxPhotos = 6;
     NSData *currentRollData = [NSKeyedArchiver archivedDataWithRootObject:_currentRoll];
     NSUserDefaults *currentRoll = [NSUserDefaults standardUserDefaults];
     [currentRoll setObject:currentRollData forKey:@"CurrentRoll"];
+    [currentRoll synchronize];
 }
 
 + (void)updatePhotoCountForCurrentRollWithBlock:(void (^) (NSError *error))block {
     PFQuery *updateRollPhotoCount = [Roll query];
     [updateRollPhotoCount getObjectInBackgroundWithId:[Roll currentRoll].objectId block:^(PFObject *object, NSError *error) {
+        NSLog(@"On Device Current roll count: %ld", (long)(_currentRoll).photosCount);
+        NSLog(@"From Parse Current roll count: %ld", (long)((Roll *)object).photosCount);
         _currentRoll = (Roll *)object;
-        _currentRoll.photosCount ++;
-        [Roll setCurrentRoll:_currentRoll];
+        _currentRoll.photosCount++;
         [_currentRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            [Roll setCurrentRoll:_currentRoll];
+            NSLog(@"New current roll count: %ld", (long)_currentRoll.photosCount);
             NSLog(@"Photo count for current roll is updated.");
                 block(error);
             }];
@@ -114,37 +121,29 @@ const NSInteger kMaxPhotos = 6;
 
 + (void)setCurrentRollFromParseWithBlock:(void (^) (NSError *error))block {
     if (_currentRoll == nil) {
-        PFQuery *currentRollQuery = [Roll query];
-        [currentRollQuery getObjectInBackgroundWithId:[User currentUser].objectId block:^(PFObject *object, NSError *error) {
-            if ([(Roll *)object photosCount] > 0) {
-                _currentRoll = (Roll*)object;
-                [User currentUser].currentRoll = _currentRoll;
-                [[User currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    [_currentRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                        [Roll setCurrentRoll:_currentRoll];
-                        block(error);
-                    }];
-                }];
-            } else {
-                [Roll createRollWithBlock:^(NSError *error) {
-                    NSLog(@"Roll was created.");
-                    block(error);
-                }];
-            }
-            
+        PFQuery *currentUserQuery = [User query];
+        [currentUserQuery includeKey:@"currentRoll"];
+        [currentUserQuery getObjectInBackgroundWithId:[User currentUser].objectId block:^(PFObject *object, NSError *error) {
+                _currentRoll = [(User *)object currentRoll];
+                [Roll setCurrentRoll:_currentRoll];
+                block(error);
         }];
     }
 }
 
+//Getting current roll from NSUserDefaults
 + (Roll *)currentRoll {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSData *encodedObject = [defaults objectForKey:@"CurrentRoll"];
-    _currentRoll = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    if (_currentRoll == nil) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSData *encodedObject = [defaults objectForKey:@"CurrentRoll"];
+        _currentRoll = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    }
     return _currentRoll;
 }
 
-+ (void)developRollWithBlock:(void (^) (NSError *error, NSArray *photosArray))block {
-    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+//Retrieve all the images for the currentRoll
++ (void)getRollPhotosWithBlock:(void (^) (NSError *error, NSArray *photosArray))block {
+    PFQuery *query = [Photo query];
     [query whereKey:@"roll" equalTo:[Roll currentRoll]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         block(error, objects);
@@ -156,23 +155,3 @@ const NSInteger kMaxPhotos = 6;
 //DO: initialize default values (in AppDelegate, NSDictionary* defaults = @{kUserNameKey:@"GreatUser", kLevel1ScoreKey:@0, kLevel1CompletedKey:@NO};
 //[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 
-//+ (void)createRollWithBlock: (void (^) (NSError *error))block {
-//    Roll *newRoll = [[Roll alloc] init];
-//    newRoll.photosCount = 0;
-//    newRoll.maxPhotos = kMaxPhotos;
-//    newRoll.userId = [User currentUser].objectId;
-//    [newRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//        PFQuery *getObjectWithId = [Roll query];
-//        [getObjectWithId getObjectInBackgroundWithId:newRoll.objectId block:^(PFObject *object, NSError *error) {
-//            _currentRoll = (Roll*)object;
-//            _currentRoll.rollId = _currentRoll.objectId;
-//            [_currentRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//                [Roll setCurrentRollWithBlock:^(NSError *error) {
-//                    NSLog(@"Current Roll is set");
-//                }];
-//                block(error);
-//            }];
-//        }];
-//    }];
-//    
-//}

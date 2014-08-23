@@ -28,5 +28,5 @@
 + (void)setCurrentRoll:(Roll *)roll;
 + (void)updatePhotoCountForCurrentRollWithBlock:(void (^) (NSError *error))block;
 + (Roll *)currentRoll;
-+ (void)developRollWithBlock:(void (^) (NSError *error, NSArray *photosArray))block;
++ (void)getRollPhotosWithBlock:(void (^) (NSError *error, NSArray *photosArray))block;
 @end
