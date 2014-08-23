@@ -12,10 +12,14 @@
 
 @interface Photo : PFObject <PFSubclassing>
 
-+ (NSString *)parseClassName;
-
+@property NSString *imageName;
+@property NSString *photoURL;
+@property PFFile *imageFile;
 @property User* user;
 @property Roll* roll;
-@property NSString *photoURL;
+
+
++ (NSString *)parseClassName;
++ (void)createPhoto:(UIImage *)orignalPhoto;
 
 @end

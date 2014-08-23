@@ -13,10 +13,10 @@
 @interface PostSplashViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
 @property (weak, nonatomic) IBOutlet UIButton *useContactsButton;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *processedImage;
+
 - (IBAction)contactsButtonDidPress:(id)sender;
 
 @end
@@ -30,15 +30,6 @@
         self.processedImage = processedImage;
     }
     
-    return self;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
     return self;
 }
 
@@ -56,12 +47,13 @@
 
 - (IBAction)contactsButtonDidPress:(id)sender {
     AddPeopleViewController *addPeopleVC = [[AddPeopleViewController alloc] init];
+    addPeopleVC.image = self.image;;
+    addPeopleVC.processedImage = self.processedImage;
     [self presentViewController:addPeopleVC animated:YES completion:nil];
 }
 
 - (IBAction)takeMorePhotos:(id)sender {
     CameraViewController *cameraViewController = [[CameraViewController alloc] init];
-    cameraViewController.roll = self.roll;
     [self presentViewController:cameraViewController animated:YES completion:nil];
 }
 

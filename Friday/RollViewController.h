@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Roll.h"
 
 @protocol RollViewControllerDelegate <NSObject>
 

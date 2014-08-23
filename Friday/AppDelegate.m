@@ -16,6 +16,7 @@
 #import "User.h"
 #import "Roll.h"
 #import "Photo.h"
+#import "UserRoll.h"
 
 @implementation AppDelegate
 
@@ -23,9 +24,10 @@
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
 
+    [User registerSubclass];
     [Roll registerSubclass];
     [Photo registerSubclass];
-    [User registerSubclass];
+    [UserRoll registerSubclass];
     
     [Parse setApplicationId:@"7WlikSk0LVU1NrT9CCNQXbB30QSTsEo2umDCky86"
                   clientKey:@"UGx1Vym8ZDBa5nEJpluEb3VQs8LE6KISvAM48T5o"];
@@ -36,16 +38,12 @@
      UIRemoteNotificationTypeAlert |
      UIRemoteNotificationTypeSound];
     
-    PFUser *currentUser = [PFUser currentUser];
-    NSLog(@"current user: %@", currentUser);
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    if (currentUser) {
+    if ([PFUser currentUser]) {
         self.window.rootViewController = [[CameraViewController alloc] init];
     } else {
         self.window.rootViewController = [[LoginViewController alloc] init];
     }
-    
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
@@ -97,7 +95,6 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"userJoined" object:self userInfo:userInfo];
 }
 

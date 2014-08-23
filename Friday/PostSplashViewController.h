@@ -11,8 +11,6 @@
 
 @interface PostSplashViewController : UIViewController
 
-@property (nonatomic, strong) PFObject *roll;
-
 - (id)initWithImage:(UIImage *)image processedImage:(UIImage *)processedImage;
 
 @end

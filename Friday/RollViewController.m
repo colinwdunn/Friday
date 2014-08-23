@@ -17,10 +17,11 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *rollCollectionView;
 @property (nonatomic, copy, readonly) NSString *photoGalleryCellClassName;
 @property (weak, nonatomic) IBOutlet UIButton *startNewRollButton;
-
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *fetchingRollIndicator;
 @property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
-
 @property (strong, nonatomic) PFImageView *fullImageView;
+
+@property (weak, nonatomic) NSTimer *rollTimer;
 
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @end
@@ -40,6 +41,28 @@
     self.startNewRollButton.layer.cornerRadius = 20;
     [self setupCollectionView];
     self.topView.layer.cornerRadius = 20;
+    
+    self.rollTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                      target:self
+                                                    selector:@selector(allPhotosDidUpload)
+                                                    userInfo:nil
+                                                     repeats:YES];
+}
+
+- (void)allPhotosDidUpload {
+    [self.fetchingRollIndicator startAnimating];
+    if ([Roll currentRoll].photosRemaining == 0) {
+        [self.rollTimer invalidate];
+        [self fetchRollPhotos];
+    } 
+}
+
+- (void)fetchRollPhotos{
+        [Roll getRollPhotosWithBlock:^(NSError *error, NSArray *photosArray) {
+        self.photosArray = photosArray;
+        [self.rollCollectionView reloadData];
+        [self.fetchingRollIndicator stopAnimating];
+    }];
 }
 
 - (void)setupCollectionView {

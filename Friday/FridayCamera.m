@@ -69,7 +69,7 @@
         
         if (exifAttachments) {
             // Do something with the attachments
-            NSLog(@"attachments: %@", exifAttachments);
+            //NSLog(@"attachments: %@", exifAttachments);
         } else {
             // No attachments
         }

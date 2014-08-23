@@ -10,26 +10,44 @@
 #import <Parse/PFObject+Subclass.h>
 
 @implementation User
+
+@dynamic username;
+@dynamic firstName;
+@dynamic phoneNumber;
 @dynamic currentRoll;
 
-- (id)initWithPFObject:(PFObject *)PFObjectUser{
-    self.userId = PFObjectUser.objectId;
-    self.firstName = PFObjectUser[@"username"];
-    return self;
-}
-
-- (void)getInvitedUser:(NSMutableArray *)invitedUsers  withSuccess:(void (^) (User *invitedUser))successBlock andFailure: (void (^) (NSError *error))failureBlock {
-    PFQuery *fetchInvitedUser = [User query];
-    [fetchInvitedUser whereKey:@"username" equalTo:@"Joseph Anderson"];
-    
-    [fetchInvitedUser findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
-        if (!error) {
-            //User *invitedUser = [[User alloc] initWithPFObject:[objects  firstObject]];
-            successBlock([objects firstObject]);
-        } else {
-            failureBlock(error);
-        }
++ (void)saveCurrentRoll:(Roll *)roll toCurrentUserWithBlock:(void (^)(NSError *))block {
+    [User currentUser].currentRoll = roll;
+    [[User currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        NSLog(@"Current Roll saved to Current User");
+        block(error);
     }];
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//- (id)initWithPFObject:(PFObject *)PFObjectUser{
+//    self.userId = PFObjectUser.objectId;
+//    self.firstName = PFObjectUser[@"username"];
+//    return self;
+//}
+//

@@ -12,14 +12,11 @@
 
 @interface User : PFUser <PFSubclassing>
 
-@property (nonatomic) NSString *userId;
+@property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *firstName;
-@property (nonatomic, strong) NSString *emailBaby;
 @property (nonatomic, strong) NSString *phoneNumber;
 @property (nonatomic, strong) Roll *currentRoll;
 
-- (id)initWithPFObject:(PFObject *)PFObjectUser;
-
-- (void)getInvitedUser:(NSMutableArray *)invitedUsers  withSuccess:(void (^) (User *invitedUser))successBlock andFailure: (void (^) (NSError *error))failureBlock;
++ (void)saveCurrentRoll:(Roll *)roll toCurrentUserWithBlock: (void (^) (NSError *error))block;
 
 @end
