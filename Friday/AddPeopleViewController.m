@@ -124,18 +124,23 @@
 
 - (void)configureCell:(ContactCell *)cell forEntry:(NSString *)entry {
     cell.contactTitleLabel.text = entry;
-    //cell.contactTitleLabel.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1].CGColor;
-    //cell.contactTitleLabel.layer.borderWidth = 3;
-    //cell.contactTitleLabel.layer.cornerRadius = 20;
+    cell.contactSelectedBackground.layer.borderWidth = 1;
+    cell.contactSelectedBackground.layer.cornerRadius = 17;
+    cell.contactSelectedBackground.layer.borderColor = [UIColor clearColor].CGColor;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ContactCell *cell = (ContactCell *)[tableView cellForRowAtIndexPath:indexPath];
+    cell.contactSelectedBackground.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1].CGColor;
+    
     User *person = self.myContacts[indexPath.row];
     [self.selectedContacts addObject:person];
     NSLog(@"You selected these contacts: %@", self.selectedContacts);
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ContactCell *cell = (ContactCell *)[tableView cellForRowAtIndexPath:indexPath];
+    cell.contactSelectedBackground.layer.borderColor = [UIColor clearColor].CGColor;
     NSMutableArray *removeInvites = [NSMutableArray array];
     User *person = self.myContacts[indexPath.row];
     User *thisPerson;

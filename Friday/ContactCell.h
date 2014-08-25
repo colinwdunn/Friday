@@ -10,5 +10,6 @@
 
 @interface ContactCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *contactTitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *contactSelectedBackground;
 
 @end
