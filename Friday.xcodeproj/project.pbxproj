@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		331B640E1956816600844EBA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 331B640C1956816600844EBA /* LoginViewController.m */; };
 		331B640F1956816600844EBA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331B640D1956816600844EBA /* LoginViewController.xib */; };
+		332B90FF19ABAF2F002C0420 /* ContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 332B90FE19ABAF2F002C0420 /* ContactCell.m */; };
 		33AED5AE1958AA49004C0E82 /* FridayCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AED5AD1958AA49004C0E82 /* FridayCamera.m */; };
 		4237EF4919800C6A00230BB6 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4237EF4819800C6A00230BB6 /* UIImage+Resize.m */; };
 		4237EF4C19800C9A00230BB6 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 4237EF4B19800C9A00230BB6 /* UIImage+Alpha.m */; };
@@ -68,6 +69,8 @@
 		331B640B1956816600844EBA /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		331B640C1956816600844EBA /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		331B640D1956816600844EBA /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		332B90FD19ABAF2F002C0420 /* ContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactCell.h; sourceTree = "<group>"; };
+		332B90FE19ABAF2F002C0420 /* ContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactCell.m; sourceTree = "<group>"; };
 		33AED5AC1958AA49004C0E82 /* FridayCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FridayCamera.h; sourceTree = "<group>"; };
 		33AED5AD1958AA49004C0E82 /* FridayCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FridayCamera.m; sourceTree = "<group>"; };
 		4237EF4719800C6A00230BB6 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
@@ -348,11 +351,13 @@
 		45EC14A71967546B0049D518 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				45EC14A5196754610049D518 /* ContactCell.xib */,
 				4534134F19728EE900C6A2FE /* CollectionViewHeaderView.xib */,
 				4534139E19735CF500C6A2FE /* NotificationsCustomView.h */,
 				4534139F19735CF500C6A2FE /* NotificationsCustomView.m */,
 				453413A119735D0E00C6A2FE /* NotificationsCustomView.xib */,
+				332B90FD19ABAF2F002C0420 /* ContactCell.h */,
+				332B90FE19ABAF2F002C0420 /* ContactCell.m */,
+				45EC14A5196754610049D518 /* ContactCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -407,7 +412,7 @@
 				ORGANIZATIONNAME = codepath;
 				TargetAttributes = {
 					429B711D1928698D00BAAE20 = {
-						DevelopmentTeam = NMG62K97Z7;
+						DevelopmentTeam = 44A2N58X6T;
 					};
 					429B71381928698D00BAAE20 = {
 						TestTargetID = 429B711D1928698D00BAAE20;
@@ -510,6 +515,7 @@
 				4237EF4F19800CA900230BB6 /* UIImage+RoundedCorner.m in Sources */,
 				453413A019735CF500C6A2FE /* NotificationsCustomView.m in Sources */,
 				427F76A8192896AE00CF30F2 /* PostSplashViewController.m in Sources */,
+				332B90FF19ABAF2F002C0420 /* ContactCell.m in Sources */,
 				33AED5AE1958AA49004C0E82 /* FridayCamera.m in Sources */,
 				427F76B21928973700CF30F2 /* PeopleViewController.m in Sources */,
 				331B640E1956816600844EBA /* LoginViewController.m in Sources */,

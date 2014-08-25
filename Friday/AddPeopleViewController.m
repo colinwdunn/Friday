@@ -14,6 +14,7 @@
 #import "UserRoll.h"
 #import "PeopleViewController.h"
 #import "CameraViewController.h"
+#import "ContactCell.h"
 
 @interface AddPeopleViewController ()
 
@@ -23,6 +24,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
+@property (weak, nonatomic) IBOutlet UIButton *shareMyCameraButton;
 
 - (IBAction)cancelButtonDidPress:(id)sender;
 
@@ -50,6 +52,10 @@
     self.selectedContacts = [NSMutableArray array];
     self.myContacts = [NSMutableArray array];
     self.imageView.image = self.processedImage;
+    
+    self.shareMyCameraButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+    self.shareMyCameraButton.layer.borderWidth = 3;
+    self.shareMyCameraButton.layer.cornerRadius = 20;
     
 }
 
@@ -110,9 +116,17 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:@"ContactCell"];
-    cell.textLabel.text = [self.myContacts[indexPath.row] firstName];
+    ContactCell *cell = [tableView  dequeueReusableCellWithIdentifier:@"ContactCell"];
+    NSString *entry = [self.myContacts[indexPath.row] firstName];
+    [self configureCell:cell forEntry:entry];
     return cell;
+}
+
+- (void)configureCell:(ContactCell *)cell forEntry:(NSString *)entry {
+    cell.contactTitleLabel.text = entry;
+    //cell.contactTitleLabel.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1].CGColor;
+    //cell.contactTitleLabel.layer.borderWidth = 3;
+    //cell.contactTitleLabel.layer.cornerRadius = 20;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
