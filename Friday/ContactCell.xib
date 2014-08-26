@@ -13,24 +13,31 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fku-Un-XMO">
-                        <rect key="frame" x="15" y="5" width="70" height="33"/>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fku-Un-XMO">
+                        <rect key="frame" x="15" y="5" width="94" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzJ-tb-REE">
-                                <rect key="frame" x="15" y="5" width="41" height="22"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dzJ-tb-REE">
+                                <rect key="frame" x="15" y="5" width="44" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="VjW-AM-Thu">
+                                <rect key="frame" x="67" y="12" width="14" height="11"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="dzJ-tb-REE" firstAttribute="top" secondItem="Fku-Un-XMO" secondAttribute="top" constant="5" id="1U6-21-8Ba"/>
-                            <constraint firstAttribute="trailing" secondItem="dzJ-tb-REE" secondAttribute="trailing" constant="14" id="36M-xI-wET"/>
-                            <constraint firstAttribute="bottom" secondItem="dzJ-tb-REE" secondAttribute="bottom" constant="6" id="Ran-hD-C7F"/>
-                            <constraint firstItem="dzJ-tb-REE" firstAttribute="leading" secondItem="Fku-Un-XMO" secondAttribute="leading" constant="15" id="g5z-qQ-dTN"/>
+                            <constraint firstAttribute="bottom" secondItem="dzJ-tb-REE" secondAttribute="bottom" constant="6" id="QZJ-Bk-lXM"/>
+                            <constraint firstItem="dzJ-tb-REE" firstAttribute="top" secondItem="Fku-Un-XMO" secondAttribute="top" constant="5" id="UZj-iS-EVa"/>
+                            <constraint firstAttribute="bottom" secondItem="VjW-AM-Thu" secondAttribute="bottom" constant="10" id="aJf-YM-oau"/>
+                            <constraint firstItem="dzJ-tb-REE" firstAttribute="leading" secondItem="Fku-Un-XMO" secondAttribute="leading" constant="15" id="hxY-nx-7hQ"/>
+                            <constraint firstItem="VjW-AM-Thu" firstAttribute="leading" secondItem="dzJ-tb-REE" secondAttribute="trailing" constant="8" id="vbT-0S-igS"/>
+                            <constraint firstItem="VjW-AM-Thu" firstAttribute="top" secondItem="Fku-Un-XMO" secondAttribute="top" constant="12" id="vkl-Rd-iJD"/>
+                            <constraint firstAttribute="trailing" secondItem="VjW-AM-Thu" secondAttribute="trailing" constant="13" id="wf9-Lg-Zs8"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -43,9 +50,13 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="contactCheckmark" destination="VjW-AM-Thu" id="KhU-Vr-t08"/>
                 <outlet property="contactSelectedBackground" destination="Fku-Un-XMO" id="JY0-Gt-vpp"/>
                 <outlet property="contactTitleLabel" destination="dzJ-tb-REE" id="oIx-L1-8XB"/>
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="checkmark" width="14" height="11"/>
+    </resources>
 </document>

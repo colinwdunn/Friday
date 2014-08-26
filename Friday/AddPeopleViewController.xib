@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="contactTableView" destination="S1L-yl-mM6" id="yiW-mQ-9aK"/>
                 <outlet property="imageView" destination="GF9-C0-oof" id="Xg4-0x-D2K"/>
+                <outlet property="inviteToTextfield" destination="4Wk-ih-aVZ" id="d1p-0D-k75"/>
                 <outlet property="shareMyCameraButton" destination="Qbn-Px-WaP" id="bd7-4S-4mK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -86,6 +87,13 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Wk-ih-aVZ">
+                    <rect key="frame" x="57" y="53" width="240" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <color key="backgroundColor" red="0.094117656350135803" green="0.33725491166114807" blue="0.62352943420410156" alpha="1" colorSpace="deviceRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

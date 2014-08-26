@@ -25,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *shareMyCameraButton;
+@property (nonatomic) NSMutableArray *selectedContactRows;
+@property (weak, nonatomic) IBOutlet UITextField *inviteToTextfield;
 
 - (IBAction)cancelButtonDidPress:(id)sender;
 
@@ -51,12 +53,16 @@
     [self.contactTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
     self.selectedContacts = [NSMutableArray array];
     self.myContacts = [NSMutableArray array];
+    self.selectedContactRows = [NSMutableArray array];
     self.imageView.image = self.processedImage;
     
     self.shareMyCameraButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.shareMyCameraButton.layer.borderWidth = 3;
     self.shareMyCameraButton.layer.cornerRadius = 20;
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    tap.cancelsTouchesInView = false;
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)getContactsList {
@@ -129,29 +135,59 @@
     cell.contactSelectedBackground.layer.borderColor = [UIColor clearColor].CGColor;
 }
 
+- (void)configureHighlightedCell:(ContactCell *)cell highlighted:(BOOL)selected {
+    if (selected) {
+        cell.contactCheckmark.hidden = false;
+        cell.contactSelectedBackground.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1].CGColor;
+    } else {
+        cell.contactCheckmark.hidden = true;
+        cell.contactSelectedBackground.layer.borderColor = [UIColor clearColor].CGColor;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ContactCell *cell = (ContactCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.contactSelectedBackground.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1].CGColor;
-    
+    [self.selectedContactRows addObject:indexPath];
+    [self configureHighlightedCell:cell highlighted:true];
     User *person = self.myContacts[indexPath.row];
     [self.selectedContacts addObject:person];
+    [self addContactNames:self.selectedContacts toTextfield:self.inviteToTextfield];
     NSLog(@"You selected these contacts: %@", self.selectedContacts);
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     ContactCell *cell = (ContactCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.contactSelectedBackground.layer.borderColor = [UIColor clearColor].CGColor;
-    NSMutableArray *removeInvites = [NSMutableArray array];
+    [self.selectedContactRows removeObject:indexPath];
+    [self configureHighlightedCell:cell highlighted:false];
     User *person = self.myContacts[indexPath.row];
-    User *thisPerson;
-    for (thisPerson in self.selectedContacts) {
-        if (thisPerson.username == person.username) {
-            [removeInvites addObject:thisPerson];
+    if ([self.selectedContacts containsObject:person]) {
+        [self.selectedContacts removeObject:person];
+    }
+    [self addContactNames:self.selectedContacts toTextfield:self.inviteToTextfield];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(ContactCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    BOOL highlighted;
+    if ([self.selectedContactRows containsObject:indexPath]) {
+        highlighted = true;
+    } else {
+        highlighted = false;
+    }
+    [self configureHighlightedCell:cell highlighted:highlighted];
+}
+
+- (void)addContactNames:(NSArray *)contacts toTextfield:(UITextField *)inviteTextfield {
+    NSString *allNames;
+    for (User *contact in contacts) {
+        NSString *contactName = contact.firstName;
+        //If first we dont want a comma
+        if (allNames == nil) {
+            allNames = [NSString stringWithFormat:@"%@, ", contactName];
+        } else {
+            allNames = [NSString stringWithFormat:@"%@%@, ", allNames, contactName];
         }
     }
-    [self.selectedContacts removeObjectsInArray:removeInvites];
-
-    NSLog(@"New selected contacts: %@", self.selectedContacts);
+    inviteTextfield.text = allNames;
 }
 
 - (IBAction)onAddSelectedContactsButton:(id)sender {
@@ -204,6 +240,11 @@
 - (IBAction)cancelButtonDidPress:(id)sender {
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
+
+- (void)dismissKeyboard:(id)sender {
+    [self.view endEditing:true];
+}
+
 @end
 
 
