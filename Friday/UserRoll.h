@@ -12,12 +12,13 @@
 
 @interface UserRoll : PFObject <PFSubclassing>
 
-+ (NSString *)parseClassName;
-
 @property (nonatomic, strong) Roll *roll;
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) NSString *phoneNumber;
 @property (nonatomic, strong) NSString *invitedUserName;
 @property (nonatomic, strong) NSString *status;
+
++ (NSString *)parseClassName;
++ (void)getInvitedToRollsWithBlock: (void (^) (NSError *error, NSArray *invitedToRolls))block;
 
 @end

@@ -15,6 +15,7 @@
 @property NSInteger maxPhotos;
 @property NSInteger photosCount;
 @property NSString *userId;
+@property NSString *rollName;
 @property (readonly) NSInteger photosRemaining;
 
 + (NSString *)parseClassName;
@@ -23,7 +24,7 @@
 - (id)decodeWithCoder:(NSCoder *)decoder;
 
 + (void)createRollWithBlock: (void (^) (NSError *error))block;
-+ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block;
+//+ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block;
 + (void)setCurrentRollFromParseWithBlock: (void (^) (NSError *error))block;
 + (void)setCurrentRoll:(Roll *)roll;
 + (void)updatePhotoCountForCurrentRollWithBlock:(void (^) (NSError *error))block;

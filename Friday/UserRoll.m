@@ -20,5 +20,18 @@
 + (NSString *)parseClassName {
     return @"UserRoll";
 }
+//281-249-9718
++ (void)getInvitedToRollsWithBlock: (void (^) (NSError *error, NSArray *invitedToRolls))block {
+    NSMutableArray *invitedToRolls = [NSMutableArray array];
+    PFQuery *getInvitedToRolls = [UserRoll query];
+    [getInvitedToRolls whereKey:@"phoneNumber" equalTo:[User currentUser].phoneNumber];
+    [getInvitedToRolls includeKey:@"roll"];
+    [getInvitedToRolls findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        for (UserRoll *userRoll in objects) {
+            [invitedToRolls addObject:userRoll.roll];
+        }
+        block(error, invitedToRolls);
+    }];
+}
 
 @end

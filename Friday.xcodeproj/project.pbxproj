@@ -48,6 +48,7 @@
 		453413A219735D0E00C6A2FE /* NotificationsCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 453413A119735D0E00C6A2FE /* NotificationsCustomView.xib */; };
 		45971B30194DFE8C00BAD5E9 /* PhotoGalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */; };
 		45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */; };
+		45A8922D19ABFA6000BBE973 /* InvitedToCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A8922C19ABFA6000BBE973 /* InvitedToCell.xib */; };
 		45C5EE7A19889CE900A0D538 /* UserRoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C5EE7919889CE900A0D538 /* UserRoll.m */; };
 		45EC14A6196754610049D518 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45EC14A5196754610049D518 /* ContactCell.xib */; };
 		45EC14A9196760450049D518 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45EC14A8196760440049D518 /* MessageUI.framework */; };
@@ -128,6 +129,7 @@
 		45971B2F194DFE8C00BAD5E9 /* PhotoGalleryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoGalleryCell.xib; sourceTree = "<group>"; };
 		45971B31194DFEE900BAD5E9 /* PhotoGalleryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoGalleryCell.h; sourceTree = "<group>"; };
 		45971B32194DFEE900BAD5E9 /* PhotoGalleryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoGalleryCell.m; sourceTree = "<group>"; };
+		45A8922C19ABFA6000BBE973 /* InvitedToCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InvitedToCell.xib; sourceTree = "<group>"; };
 		45C5EE7819889CE900A0D538 /* UserRoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRoll.h; sourceTree = "<group>"; };
 		45C5EE7919889CE900A0D538 /* UserRoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRoll.m; sourceTree = "<group>"; };
 		45EC14A5196754610049D518 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
@@ -204,12 +206,6 @@
 				451467D41992177500E5CDF5 /* RollChoiceViewController.h */,
 				451467D51992177500E5CDF5 /* RollChoiceViewController.m */,
 				451467D61992177500E5CDF5 /* RollChoiceViewController.xib */,
-				4237EF4719800C6A00230BB6 /* UIImage+Resize.h */,
-				4237EF4819800C6A00230BB6 /* UIImage+Resize.m */,
-				4237EF4A19800C9A00230BB6 /* UIImage+Alpha.h */,
-				4237EF4B19800C9A00230BB6 /* UIImage+Alpha.m */,
-				4237EF4D19800CA900230BB6 /* UIImage+RoundedCorner.h */,
-				4237EF4E19800CA900230BB6 /* UIImage+RoundedCorner.m */,
 			);
 			name = Splash;
 			sourceTree = "<group>";
@@ -277,6 +273,7 @@
 		429B71271928698D00BAAE20 /* Friday */ = {
 			isa = PBXGroup;
 			children = (
+				45A8922B19A9216800BBE973 /* Categories */,
 				45EC14A71967546B0049D518 /* Views */,
 				451836831958743300594C07 /* Models */,
 				427F769F19286F7200CF30F2 /* View Controllers */,
@@ -345,10 +342,24 @@
 			name = UICollectionViewExtensions;
 			sourceTree = "<group>";
 		};
+		45A8922B19A9216800BBE973 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				4237EF4719800C6A00230BB6 /* UIImage+Resize.h */,
+				4237EF4819800C6A00230BB6 /* UIImage+Resize.m */,
+				4237EF4A19800C9A00230BB6 /* UIImage+Alpha.h */,
+				4237EF4B19800C9A00230BB6 /* UIImage+Alpha.m */,
+				4237EF4D19800CA900230BB6 /* UIImage+RoundedCorner.h */,
+				4237EF4E19800CA900230BB6 /* UIImage+RoundedCorner.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		45EC14A71967546B0049D518 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				45EC14A5196754610049D518 /* ContactCell.xib */,
+				45A8922C19ABFA6000BBE973 /* InvitedToCell.xib */,
 				4534134F19728EE900C6A2FE /* CollectionViewHeaderView.xib */,
 				4534139E19735CF500C6A2FE /* NotificationsCustomView.h */,
 				4534139F19735CF500C6A2FE /* NotificationsCustomView.m */,
@@ -444,6 +455,7 @@
 				427F76BB192897B000CF30F2 /* CameraViewController.xib in Resources */,
 				429B712C1928698D00BAAE20 /* InfoPlist.strings in Resources */,
 				427F76B31928973700CF30F2 /* PeopleViewController.xib in Resources */,
+				45A8922D19ABFA6000BBE973 /* InvitedToCell.xib in Resources */,
 				427F76AE1928972600CF30F2 /* AddPeopleViewController.xib in Resources */,
 				427F76A9192896AE00CF30F2 /* PostSplashViewController.xib in Resources */,
 				453413A219735D0E00C6A2FE /* NotificationsCustomView.xib in Resources */,

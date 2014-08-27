@@ -14,6 +14,8 @@
 #import "UserRoll.h"
 #import "RollChoiceViewController.h"
 
+
+//nico: 281-249-9718
 @interface LoginViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
@@ -67,7 +69,6 @@
                 }];
             }
         }];
-     
     }];
 }
 

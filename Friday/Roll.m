@@ -25,8 +25,7 @@ const NSInteger kMaxPhotos = 6;
 @dynamic maxPhotos;
 @dynamic photosCount;
 @dynamic userId;
-//@dynamic photosRemaining;
-
+@dynamic rollName;
 
 + (NSString *)parseClassName{
     return @"Roll";
@@ -71,6 +70,7 @@ const NSInteger kMaxPhotos = 6;
     newRoll.photosCount = 0;
     newRoll.maxPhotos = kMaxPhotos;
     newRoll.userId = [User currentUser].objectId;
+    newRoll.rollName = @"My Trip Not To Hawaii";
     [newRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         [User saveCurrentRoll:newRoll toCurrentUserWithBlock:^(NSError *error) {
             [Roll setCurrentRoll:newRoll];
@@ -104,20 +104,20 @@ const NSInteger kMaxPhotos = 6;
         }];
 }
 
-+ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block {
-    PFQuery *invitedToRollQuery = [UserRoll query];
-    [invitedToRollQuery includeKey:@"roll"];
-    [invitedToRollQuery whereKey:@"invitedUserName" equalTo:[User currentUser].username];
-    [invitedToRollQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        _currentRoll = [(UserRoll *)objects[0] roll];
-        _currentRoll.photosCount ++;
-        [User currentUser].currentRoll = _currentRoll;
-        [[User currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            [Roll setCurrentRoll:_currentRoll];
-                block(error);
-            }];
-        }];
-}
+//+ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block {
+//    PFQuery *invitedToRollQuery = [UserRoll query];
+//    [invitedToRollQuery includeKey:@"roll"];
+//    [invitedToRollQuery whereKey:@"invitedUserName" equalTo:[User currentUser].username];
+//    [invitedToRollQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        _currentRoll = [(UserRoll *)objects[0] roll];
+//        _currentRoll.photosCount ++;
+//        [User currentUser].currentRoll = _currentRoll;
+//        [[User currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//            [Roll setCurrentRoll:_currentRoll];
+//                block(error);
+//            }];
+//        }];
+//}
 
 + (void)setCurrentRollFromParseWithBlock:(void (^) (NSError *error))block {
     if (_currentRoll == nil) {

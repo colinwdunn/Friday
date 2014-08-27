@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RollChoiceViewController">
             <connections>
                 <outlet property="continuExistingRollButton" destination="i9U-1g-I44" id="bM1-qG-Tlp"/>
+                <outlet property="invitedToRollsTableView" destination="dPA-J9-U8E" id="N4v-i6-m5Q"/>
                 <outlet property="startNewRollButton" destination="BLW-OO-cM3" id="qj4-QX-ZWK"/>
                 <outlet property="useInvitedToRollButton" destination="7qc-CD-Yqk" id="xau-rb-UGc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -51,20 +52,15 @@
                         <action selector="continuExistingRollButtonTapped:" destination="-1" eventType="touchUpInside" id="WwK-fC-zAT"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hardcore Parkour " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yvx-nO-cZE">
-                    <rect key="frame" x="20" y="82" width="141" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Road trip" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZz-9F-PnS">
-                    <rect key="frame" x="20" y="111" width="71" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dPA-J9-U8E">
+                    <rect key="frame" x="40" y="74" width="247" height="347"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="0j3-Tg-dYF"/>
+                        <outlet property="delegate" destination="-1" id="3EY-0l-O1l"/>
+                    </connections>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="0.094117656349999995" green="0.33725491169999999" blue="0.62352943419999995" alpha="1" colorSpace="deviceRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

@@ -61,7 +61,6 @@
 }
 
 - (void)displayNotificationView:(NSNotification *)notification {
-
     self.notificationsLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
     self.notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
