@@ -76,9 +76,9 @@
 
 - (IBAction)useInvitedToButtonTapped:(id)sender {
     //update roll status to accepted. 
-    [Roll setCurrentRollFromUserRollWithBlock:^(NSError *error) {
-        
-    }];
+//    [Roll setCurrentRollFromUserRollWithBlock:^(NSError *error) {
+//        
+//    }];
 }
 
 - (IBAction)startNewRollButtonTapped:(id)sender {

@@ -361,11 +361,8 @@
 		45EC14A71967546B0049D518 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				45EC14A5196754610049D518 /* ContactCell.xib */,
 				45A8922C19ABFA6000BBE973 /* InvitedToCell.xib */,
-=======
->>>>>>> 9c4782d660ad97dafffa5c675881cf8cc39c5230
 				4534134F19728EE900C6A2FE /* CollectionViewHeaderView.xib */,
 				4534139E19735CF500C6A2FE /* NotificationsCustomView.h */,
 				4534139F19735CF500C6A2FE /* NotificationsCustomView.m */,
@@ -427,7 +424,7 @@
 				ORGANIZATIONNAME = codepath;
 				TargetAttributes = {
 					429B711D1928698D00BAAE20 = {
-						DevelopmentTeam = 44A2N58X6T;
+						DevelopmentTeam = NMG62K97Z7;
 					};
 					429B71381928698D00BAAE20 = {
 						TestTargetID = 429B711D1928698D00BAAE20;
