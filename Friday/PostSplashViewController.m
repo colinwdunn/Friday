@@ -52,10 +52,4 @@
     [self presentViewController:addPeopleVC animated:YES completion:nil];
 }
 
-- (IBAction)takeMorePhotos:(id)sender {
-    CameraViewController *cameraViewController = [[CameraViewController alloc] init];
-    [self presentViewController:cameraViewController animated:YES completion:nil];
-}
-
-
 @end

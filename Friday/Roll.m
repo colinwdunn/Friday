@@ -119,6 +119,18 @@ const NSInteger kMaxPhotos = 6;
 //        }];
 //}
 
+
++ (void)getNumberOfMembersInRollWithBlock:(void (^) (NSInteger membersNumber, NSError *error))block {
+    PFQuery *memberQuery = [UserRoll query];
+    [memberQuery whereKey:@"roll" equalTo:[Roll currentRoll]];
+    [memberQuery whereKey:@"status" equalTo:@"accepted"];
+    [memberQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSInteger memberNumber = objects.count + 1;
+        block(memberNumber, error);
+    }];
+}
+
+//when app is deleted (current roll not on device anymore). On retrun, get current roll from parse.
 + (void)setCurrentRollFromParseWithBlock:(void (^) (NSError *error))block {
     if (_currentRoll == nil) {
         PFQuery *currentUserQuery = [User query];

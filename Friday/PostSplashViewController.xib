@@ -39,27 +39,16 @@ friends.</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftM-qP-ZBh">
-                    <rect key="frame" x="65" y="369" width="191" height="47"/>
+                    <rect key="frame" x="60" y="388" width="200" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="Add Contacts">
+                    <state key="normal" title="Use My Contacts">
                         <color key="titleColor" red="0.98431372549999996" green="0.82745098039999998" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="contactsButtonDidPress:" destination="-1" eventType="touchUpInside" id="xCj-MT-Jxd"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6iq-rd-Ly6">
-                    <rect key="frame" x="71" y="447" width="179" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="19"/>
-                    <state key="normal" title="Take more photos">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="takeMorePhotos:" destination="-1" eventType="touchUpInside" id="nwr-9s-1Cc"/>
                     </connections>
                 </button>
             </subviews>

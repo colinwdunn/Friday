@@ -20,5 +20,5 @@
 
 + (NSString *)parseClassName;
 + (void)getInvitedToRollsWithBlock: (void (^) (NSError *error, NSArray *invitedToRolls))block;
-
++ (void)updateRoll:(Roll*)roll StatusToAcceptedWithBlock:(void (^) (NSError *error))block;
 @end

@@ -192,7 +192,6 @@
 				331B640A1956815200844EBA /* Login */,
 				427F76B41928977F00CF30F2 /* Splash */,
 				427F76B51928978900CF30F2 /* People */,
-				427F76B61928979B00CF30F2 /* Camera */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -209,6 +208,7 @@
 				451467D41992177500E5CDF5 /* RollChoiceViewController.h */,
 				451467D51992177500E5CDF5 /* RollChoiceViewController.m */,
 				451467D61992177500E5CDF5 /* RollChoiceViewController.xib */,
+				427F76B61928979B00CF30F2 /* Camera */,
 			);
 			name = Splash;
 			sourceTree = "<group>";

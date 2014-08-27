@@ -22,7 +22,6 @@
 
 @property (strong, nonatomic) NSArray *invitedToRollsArray;
 
-- (IBAction)useInvitedToButtonTapped:(id)sender;
 - (IBAction)startNewRollButtonTapped:(id)sender;
 - (IBAction)continuExistingRollButtonTapped:(id)sender;
 
@@ -42,6 +41,16 @@
         self.invitedToRollsArray = [NSArray arrayWithArray:invitedToRolls];
         [self.invitedToRollsTableView reloadData];
     }];
+    
+    if ([Roll currentRoll] == nil) {
+        [Roll setCurrentRollFromParseWithBlock:^(NSError *error) {
+            if ([Roll currentRoll] != nil) {
+                if ([Roll currentRoll].photosCount <= 0) {
+                    self.continuExistingRollButton.hidden = YES;
+                }
+            }
+        }];
+    }
 }
 
 - (void)setUpTableView {
@@ -58,27 +67,23 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"InvitedToCell"];
     }
     cell.textLabel.text = [self.invitedToRollsArray[indexPath.row] rollName];
-    cell.backgroundColor = [UIColor redColor];
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [Roll setCurrentRoll:self.invitedToRollsArray[indexPath.row]];
-    
-    if ([User currentUser].isNew) {
-        SplashViewController *splashVC = [[SplashViewController alloc] init];
-        [self presentViewController:splashVC animated:YES completion:nil];
-    } else {
-        CameraViewController *cameraVC = [[CameraViewController alloc] init];
-        [self presentViewController:cameraVC animated:YES completion:nil];
-    }
-}
-
-- (IBAction)useInvitedToButtonTapped:(id)sender {
-    //update roll status to accepted. 
-//    [Roll setCurrentRollFromUserRollWithBlock:^(NSError *error) {
-//        
-//    }];
+    [User saveCurrentRoll:self.invitedToRollsArray[indexPath.row] toCurrentUserWithBlock:^(NSError *error) {
+        [UserRoll updateRoll:self.invitedToRollsArray[indexPath.row] StatusToAcceptedWithBlock:^(NSError *error) {
+            NSLog(@"Updated roll status");
+            if ([User currentUser].isNew) {
+                SplashViewController *splashVC = [[SplashViewController alloc] init];
+                [self presentViewController:splashVC animated:YES completion:nil];
+            } else {
+                CameraViewController *cameraVC = [[CameraViewController alloc] init];
+                [self presentViewController:cameraVC animated:YES completion:nil];
+            }
+        }];
+    }];
 }
 
 - (IBAction)startNewRollButtonTapped:(id)sender {
@@ -94,7 +99,6 @@
 }
 
 - (IBAction)continuExistingRollButtonTapped:(id)sender {
-    [Roll currentRoll];
     if ([User currentUser].isNew) {
         SplashViewController *splashVC = [[SplashViewController alloc] init];
         [self presentViewController:splashVC animated:YES completion:nil];

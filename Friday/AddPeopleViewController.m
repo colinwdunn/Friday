@@ -202,15 +202,23 @@
           controller.body = @"Go to your Friday app! It is Friday!";
           controller.recipients = inviteNumbers;
           controller.messageComposeDelegate = self;
-          [self presentViewController:controller animated:YES completion:nil];
       }
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+    
+    [self dismissViewControllerAnimated:NO completion:^{
+        if (self.delegate != nil) {
+            [self.delegate didDismissAddPeopleViewController];
+        }
+    }];
+   
     if (result == MessageComposeResultCancelled) {
         NSLog(@"Canceled the message: %d", result);
         [self didInviteUsers];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        
     }
     if (result == MessageComposeResultSent) {
         NSLog(@"Message was sent");
@@ -231,8 +239,6 @@
         invited.status = @"invited";
         [invited saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             NSLog(@"Shell user created");
-            CameraViewController *cameraViewController = [[CameraViewController alloc] init];
-            [self presentViewController:cameraViewController animated:YES completion:nil];
         }];
     }
 }

@@ -34,4 +34,19 @@
     }];
 }
 
++ (void)updateRoll:(Roll*)roll StatusToAcceptedWithBlock:(void (^) (NSError *error))block {
+    PFQuery *getInvitedToRolls = [UserRoll query];
+    [getInvitedToRolls includeKey:@"roll"];
+    [getInvitedToRolls whereKey:@"roll" equalTo:[Roll currentRoll]];
+    [getInvitedToRolls whereKey:@"invitedUserName" equalTo:[User currentUser].username];
+    [getInvitedToRolls getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        UserRoll *userRoll = (UserRoll *)object;
+        userRoll.status = @"accepted";
+        [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            NSLog(@"Roll Status Changed to accpeted");
+        }];
+        block(error);
+    }];
+}
+
 @end
