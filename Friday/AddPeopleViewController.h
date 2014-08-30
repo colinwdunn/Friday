@@ -14,9 +14,6 @@
 
 @interface AddPeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate>
 
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIImage *processedImage;
-
 @property (weak, nonatomic) id <AddPeopleViewControllerDelegate> delegate;
 
 @end

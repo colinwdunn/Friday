@@ -18,9 +18,9 @@ PODS:
   - AFNetworking/UIKit (2.2.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Bolts (1.1.1)
+  - Bolts (1.1.2)
   - CocoaLumberjack (1.6.2)
-  - Facebook-iOS-SDK (3.16.2):
+  - Facebook-iOS-SDK (3.17.0):
     - Bolts
   - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
@@ -28,6 +28,9 @@ PODS:
     - Parse-iOS-SDK (~> 1.2.18)
   - Parse-iOS-SDK (1.2.19):
     - Facebook-iOS-SDK (~> 3.7)
+  - Realm (0.84.0):
+    - Realm/Headers
+  - Realm/Headers (0.84.0)
   - UIImageEffects (0.0.1)
   - VLBCameraView (2.0):
     - CocoaLumberjack (= 1.6.2)
@@ -38,17 +41,19 @@ DEPENDENCIES:
   - AFNetworking
   - Parse
   - Parse+NSCoding (~> 0.1.4)
+  - Realm
   - UIImageEffects
   - VLBCameraView
 
 SPEC CHECKSUMS:
   AFNetworking: ab63e259fe91eef4519b371ef0a4955af0e73e64
-  Bolts: 0ca796081c3e7c139bd86d6903c27f1b83036a5d
+  Bolts: 2635e8698a630774689441047f3465d78c48d485
   CocoaLumberjack: 0a08f3092acaab5f92c139e1186aa255a1e39446
-  Facebook-iOS-SDK: 34eef640c2cc4c8618ba0f574ad2b290e07f1b4e
+  Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
   Parse: ffebaecaddd32cb52671010f81567c298ff93d04
   Parse+NSCoding: 2d7fd08777c8df10aaa667c02382878c98128a88
   Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
+  Realm: 097412d7bcbba45ad5037add12e0395136070d88
   UIImageEffects: 69cd1e1f8fc4042a8fefcf4a0727cbf213e4dbfb
   VLBCameraView: 9bc4badfef739503533dd15726669df619fa677c
   VLBFoundation: d5ddef89836c735841390706e136fbbd14a04387

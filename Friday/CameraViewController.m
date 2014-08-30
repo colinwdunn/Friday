@@ -63,7 +63,6 @@
     
     //calculating number of roll members
     self.numberOfMembers = 1;
-    
   
 }
 

@@ -15,6 +15,8 @@
 #import "PeopleViewController.h"
 #import "CameraViewController.h"
 #import "ContactCell.h"
+#import <Realm/Realm.h>
+#import "CachedBlurredImage.h"
 
 @interface AddPeopleViewController ()
 
@@ -34,17 +36,6 @@
 
 @implementation AddPeopleViewController
 
-- (id)initWithImage:(UIImage *)image processedImage:(UIImage *)processedImage {
-    self = [super init];
-    if (self) {
-        self.image = image;
-        self.processedImage = processedImage;
-    }
-    
-    return self;
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,7 +45,8 @@
     self.selectedContacts = [NSMutableArray array];
     self.myContacts = [NSMutableArray array];
     self.selectedContactRows = [NSMutableArray array];
-    self.imageView.image = self.processedImage;
+    
+    self.imageView.image = [CachedBlurredImage getBlurredImage];
     
     self.shareMyCameraButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.shareMyCameraButton.layer.borderWidth = 3;
