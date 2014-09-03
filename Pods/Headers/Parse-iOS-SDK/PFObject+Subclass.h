@@ -1,1 +1,1 @@
-../../Parse-iOS-SDK/Parse.framework/Versions/1.2.19/Headers/PFObject+Subclass.h
+../../Parse-iOS-SDK/Parse.framework/Versions/A/Headers/PFObject+Subclass.h
