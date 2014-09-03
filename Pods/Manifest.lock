@@ -29,6 +29,9 @@ PODS:
   - Parse-iOS-SDK (1.2.21):
     - Bolts
     - Facebook-iOS-SDK (~> 3.7)
+  - Realm (0.84.0):
+    - Realm/Headers
+  - Realm/Headers (0.84.0)
   - UIImageEffects (0.0.1)
   - VLBCameraView (2.0):
     - CocoaLumberjack (= 1.6.2)
@@ -39,6 +42,7 @@ DEPENDENCIES:
   - AFNetworking
   - Parse
   - Parse+NSCoding (~> 0.1.4)
+  - Realm
   - UIImageEffects
   - VLBCameraView
 
@@ -50,6 +54,7 @@ SPEC CHECKSUMS:
   Parse: ffebaecaddd32cb52671010f81567c298ff93d04
   Parse+NSCoding: 2d7fd08777c8df10aaa667c02382878c98128a88
   Parse-iOS-SDK: 3781eeb56fa6b30d4feee97ee0d22595c07d6c70
+  Realm: 097412d7bcbba45ad5037add12e0395136070d88
   UIImageEffects: 69cd1e1f8fc4042a8fefcf4a0727cbf213e4dbfb
   VLBCameraView: 9bc4badfef739503533dd15726669df619fa677c
   VLBFoundation: d5ddef89836c735841390706e136fbbd14a04387
