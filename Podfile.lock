@@ -18,9 +18,9 @@ PODS:
   - AFNetworking/UIKit (2.2.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Bolts (1.1.1)
+  - Bolts (1.1.2)
   - CocoaLumberjack (1.6.2)
-  - Facebook-iOS-SDK (3.16.2):
+  - Facebook-iOS-SDK (3.17.0):
     - Bolts
   - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
@@ -43,9 +43,9 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: ab63e259fe91eef4519b371ef0a4955af0e73e64
-  Bolts: 0ca796081c3e7c139bd86d6903c27f1b83036a5d
+  Bolts: 2635e8698a630774689441047f3465d78c48d485
   CocoaLumberjack: 0a08f3092acaab5f92c139e1186aa255a1e39446
-  Facebook-iOS-SDK: 34eef640c2cc4c8618ba0f574ad2b290e07f1b4e
+  Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
   Parse: ffebaecaddd32cb52671010f81567c298ff93d04
   Parse+NSCoding: 2d7fd08777c8df10aaa667c02382878c98128a88
   Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
