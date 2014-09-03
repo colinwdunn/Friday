@@ -40,7 +40,9 @@
     self.startNewRollButton.layer.borderWidth = 3;
     self.startNewRollButton.layer.cornerRadius = 20;
     [self setupCollectionView];
+    
     self.topView.layer.cornerRadius = 20;
+    self.topView.alpha = .3;
     
     self.rollTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                       target:self
@@ -51,10 +53,10 @@
 
 - (void)allPhotosDidUpload {
     [self.fetchingRollIndicator startAnimating];
-    if ([Roll currentRoll].photosRemaining == 0) {
-        [self.rollTimer invalidate];
-        [self fetchRollPhotos];
-    } 
+        if ([Roll currentRoll].photosRemaining == 0) {
+            [self.rollTimer invalidate];
+            [self fetchRollPhotos];
+        }
 }
 
 - (void)fetchRollPhotos{

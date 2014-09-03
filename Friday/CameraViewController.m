@@ -26,8 +26,13 @@
 @property (nonatomic, strong) NotificationsCustomView *notificationView;
 @property (nonatomic, strong) IBOutlet UILabel *notificationsLabel;
 @property (strong, nonatomic) IBOutlet UIButton *currentPhotoCountButton;
-
+@property (weak, nonatomic) IBOutlet UILabel *tottalCountLable;
+@property (weak, nonatomic) IBOutlet UIImageView *takePhotoImageView;
+@property (weak, nonatomic) IBOutlet UIButton *numberOfMembersButton;
+@property (weak, nonatomic) IBOutlet UIView *topView;
 @property (nonatomic, strong) RollViewController *rollVC;
+@property (nonatomic, strong) AddPeopleViewController *addPeopleVC;
+@property (nonatomic, assign) NSInteger numberOfMembers;
 
 - (IBAction)takePhotoDidPress:(id)sender;
 - (IBAction)addPeopleButtonDidPress:(id)sender;
@@ -52,16 +57,30 @@
     NSArray *views = [nib instantiateWithOwner:self options:nil];
     
     self.notificationView = views[0];
+    
+    //styling top view
+    self.topView.layer.cornerRadius = 20;
+    
+    //calculating number of roll members
+    self.numberOfMembers = 1;
+  
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.currentCount = [Roll currentRoll].photosRemaining;
     [self photoCountButtonControl];
+    [self getMembersNumber];
+}
+
+- (void)getMembersNumber {
+    [Roll getNumberOfMembersInRollWithBlock:^(NSInteger membersNumber, NSError *error) {
+        self.numberOfMembers = membersNumber;
+        self.numberOfMembersButton.titleLabel.text = [NSString stringWithFormat:@"%ld", (long)self.numberOfMembers];
+    }];
 }
 
 - (void)displayNotificationView:(NSNotification *)notification {
-
     self.notificationsLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
     self.notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
@@ -70,6 +89,7 @@
     self.notificationView.frame = CGRectMake(20, 70, 200, 50);
 
     [self.view addSubview:self.notificationView];
+   
 }
 
 - (IBAction)takePhotoDidPress:(id)sender {
@@ -98,17 +118,21 @@
     if (self.currentCount <= 0) {
         self.currentPhotoCountButton.hidden = YES;
         self.showRollButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        self.showRollButton.frame = CGRectMake(120, 500, 100, 40);
+        self.showRollButton.frame = CGRectMake(48, 500, 200, 43);
         self.showRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
         self.showRollButton.layer.borderWidth = 3;
         self.showRollButton.layer.cornerRadius = 20;
         self.showRollButton.layer.opaque = YES;
         [self.showRollButton setTitle: @"Show Roll" forState:UIControlStateNormal];
-        self.showRollButton.titleLabel.textColor = [UIColor yellowColor];
+        self.showRollButton.titleLabel.textColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1];
         [self.showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.showRollButton];
+        self.takePhotoImageView.hidden = YES;
+        self.tottalCountLable.hidden = YES;
     } else {
         self.showRollButton.hidden = YES;
+        self.takePhotoImageView.hidden = NO;
+        self.tottalCountLable.hidden = NO;
         self.currentPhotoCountButton.hidden= NO;
         [self.currentPhotoCountButton setTitle:[@(self.currentCount) stringValue] forState:UIControlStateNormal];
     }
@@ -124,6 +148,8 @@
     [Roll createRollWithBlock:^(NSError *error) {
         self.currentCount = 6;
         self.currentPhotoCountButton.hidden = NO;
+        self.takePhotoImageView.hidden = NO;
+        self.tottalCountLable.hidden = NO;
         self.showRollButton.hidden = YES;
         [self photoCountButtonControl];
          [self.rollVC dismissViewControllerAnimated:YES completion:nil];
@@ -131,8 +157,13 @@
 }
 
 - (IBAction)addPeopleButtonDidPress:(id)sender {
-    AddPeopleViewController *addPeopleVC = [[AddPeopleViewController alloc] init];
-    [self presentViewController:addPeopleVC animated:YES completion:nil];
+    self.addPeopleVC = [[AddPeopleViewController alloc] init];
+    self.addPeopleVC.delegate = self;
+    [self presentViewController:self.addPeopleVC animated:YES completion:nil];
+}
+
+- (void)didDismissAddPeopleViewController {
+    [self.addPeopleVC dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (IBAction)onShowMembersButtonPressed:(id)sender {
@@ -141,8 +172,6 @@
 }
 
 @end
-
-
 
 //Roll *newRoll = [Roll object];
 //newRoll[@"user"] = [User currentUser];

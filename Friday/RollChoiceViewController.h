@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RollChoiceViewController : UIViewController
+@interface RollChoiceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

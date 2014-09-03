@@ -9,9 +9,21 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
+<<<<<<< HEAD
 @interface AddPeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, UITextFieldDelegate>
+=======
 
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIImage *processedImage;
+@protocol AddPeopleViewControllerDelegate;
+
+@interface AddPeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate>
+>>>>>>> bbc67f0c941d70686d23184fc016d41830c72935
+
+@property (weak, nonatomic) id <AddPeopleViewControllerDelegate> delegate;
+
+@end
+
+@protocol AddPeopleViewControllerDelegate <NSObject>
+
+- (void)didDismissAddPeopleViewController;
 
 @end

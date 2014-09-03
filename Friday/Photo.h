@@ -21,5 +21,5 @@
 
 + (NSString *)parseClassName;
 + (void)createPhoto:(UIImage *)orignalPhoto;
-
++ (void)processImage:(UIImage *)image inView:(UIView *)currentView completion:(void (^)(UIImage *image, UIImage *processedImage))completion;
 @end

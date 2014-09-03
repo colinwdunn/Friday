@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AddPeopleViewController.h"
 #import "Roll.h"
 
-@interface PostSplashViewController : UIViewController
+@interface PostSplashViewController : UIViewController <AddPeopleViewControllerDelegate>
 
 - (id)initWithImage:(UIImage *)image processedImage:(UIImage *)processedImage;
 

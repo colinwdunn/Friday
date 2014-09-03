@@ -9,6 +9,8 @@
 #import "PostSplashViewController.h"
 #import "CameraViewController.h"
 #import "AddPeopleViewController.h"
+#import <Realm/Realm.h>
+#import "CachedBlurredImage.h"
 
 @interface PostSplashViewController ()
 
@@ -16,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *useContactsButton;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImage *processedImage;
+
+@property (nonatomic, strong) AddPeopleViewController *addPeopleVC;
 
 - (IBAction)contactsButtonDidPress:(id)sender;
 
@@ -42,20 +46,19 @@
     self.useContactsButton.layer.cornerRadius = 20;
     
     self.imageView.image = self.processedImage;
-//    self.imageView.image = self.image;
 }
 
 - (IBAction)contactsButtonDidPress:(id)sender {
-    AddPeopleViewController *addPeopleVC = [[AddPeopleViewController alloc] init];
-    addPeopleVC.image = self.image;;
-    addPeopleVC.processedImage = self.processedImage;
-    [self presentViewController:addPeopleVC animated:YES completion:nil];
+    self.addPeopleVC = [[AddPeopleViewController alloc] init];
+    self.addPeopleVC.delegate = self;
+    [self presentViewController:self.addPeopleVC animated:YES completion:nil];
 }
 
-- (IBAction)takeMorePhotos:(id)sender {
-    CameraViewController *cameraViewController = [[CameraViewController alloc] init];
-    [self presentViewController:cameraViewController animated:YES completion:nil];
+- (void)didDismissAddPeopleViewController {
+    [self.addPeopleVC dismissViewControllerAnimated:NO completion:^{
+        CameraViewController *cameraVC = [[CameraViewController alloc] init];
+        [self presentViewController:cameraVC animated:YES completion:nil];
+    }];
 }
-
 
 @end

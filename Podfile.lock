@@ -53,7 +53,11 @@ SPEC CHECKSUMS:
   Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
   Parse: ffebaecaddd32cb52671010f81567c298ff93d04
   Parse+NSCoding: 2d7fd08777c8df10aaa667c02382878c98128a88
+<<<<<<< HEAD
   Parse-iOS-SDK: 3781eeb56fa6b30d4feee97ee0d22595c07d6c70
+=======
+  Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
+>>>>>>> bbc67f0c941d70686d23184fc016d41830c72935
   Realm: 097412d7bcbba45ad5037add12e0395136070d88
   UIImageEffects: 69cd1e1f8fc4042a8fefcf4a0727cbf213e4dbfb
   VLBCameraView: 9bc4badfef739503533dd15726669df619fa677c

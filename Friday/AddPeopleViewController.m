@@ -15,6 +15,8 @@
 #import "PeopleViewController.h"
 #import "CameraViewController.h"
 #import "ContactCell.h"
+#import <Realm/Realm.h>
+#import "CachedBlurredImage.h"
 
 @interface AddPeopleViewController ()
 
@@ -36,17 +38,6 @@
 
 @implementation AddPeopleViewController
 
-- (id)initWithImage:(UIImage *)image processedImage:(UIImage *)processedImage {
-    self = [super init];
-    if (self) {
-        self.image = image;
-        self.processedImage = processedImage;
-    }
-    
-    return self;
-}
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,7 +50,8 @@
     self.selectedContacts = [NSMutableArray array];
     self.myContacts = [NSMutableArray array];
     self.selectedContactRows = [NSMutableArray array];
-    self.imageView.image = self.processedImage;
+    
+    self.imageView.image = [CachedBlurredImage getBlurredImage];
     
     self.shareMyCameraButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.shareMyCameraButton.layer.borderWidth = 3;
@@ -239,15 +231,23 @@
           controller.body = @"Go to your Friday app! It is Friday!";
           controller.recipients = inviteNumbers;
           controller.messageComposeDelegate = self;
-          [self presentViewController:controller animated:YES completion:nil];
       }
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+    
+    [self dismissViewControllerAnimated:NO completion:^{
+        if (self.delegate != nil) {
+            [self.delegate didDismissAddPeopleViewController];
+        }
+    }];
+   
     if (result == MessageComposeResultCancelled) {
         NSLog(@"Canceled the message: %d", result);
         [self didInviteUsers];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        
     }
     if (result == MessageComposeResultSent) {
         NSLog(@"Message was sent");
@@ -268,8 +268,6 @@
         invited.status = @"invited";
         [invited saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             NSLog(@"Shell user created");
-            CameraViewController *cameraViewController = [[CameraViewController alloc] init];
-            [self presentViewController:cameraViewController animated:YES completion:nil];
         }];
     }
 }

@@ -7,6 +7,8 @@
 //
 
 #import "Photo.h"
+#import "UIImage+Resize.h"
+#import "UIImage+ImageEffects.h"
 #import <Parse/PFObject+Subclass.h>
 
 @implementation Photo
@@ -35,6 +37,15 @@
             
         }];
     }];
+}
+
+//resizes and blurs the captured image
++ (void)processImage:(UIImage *)image inView:(UIView *)currentView completion:(void (^)(UIImage *image, UIImage *processedImage))completion {
+    UIImage *resizedImage = [image resizedImage:currentView.frame.size interpolationQuality:kCGInterpolationLow];
+    UIImage *processedImage = [resizedImage applyBlurWithRadius:20 tintColor:nil saturationDeltaFactor:1.8 maskImage:nil];
+    dispatch_async(dispatch_get_main_queue(), ^ {
+        completion(image, processedImage);
+    });
 }
 
 @end
