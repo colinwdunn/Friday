@@ -13,6 +13,7 @@
 
 //281-249-9718
 //Jim: 5742655062
+//3105928828
 
 //#define kUserNameValue @"serNameKey" > Have a constant.h/.m file for these and import them when needed
 
@@ -127,6 +128,16 @@ const NSInteger kMaxPhotos = 6;
     [memberQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSInteger memberNumber = objects.count + 1;
         block(memberNumber, error);
+    }];
+}
+
++ (void)getMembersListInRollWithBlock: (void (^) (NSArray *membersArray, NSError *error))block {
+    PFQuery *memberQuery = [UserRoll query];
+    [memberQuery whereKey:@"roll" equalTo:[Roll currentRoll]];
+    [memberQuery whereKey:@"status" equalTo:@"accepted"];
+    [memberQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSArray *members = [[NSArray alloc] initWithArray:objects];
+        block(members, error);
     }];
 }
 

@@ -27,6 +27,7 @@
 + (void)createRollWithBlock: (void (^) (NSError *error))block;
 //+ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block;
 + (void)getNumberOfMembersInRollWithBlock:(void (^) (NSInteger membersNumber, NSError *error))block;
++ (void)getMembersListInRollWithBlock: (void (^) (NSArray *membersArray, NSError *error))block;
 + (void)setCurrentRollFromParseWithBlock: (void (^) (NSError *error))block;
 + (void)setCurrentRoll:(Roll *)roll;
 + (void)updatePhotoCountForCurrentRollWithBlock:(void (^) (NSError *error))block;

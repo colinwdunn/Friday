@@ -20,7 +20,7 @@
 + (NSString *)parseClassName {
     return @"UserRoll";
 }
-//281-249-9718
+
 + (void)getInvitedToRollsWithBlock: (void (^) (NSError *error, NSArray *invitedToRolls))block {
     NSMutableArray *invitedToRolls = [NSMutableArray array];
     PFQuery *getInvitedToRolls = [UserRoll query];

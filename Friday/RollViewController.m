@@ -11,6 +11,10 @@
 #import "PhotoGalleryCell.h"
 #import "SplashViewController.h"
 #import "PhotoGalleryCollectionViewFlowLayout.h"
+#import "CachedBlurredImage.h"
+
+
+//3105928828
 
 @interface RollViewController ()
 
@@ -20,10 +24,13 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *fetchingRollIndicator;
 @property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
 @property (strong, nonatomic) PFImageView *fullImageView;
-
-@property (weak, nonatomic) NSTimer *rollTimer;
-
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewTopConstraint;
 @property (weak, nonatomic) IBOutlet UIView *topView;
+@property (weak, nonatomic) NSTimer *rollTimer;
+- (IBAction)onPhotoAlbumPulledDown:(id)sender;
+
+
 @end
 
 @implementation RollViewController
@@ -49,6 +56,10 @@
                                                     selector:@selector(allPhotosDidUpload)
                                                     userInfo:nil
                                                      repeats:YES];
+    
+     self.imageView.image = [CachedBlurredImage getBlurredImage];
+    self.startNewRollButton.hidden = YES;
+    
 }
 
 - (void)allPhotosDidUpload {
@@ -56,6 +67,13 @@
         if ([Roll currentRoll].photosRemaining == 0) {
             [self.rollTimer invalidate];
             [self fetchRollPhotos];
+        } else {
+            [Roll getRollPhotosWithBlock:^(NSError *error, NSArray *photosArray) {
+                if (photosArray.count == 6) {
+                    [self.rollTimer invalidate];
+                    [self fetchRollPhotos];
+                }
+            }];
         }
 }
 
@@ -144,4 +162,12 @@
     
 }
 
+- (IBAction)onPhotoAlbumPulledDown:(id)sender {
+    self.startNewRollButton.hidden = NO;
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         self.collectionViewTopConstraint.constant = 75;
+                     }];
+    
+}
 @end
