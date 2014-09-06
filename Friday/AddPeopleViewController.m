@@ -22,7 +22,9 @@
 
 @property (nonatomic) NSMutableArray *myContacts;
 @property (weak, nonatomic) IBOutlet UITableView *contactTableView;
+@property (weak, nonatomic) IBOutlet UITableView *searchTableView;
 @property (nonatomic) NSMutableArray *selectedContacts;
+@property (nonatomic) NSMutableArray *filteredSearchResults;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
@@ -41,7 +43,11 @@
     [super viewDidLoad];
     
     [self getContactsList];
+    [self styleTextfieldText];
     [self.contactTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+    
+    [self.searchTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+    self.searchTableView.hidden = true;
     self.selectedContacts = [NSMutableArray array];
     self.myContacts = [NSMutableArray array];
     self.selectedContactRows = [NSMutableArray array];
@@ -51,6 +57,11 @@
     self.shareMyCameraButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.shareMyCameraButton.layer.borderWidth = 3;
     self.shareMyCameraButton.layer.cornerRadius = 20;
+    
+    self.inviteToTextfield.delegate = self;
+    self.searchTableView.delegate = self;
+    self.searchTableView.dataSource = self;
+    self.filteredSearchResults = [NSMutableArray array];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     tap.cancelsTouchesInView = false;
@@ -104,18 +115,31 @@
     }
 }
 
+- (void)styleTextfieldText {
+    UIFont *boldFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:[UIFont systemFontSize]];
+    [self.inviteToTextfield setFont:boldFont];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.myContacts.count;
+    if (tableView == self.searchTableView){
+        return self.filteredSearchResults.count;
+    } else {
+        return self.myContacts.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ContactCell *cell = [tableView  dequeueReusableCellWithIdentifier:@"ContactCell"];
-    NSString *entry = [self.myContacts[indexPath.row] firstName];
+    NSString *entry;
+    if (tableView == self.searchTableView) {
+        entry = [self.filteredSearchResults[indexPath.row] firstName];
+    } else {
+        entry = [self.myContacts[indexPath.row] firstName];
+    }
     [self configureCell:cell forEntry:entry];
     return cell;
 }
@@ -139,12 +163,26 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ContactCell *cell = (ContactCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [self.selectedContactRows addObject:indexPath];
-    [self configureHighlightedCell:cell highlighted:true];
-    User *person = self.myContacts[indexPath.row];
+    User *person = nil;
+    if (tableView == self.searchTableView){
+        person = self.filteredSearchResults[indexPath.row];
+        NSUInteger indexOfPerson = [self.myContacts indexOfObject:person];
+        NSIndexPath *selectedPersonIndexPath = [NSIndexPath indexPathForRow:indexOfPerson inSection:0];
+        [self.selectedContactRows addObject:selectedPersonIndexPath];
+        [self.contactTableView reloadData];
+    } else {
+        [self.selectedContactRows addObject:indexPath];
+        [self configureHighlightedCell:cell highlighted:true];
+        person = self.myContacts[indexPath.row];
+    }
     [self.selectedContacts addObject:person];
     [self addContactNames:self.selectedContacts toTextfield:self.inviteToTextfield];
-    NSLog(@"You selected these contacts: %@", self.selectedContacts);
+    
+    if (tableView == self.searchTableView) {
+        [self.inviteToTextfield becomeFirstResponder];
+        self.searchTableView.hidden = true;
+        [self.filteredSearchResults removeAllObjects];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -172,14 +210,15 @@
     NSString *allNames;
     for (User *contact in contacts) {
         NSString *contactName = contact.firstName;
-        //If first we dont want a comma
         if (allNames == nil) {
+            //First contact added
             allNames = [NSString stringWithFormat:@"%@, ", contactName];
         } else {
             allNames = [NSString stringWithFormat:@"%@%@, ", allNames, contactName];
         }
     }
     inviteTextfield.text = allNames;
+    self.searchTableView.hidden = true;
 }
 
 - (IBAction)onAddSelectedContactsButton:(id)sender {
@@ -210,6 +249,7 @@
     if (result == MessageComposeResultCancelled) {
         NSLog(@"Canceled the message: %d", result);
         [self didInviteUsers];
+        //TODO: Nice flash message confirming things were sent
         
     }
     if (result == MessageComposeResultSent) {
@@ -242,6 +282,41 @@
 - (void)dismissKeyboard:(id)sender {
     [self.view endEditing:true];
 }
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    //self.searchTableView.hidden = false;
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    //We can set and reload the search table view here
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    self.searchTableView.hidden = false;
+    //TODO: Delete corner case
+    NSString *searchTextfieldText = self.inviteToTextfield.text;
+    NSString *searchTextWithPressedChar = [searchTextfieldText stringByReplacingCharactersInRange:range withString:string];
+    NSArray *tempArray = [searchTextWithPressedChar componentsSeparatedByString:@", "];
+    NSString *searchText = [tempArray lastObject];
+    if ([searchText isEqualToString:@""]) {
+        //TODO: Check for no space case, when user deletes up to comma
+        [self.filteredSearchResults removeAllObjects];
+        self.searchTableView.hidden = true;
+    } else {
+        [self.filteredSearchResults removeAllObjects];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.firstName contains[c] %@", searchText];
+        self.filteredSearchResults = [NSMutableArray arrayWithArray:[self.myContacts filteredArrayUsingPredicate:predicate]];
+        [self.searchTableView reloadData];
+    }
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+
+}
+
+//TODO: Scrolling contacts tableview should dismiss keyboard
 
 @end
 
