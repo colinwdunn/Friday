@@ -134,7 +134,7 @@ const NSInteger kMaxPhotos = 6;
 + (void)getMembersListInRollWithBlock: (void (^) (NSArray *membersArray, NSError *error))block {
     PFQuery *memberQuery = [UserRoll query];
     [memberQuery whereKey:@"roll" equalTo:[Roll currentRoll]];
-    [memberQuery whereKey:@"status" equalTo:@"accepted"];
+    //[memberQuery whereKey:@"status" equalTo:@"accepted"];
     [memberQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSArray *members = [[NSArray alloc] initWithArray:objects];
         block(members, error);
