@@ -77,6 +77,13 @@ const NSInteger kMaxPhotos = 6;
             [Roll setCurrentRoll:newRoll];
             NSLog(@"Roll was created and saved to current User on Parse and saved in UserDefaults.");
             block(error);
+            UserRoll *userRoll = [[UserRoll alloc] init];
+            userRoll.invitedUserName = User.currentUser.username;
+            userRoll.status = @"Owner";
+            userRoll.phoneNumber = User.currentUser.phoneNumber;
+            userRoll.roll = newRoll;
+            userRoll.user = User.currentUser;
+            [userRoll saveInBackground];
         }];
     }];
 }

@@ -41,6 +41,7 @@
     [self.groupTableView registerNib:[UINib nibWithNibName:@"GroupMemberCell" bundle:nil] forCellReuseIdentifier:@"groupCell"];
     [Roll getMembersListInRollWithBlock:^(NSArray *membersArray, NSError *error) {
         self.groupMemberList = membersArray;
+        
 //      self.ownerNameLabel.text = [User currentUser].username;
 //      self.invitedUserNameLabel.text = [membersArray firstObject];
         [self.groupTableView reloadData];
