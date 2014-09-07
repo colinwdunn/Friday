@@ -77,6 +77,13 @@ const NSInteger kMaxPhotos = 6;
             [Roll setCurrentRoll:newRoll];
             NSLog(@"Roll was created and saved to current User on Parse and saved in UserDefaults.");
             block(error);
+            UserRoll *userRoll = [[UserRoll alloc] init];
+            userRoll.invitedUserName = User.currentUser.username;
+            userRoll.status = @"Owner";
+            userRoll.phoneNumber = User.currentUser.phoneNumber;
+            userRoll.roll = newRoll;
+            userRoll.user = User.currentUser;
+            [userRoll saveInBackground];
         }];
     }];
 }
@@ -134,7 +141,7 @@ const NSInteger kMaxPhotos = 6;
 + (void)getMembersListInRollWithBlock: (void (^) (NSArray *membersArray, NSError *error))block {
     PFQuery *memberQuery = [UserRoll query];
     [memberQuery whereKey:@"roll" equalTo:[Roll currentRoll]];
-    [memberQuery whereKey:@"status" equalTo:@"accepted"];
+    //[memberQuery whereKey:@"status" equalTo:@"accepted"];
     [memberQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSArray *members = [[NSArray alloc] initWithArray:objects];
         block(members, error);

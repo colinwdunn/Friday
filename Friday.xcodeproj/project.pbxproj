@@ -11,6 +11,8 @@
 		331B640F1956816600844EBA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 331B640D1956816600844EBA /* LoginViewController.xib */; };
 		332B90FF19ABAF2F002C0420 /* ContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 332B90FE19ABAF2F002C0420 /* ContactCell.m */; };
 		33AED5AE1958AA49004C0E82 /* FridayCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AED5AD1958AA49004C0E82 /* FridayCamera.m */; };
+		33EF3BC819BBBE4200916DE1 /* GroupMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EF3BC619BBBE4200916DE1 /* GroupMemberCell.m */; };
+		33EF3BC919BBBE4200916DE1 /* GroupMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33EF3BC719BBBE4200916DE1 /* GroupMemberCell.xib */; };
 		4237EF4919800C6A00230BB6 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4237EF4819800C6A00230BB6 /* UIImage+Resize.m */; };
 		4237EF4C19800C9A00230BB6 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 4237EF4B19800C9A00230BB6 /* UIImage+Alpha.m */; };
 		4237EF4F19800CA900230BB6 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 4237EF4E19800CA900230BB6 /* UIImage+RoundedCorner.m */; };
@@ -79,6 +81,9 @@
 		332B90FE19ABAF2F002C0420 /* ContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactCell.m; sourceTree = "<group>"; };
 		33AED5AC1958AA49004C0E82 /* FridayCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FridayCamera.h; sourceTree = "<group>"; };
 		33AED5AD1958AA49004C0E82 /* FridayCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FridayCamera.m; sourceTree = "<group>"; };
+		33EF3BC519BBBE4200916DE1 /* GroupMemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMemberCell.h; sourceTree = "<group>"; };
+		33EF3BC619BBBE4200916DE1 /* GroupMemberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMemberCell.m; sourceTree = "<group>"; };
+		33EF3BC719BBBE4200916DE1 /* GroupMemberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupMemberCell.xib; sourceTree = "<group>"; };
 		4237EF4719800C6A00230BB6 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		4237EF4819800C6A00230BB6 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		4237EF4A19800C9A00230BB6 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
@@ -391,6 +396,9 @@
 				332B90FD19ABAF2F002C0420 /* ContactCell.h */,
 				332B90FE19ABAF2F002C0420 /* ContactCell.m */,
 				45EC14A5196754610049D518 /* ContactCell.xib */,
+				33EF3BC519BBBE4200916DE1 /* GroupMemberCell.h */,
+				33EF3BC619BBBE4200916DE1 /* GroupMemberCell.m */,
+				33EF3BC719BBBE4200916DE1 /* GroupMemberCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -446,7 +454,7 @@
 				ORGANIZATIONNAME = codepath;
 				TargetAttributes = {
 					429B711D1928698D00BAAE20 = {
-						DevelopmentTeam = NMG62K97Z7;
+						DevelopmentTeam = 44A2N58X6T;
 					};
 					429B71381928698D00BAAE20 = {
 						TestTargetID = 429B711D1928698D00BAAE20;
@@ -485,6 +493,7 @@
 				427F76B31928973700CF30F2 /* PeopleViewController.xib in Resources */,
 				45A8922D19ABFA6000BBE973 /* InvitedToCell.xib in Resources */,
 				427F76AE1928972600CF30F2 /* AddPeopleViewController.xib in Resources */,
+				33EF3BC919BBBE4200916DE1 /* GroupMemberCell.xib in Resources */,
 				427F76A9192896AE00CF30F2 /* PostSplashViewController.xib in Resources */,
 				427F76A419286F8700CF30F2 /* SplashViewController.xib in Resources */,
 				429B71341928698D00BAAE20 /* Images.xcassets in Resources */,
@@ -570,6 +579,7 @@
 				45971B33194DFEE900BAD5E9 /* PhotoGalleryCell.m in Sources */,
 				45C5EE7A19889CE900A0D538 /* UserRoll.m in Sources */,
 				429B712E1928698D00BAAE20 /* main.m in Sources */,
+				33EF3BC819BBBE4200916DE1 /* GroupMemberCell.m in Sources */,
 				427F76BA192897B000CF30F2 /* CameraViewController.m in Sources */,
 				427F76A319286F8700CF30F2 /* SplashViewController.m in Sources */,
 				427F76BF192897BC00CF30F2 /* RollViewController.m in Sources */,
