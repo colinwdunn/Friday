@@ -454,7 +454,7 @@
 				ORGANIZATIONNAME = codepath;
 				TargetAttributes = {
 					429B711D1928698D00BAAE20 = {
-						DevelopmentTeam = 44A2N58X6T;
+						DevelopmentTeam = NMG62K97Z7;
 					};
 					429B71381928698D00BAAE20 = {
 						TestTargetID = 429B711D1928698D00BAAE20;

@@ -13,8 +13,6 @@
 #import "Roll.h"
 #import "UserRoll.h"
 #import "RollChoiceViewController.h"
-#import <Crashlytics/Crashlytics.h>
-
 
 //nico: 281-249-9718
 @interface LoginViewController ()
@@ -102,9 +100,7 @@
         }
     }];
 }
-- (IBAction)crashTestButtonWasTapped:(id)sender {
-    [[Crashlytics sharedInstance] crash];
-}
+
 
 @end
 

@@ -17,8 +17,6 @@
 #import "Roll.h"
 #import "Photo.h"
 #import "UserRoll.h"
-#import <Crashlytics/Crashlytics.h>
-#import <HockeySDK/HockeySDK.h>
 
 @implementation AppDelegate
 
@@ -49,12 +47,7 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"35762e51861075b734f988a8f0c52d2f"];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-    
-    [Crashlytics startWithAPIKey:@"450870b0b9669cd4664005dbac58452654aa32b3"];
+
     return YES;
 }
 
