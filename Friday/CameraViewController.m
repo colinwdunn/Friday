@@ -14,7 +14,6 @@
 #import <Parse/Parse.h>
 #import "Roll.h"
 #import "Photo.h"
-#import "NotificationsCustomView.h"
 
 @interface CameraViewController ()
 
@@ -23,8 +22,6 @@
 @property (nonatomic, strong) NSArray *photoArrayOfPFObjects;
 @property (nonatomic, strong) UIButton *showRollButton;
 @property (nonatomic, assign) NSInteger currentCount;
-@property (nonatomic, strong) NotificationsCustomView *notificationView;
-@property (nonatomic, strong) IBOutlet UILabel *notificationsLabel;
 @property (strong, nonatomic) IBOutlet UIButton *currentPhotoCountButton;
 @property (weak, nonatomic) IBOutlet UILabel *tottalCountLable;
 @property (weak, nonatomic) IBOutlet UIImageView *takePhotoImageView;
@@ -51,12 +48,8 @@
     self.camera = [[FridayCamera alloc] init];
     [self.camera startRunningCameraSessionWithView:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:) name:@"userJoined" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:for:) name:@"userJoined" object:nil];
     
-    UINib *nib = [UINib nibWithNibName:@"NotificationsCustomView" bundle:nil];
-    NSArray *views = [nib instantiateWithOwner:self options:nil];
-    
-    self.notificationView = views[0];
     
     //styling top view
     self.topView.layer.cornerRadius = 20;
@@ -79,16 +72,37 @@
         self.numberOfMembersButton.titleLabel.text = [NSString stringWithFormat:@"%ld", (long)self.numberOfMembers];
     }];
 }
+- (IBAction)displayNotifications:(id)sender {
+    
+    UIView *notificationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 225, 53)];
+    UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 191, 11)];
+    [notificationView addSubview:notificationLabel];
+    
+    notificationLabel.text = @"Ryan has just joined";
+    
+    notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+    notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+    notificationView.layer.borderWidth = 3;
+    notificationView.layer.cornerRadius = 20;
+    notificationView.frame = CGRectMake(20, 70, 200, 50);
+    
+    [self.view addSubview:notificationView];
+}
 
-- (void)displayNotificationView:(NSNotification *)notification {
-    self.notificationsLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
-    self.notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
-    self.notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
-    self.notificationView.layer.borderWidth = 3;
-    self.notificationView.layer.cornerRadius = 20;
-    self.notificationView.frame = CGRectMake(20, 70, 200, 50);
+- (void)displayNotificationView:(NSNotification *)notification for:(NSInteger)memebrOfPhotoTaken {
+    
+    UIView *notificationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 225, 53)];
+    UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 191, 11)];
+    [notificationView addSubview:notificationLabel];
+    
+    notificationLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
+    notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+    notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+    notificationView.layer.borderWidth = 3;
+    notificationView.layer.cornerRadius = 20;
+    notificationView.frame = CGRectMake(20, 70, 200, 50);
 
-    [self.view addSubview:self.notificationView];
+    [self.view addSubview:notificationView];
    
 }
 
