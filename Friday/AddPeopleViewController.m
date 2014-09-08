@@ -27,11 +27,12 @@
 @property (nonatomic) NSMutableArray *filteredSearchResults;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
 @property (weak, nonatomic) IBOutlet UIButton *shareMyCameraButton;
 @property (nonatomic) NSMutableArray *selectedContactRows;
-@property (weak, nonatomic) IBOutlet UITextField *inviteToTextfield;
+@property (weak, nonatomic) IBOutlet UITextView *inviteToTextView;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchTableViewHeightConstraint;
 - (IBAction)cancelButtonDidPress:(id)sender;
 
 @end
@@ -43,7 +44,7 @@
     [super viewDidLoad];
     
     [self getContactsList];
-    [self styleTextfieldText];
+    [self styleTextViewText];
     [self.contactTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
     
     [self.searchTableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
@@ -58,7 +59,7 @@
     self.shareMyCameraButton.layer.borderWidth = 3;
     self.shareMyCameraButton.layer.cornerRadius = 20;
     
-    self.inviteToTextfield.delegate = self;
+    self.inviteToTextView.delegate = self;
     self.searchTableView.delegate = self;
     self.searchTableView.dataSource = self;
     self.filteredSearchResults = [NSMutableArray array];
@@ -115,9 +116,9 @@
     }
 }
 
-- (void)styleTextfieldText {
+- (void)styleTextViewText {
     UIFont *boldFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:[UIFont systemFontSize]];
-    [self.inviteToTextfield setFont:boldFont];
+    [self.inviteToTextView setFont:boldFont];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -175,14 +176,17 @@
         [self configureHighlightedCell:cell highlighted:true];
         person = self.myContacts[indexPath.row];
     }
+    
     [self.selectedContacts addObject:person];
-    [self addContactNames:self.selectedContacts toTextfield:self.inviteToTextfield];
+    [self addContactNames:self.selectedContacts toTextView:self.inviteToTextView];
     
     if (tableView == self.searchTableView) {
-        [self.inviteToTextfield becomeFirstResponder];
+        [self.inviteToTextView becomeFirstResponder];
         self.searchTableView.hidden = true;
         [self.filteredSearchResults removeAllObjects];
     }
+    
+    [self resizingTextView];
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -193,7 +197,9 @@
     if ([self.selectedContacts containsObject:person]) {
         [self.selectedContacts removeObject:person];
     }
-    [self addContactNames:self.selectedContacts toTextfield:self.inviteToTextfield];
+    
+    [self addContactNames:self.selectedContacts toTextView:self.inviteToTextView];
+    [self resizingTextView];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(ContactCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -206,7 +212,7 @@
     [self configureHighlightedCell:cell highlighted:highlighted];
 }
 
-- (void)addContactNames:(NSArray *)contacts toTextfield:(UITextField *)inviteTextfield {
+- (void)addContactNames:(NSArray *)contacts toTextView:(UITextView *)inviteTextView {
     NSString *allNames;
     for (User *contact in contacts) {
         NSString *contactName = contact.firstName;
@@ -217,7 +223,7 @@
             allNames = [NSString stringWithFormat:@"%@%@, ", allNames, contactName];
         }
     }
-    inviteTextfield.text = allNames;
+    inviteTextView.text = allNames;
     self.searchTableView.hidden = true;
 }
 
@@ -283,20 +289,30 @@
     [self.view endEditing:true];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     //self.searchTableView.hidden = false;
     return YES;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (void)textViewDidBeginEditing:(UITextView *)textView {
     //We can set and reload the search table view here
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (void)textViewDidEndEditing:(UITextView *)textView{
+    if ([textView.text isEqualToString:@""]) {
+        [self.selectedContacts removeAllObjects];
+        [self addContactNames:self.selectedContacts toTextView:self.inviteToTextView];
+    }
+    
+    [self resizingTextView];
+    
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     self.searchTableView.hidden = false;
     //TODO: Delete corner case
-    NSString *searchTextfieldText = self.inviteToTextfield.text;
-    NSString *searchTextWithPressedChar = [searchTextfieldText stringByReplacingCharactersInRange:range withString:string];
+    NSString *searchTextViewText = self.inviteToTextView.text;
+    NSString *searchTextWithPressedChar = [searchTextViewText stringByReplacingCharactersInRange:range withString:text];
     NSArray *tempArray = [searchTextWithPressedChar componentsSeparatedByString:@", "];
     NSString *searchText = [tempArray lastObject];
     if ([searchText isEqualToString:@""]) {
@@ -309,12 +325,21 @@
         self.filteredSearchResults = [NSMutableArray arrayWithArray:[self.myContacts filteredArrayUsingPredicate:predicate]];
         [self.searchTableView reloadData];
     }
+    
+    [self resizingTextView];
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-
+- (void)resizingTextView {
+    [UIView animateWithDuration:1
+                     animations:^{
+                         CGSize sizeThatShouldFitTheContent = [self.inviteToTextView sizeThatFits:self.inviteToTextView.frame.size];
+                         self.textViewHeightConstraint.constant = sizeThatShouldFitTheContent.height;
+                         [self.view setNeedsLayout];
+                     }];
+    //[self.contactTableView reloadData];
 }
+
 
 //TODO: Scrolling contacts tableview should dismiss keyboard
 

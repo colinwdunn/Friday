@@ -12,7 +12,7 @@
 
 @protocol AddPeopleViewControllerDelegate;
 
-@interface AddPeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, UITextFieldDelegate>
+@interface AddPeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) id <AddPeopleViewControllerDelegate> delegate;
 
