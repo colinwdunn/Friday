@@ -37,6 +37,7 @@
 - (IBAction)takePhotoDidPress:(id)sender;
 - (IBAction)addPeopleButtonDidPress:(id)sender;
 - (IBAction)onShowMembersButtonPressed:(id)sender;
+- (IBAction)invisibleButtonDidPress:(id)sender;
 
 @end
 
@@ -81,7 +82,7 @@
 }
 
 - (void)displayNotificationView:(NSNotification *)notification {
-    self.notificationsLabel.text = [NSString stringWithFormat:@"%@", notification.userInfo[@"name"]];
+    self.notificationsLabel.text = [NSString stringWithFormat:@"%@ %@", notification.userInfo[@"name"], notification.userInfo[@"message"]];
     self.notificationView.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.notificationView.layer.backgroundColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.notificationView.layer.borderWidth = 3;
@@ -89,7 +90,7 @@
     self.notificationView.frame = CGRectMake(20, 70, 200, 50);
 
     [self.view addSubview:self.notificationView];
-   
+    NSLog(@"Sent display notification");
 }
 
 - (IBAction)takePhotoDidPress:(id)sender {
@@ -106,6 +107,7 @@
     
     [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
         [Photo createPhoto:takenPhoto];
+        [self sendPhotoTakenPushNotification];
     }];
 }
 
@@ -169,6 +171,30 @@
 - (IBAction)onShowMembersButtonPressed:(id)sender {
     PeopleViewController *peopleVC = [[PeopleViewController alloc] init];
     [self presentViewController:peopleVC animated:YES completion:nil];
+}
+
+- (void)sendPhotoTakenPushNotification {
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"just took a photo.", @"message", User.currentUser.username, @"name",  nil];
+    PFPush *push = [[PFPush alloc] init];
+    [push setChannel:[Roll pushNotificationChannel]];
+    [push setData:data];
+    [push sendPushInBackground];
+}
+
+- (IBAction)invisibleButtonDidPress:(id)sender {
+    
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"just joined the roll.", @"message", User.currentUser.username, @"name",  nil];
+    
+//    Test push
+//    PFPush *push = [[PFPush alloc] init];
+//    [push setChannel:[Roll pushNotificationChannel]];
+//    [push setMessage:@"The Giants just scored!"];
+//    [push sendPushInBackground];
+    
+    PFPush *push = [[PFPush alloc] init];
+    [push setChannel:[Roll pushNotificationChannel]];
+    [push setData:data];
+    [push sendPushInBackground];
 }
 
 @end

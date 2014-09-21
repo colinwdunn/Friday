@@ -75,6 +75,7 @@
     [User saveCurrentRoll:self.invitedToRollsArray[indexPath.row] toCurrentUserWithBlock:^(NSError *error) {
         [UserRoll updateRoll:self.invitedToRollsArray[indexPath.row] StatusToAcceptedWithBlock:^(NSError *error) {
             NSLog(@"Updated roll status");
+            [self sendUserJoinedPushNotification];
             if ([User currentUser].isNew) {
                 SplashViewController *splashVC = [[SplashViewController alloc] init];
                 [self presentViewController:splashVC animated:YES completion:nil];
@@ -82,8 +83,19 @@
                 CameraViewController *cameraVC = [[CameraViewController alloc] init];
                 [self presentViewController:cameraVC animated:YES completion:nil];
             }
+            
         }];
     }];
+}
+
+- (void)sendUserJoinedPushNotification {
+    
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"has joined.", @"message", User.currentUser.username, @"name",  nil];
+    PFPush *push = [[PFPush alloc] init];
+    [push setChannel:[Roll currentRoll].objectId];
+    [push setData:data];
+    [push sendPushInBackground];
+    
 }
 
 - (IBAction)startNewRollButtonTapped:(id)sender {

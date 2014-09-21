@@ -95,6 +95,7 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    //Need to make postNotificationName dynamic
     [[NSNotificationCenter defaultCenter] postNotificationName:@"userJoined" object:self userInfo:userInfo];
 }
 

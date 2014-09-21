@@ -33,4 +33,5 @@
 + (void)updatePhotoCountForCurrentRollWithBlock:(void (^) (NSError *error))block;
 + (Roll *)currentRoll;
 + (void)getRollPhotosWithBlock:(void (^) (NSError *error, NSArray *photosArray))block;
++ (NSString *)pushNotificationChannel;
 @end

@@ -94,6 +94,13 @@ const NSInteger kMaxPhotos = 6;
     NSUserDefaults *currentRoll = [NSUserDefaults standardUserDefaults];
     [currentRoll setObject:currentRollData forKey:@"CurrentRoll"];
     [currentRoll synchronize];
+    [self subscribeToRollPushNotifications];
+}
+
++ (void)subscribeToRollPushNotifications {
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation addUniqueObject:[Roll pushNotificationChannel] forKey:@"channels"];
+    [currentInstallation saveInBackground];
 }
 
 + (void)updatePhotoCountForCurrentRollWithBlock:(void (^) (NSError *error))block {
@@ -110,6 +117,11 @@ const NSInteger kMaxPhotos = 6;
                 block(error);
             }];
         }];
+}
+
++ (NSString *)pushNotificationChannel {
+    NSString *pushChannel = [NSString stringWithFormat:@"C%@", [Roll currentRoll].objectId];
+    return pushChannel;
 }
 
 //+ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block {
