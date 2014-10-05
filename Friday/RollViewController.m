@@ -92,33 +92,59 @@
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.photosArray.count;
+    
+    if (section == 0) {
+        return 1;
+    } else {
+        return self.photosArray.count;
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     PhotoGalleryCell *photoCell = (PhotoGalleryCell *)[collectionView dequeueReusableCellWithReuseIdentifier:self.photoGalleryCellClassName forIndexPath:indexPath];
-    [photoCell setPhotoImage:self.photosArray[indexPath.item]];
+    
+    if (indexPath.section == 0) {
+        
+        UIButton *startNewRollButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 0, 200, 43)];
+        [startNewRollButton setTitle:@"Start a New Roll" forState:UIControlStateNormal] ;
+        [startNewRollButton addTarget:self action:@selector(createNewRoll) forControlEvents:UIControlEventTouchUpInside];
+        [startNewRollButton setTitleColor:[UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1] forState:UIControlStateNormal];
+        [startNewRollButton setTitleColor:[UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1] forState:UIControlStateHighlighted];
+        startNewRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
+        startNewRollButton.layer.borderWidth = 3;
+        startNewRollButton.layer.cornerRadius = 20;
+        [photoCell.contentView addSubview:startNewRollButton];
+        
+    } else {
+       [photoCell setPhotoImage:self.photosArray[indexPath.item]]; 
+    }
+    
+    
     return photoCell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    RollGalleryLayoutViewController *rollGalleryLayoutVC = [[RollGalleryLayoutViewController alloc] initWithPhotoArray:self.photosArray];
-    [self presentViewController:rollGalleryLayoutVC animated:YES completion:nil];
-}
-
-//self.itemSize = CGSizeMake(100, 100);
-//self.sectionInset = UIEdgeInsetsMake(2, 8, 2, 8);
-//self.minimumInteritemSpacing = 2.0f;
-//self.minimumLineSpacing = 2.0f;
-//self.scrollDirection = UICollectionViewScrollDirectionVertical;
-//[self.collectionView setPagingEnabled:YES];
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+//    if (indexPath.section == 0) {
+//        [self createNewRoll];
+//    } else {
+//        RollGalleryLayoutViewController *rollGalleryLayoutVC = [[RollGalleryLayoutViewController alloc] initWithPhotoArray:self.photosArray];
+//        [self presentViewController:rollGalleryLayoutVC animated:YES completion:nil];
+//    }
+//}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(100, 100);
+    
+    if (indexPath.section == 0) {
+        return CGSizeMake(400, 50);
+    } else {
+        return CGSizeMake(100, 100);
+    }
+    
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
@@ -132,7 +158,7 @@
     return 2.0f;
 }
 
-- (IBAction)createNewRoll:(id)sender {
+- (void)createNewRoll {
     if (self.delegate !=nil) {
         [self.delegate didDismissRollViewController];
     }
