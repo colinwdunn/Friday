@@ -20,11 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *addPeopleButton;
 @property (weak, nonatomic) IBOutlet UITableView *groupTableView;
 
-
-//for demo
-@property (weak, nonatomic) IBOutlet UILabel *ownerNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *invitedUserNameLabel;
-
+@property (weak, nonatomic) UIImage *image;
 
 - (IBAction)closeButtonDidPress:(id)sender;
 - (IBAction)addContactDidPress:(id)sender;
@@ -33,27 +29,35 @@
 
 @implementation PeopleViewController
 
+- (id)initWithImage:(UIImage *)image {
+    self = [super init];
+    if (self) {
+        self.image = image;
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.groupMemberList = [NSArray array];
     [self.groupTableView registerNib:[UINib nibWithNibName:@"GroupMemberCell" bundle:nil] forCellReuseIdentifier:@"groupCell"];
+    [self.groupTableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     [Roll getMembersListInRollWithBlock:^(NSArray *membersArray, NSError *error) {
         self.groupMemberList = membersArray;
-        
-//      self.ownerNameLabel.text = [User currentUser].username;
-//      self.invitedUserNameLabel.text = [membersArray firstObject];
         [self.groupTableView reloadData];
         //TODO: If group is empty state
     }];
-    self.imageView.image = [CachedBlurredImage getBlurredImage];
-    
+    //self.imageView.image = [CachedBlurredImage getBlurredImage];
+    self.imageView.image  = self.image;
     self.addPeopleButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.addPeopleButton.layer.borderWidth = 3;
     self.addPeopleButton.layer.cornerRadius = 20;
     [self.groupTableView reloadData];
 }
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

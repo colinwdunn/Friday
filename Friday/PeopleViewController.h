@@ -10,4 +10,6 @@
 
 @interface PeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
+- (id)initWithImage:(UIImage *)image;
+
 @end

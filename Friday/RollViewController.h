@@ -12,6 +12,7 @@
 @protocol RollViewControllerDelegate <NSObject>
 
 - (void)didDismissRollViewController;
+- (void)didDismissRollViewController2;
 
 @end
 

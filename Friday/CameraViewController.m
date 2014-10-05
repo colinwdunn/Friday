@@ -12,6 +12,7 @@
 #import "PeopleViewController.h"
 #import "FridayCamera.h"
 #import <Parse/Parse.h>
+#import "UIImage+ImageEffects.h"
 #import "Roll.h"
 #import "Photo.h"
 
@@ -170,6 +171,10 @@
     }];
 }
 
+- (void)didDismissRollViewController2{
+    [self.rollVC dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)addPeopleButtonDidPress:(id)sender {
     self.addPeopleVC = [[AddPeopleViewController alloc] init];
     self.addPeopleVC.delegate = self;
@@ -181,7 +186,12 @@
 }
 
 - (IBAction)onShowMembersButtonPressed:(id)sender {
-    PeopleViewController *peopleVC = [[PeopleViewController alloc] init];
+    self.topView.hidden = YES;
+    self.takePhotoImageView.hidden = YES;
+    self.currentPhotoCountButton.hidden = YES;
+    
+    UIImage *blurredSnapshotImage = [UIImage captureBlurImageForView:self.view inFrame:self.view.frame];
+    PeopleViewController *peopleVC = [[PeopleViewController alloc] initWithImage:blurredSnapshotImage];
     [self presentViewController:peopleVC animated:YES completion:nil];
 }
 

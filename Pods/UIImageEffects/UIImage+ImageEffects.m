@@ -143,6 +143,18 @@
     return [self applyBlurWithRadius:10 tintColor:effectColor saturationDeltaFactor:-1.0 maskImage:nil];
 }
 
++ (UIImage *)captureBlurImageForView:(UIView *)view inFrame:(CGRect)frame {
+    UIScreen *screen = [UIScreen mainScreen];
+    UIGraphicsBeginImageContextWithOptions(frame.size, YES, screen.scale);
+    [view drawViewHierarchyInRect:frame afterScreenUpdates:NO];
+    
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    
+    [snapshot applyBlurWithRadius:10 tintColor:nil saturationDeltaFactor:0.5 maskImage:nil];
+    
+    UIGraphicsEndImageContext();
+    return snapshot;
+}
 
 - (UIImage *)applyBlurWithRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage
 {

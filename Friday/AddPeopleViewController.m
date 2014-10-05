@@ -331,13 +331,13 @@
 }
 
 - (void)resizingTextView {
+    
+    CGSize sizeThatShouldFitTheContent = [self.inviteToTextView sizeThatFits:self.inviteToTextView.frame.size];
+    self.textViewHeightConstraint.constant = sizeThatShouldFitTheContent.height;
     [UIView animateWithDuration:1
                      animations:^{
-                         CGSize sizeThatShouldFitTheContent = [self.inviteToTextView sizeThatFits:self.inviteToTextView.frame.size];
-                         self.textViewHeightConstraint.constant = sizeThatShouldFitTheContent.height;
                          [self.view setNeedsLayout];
                      }];
-    //[self.contactTableView reloadData];
 }
 
 

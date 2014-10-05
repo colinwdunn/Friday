@@ -10,11 +10,9 @@
 #import <Parse/Parse.h>
 #import "PhotoGalleryCell.h"
 #import "SplashViewController.h"
-#import "PhotoGalleryCollectionViewFlowLayout.h"
 #import "CachedBlurredImage.h"
-
-
-//3105928828
+#import "RollGalleryLayoutViewController.h"
+#import "CollectionViewHeaderView.h"
 
 @interface RollViewController ()
 
@@ -22,14 +20,11 @@
 @property (nonatomic, copy, readonly) NSString *photoGalleryCellClassName;
 @property (weak, nonatomic) IBOutlet UIButton *startNewRollButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *fetchingRollIndicator;
-@property (strong, nonatomic) PhotoGalleryCollectionViewFlowLayout *mainCollectionViewFlowLayout;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *mainCollectionViewFlowLayout;
 @property (strong, nonatomic) PFImageView *fullImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewTopConstraint;
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (weak, nonatomic) NSTimer *rollTimer;
-- (IBAction)onPhotoAlbumPulledDown:(id)sender;
-
 
 @end
 
@@ -46,7 +41,6 @@
     self.startNewRollButton.layer.borderColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1].CGColor;
     self.startNewRollButton.layer.borderWidth = 3;
     self.startNewRollButton.layer.cornerRadius = 20;
-    [self setupCollectionView];
     
     self.topView.layer.cornerRadius = 20;
     self.topView.alpha = .3;
@@ -58,7 +52,8 @@
                                                      repeats:YES];
     
      self.imageView.image = [CachedBlurredImage getBlurredImage];
-    self.startNewRollButton.hidden = YES;
+    
+    [self setupCollectionView];
     
 }
 
@@ -72,6 +67,9 @@
                 if (photosArray.count == 6) {
                     [self.rollTimer invalidate];
                     [self fetchRollPhotos];
+                    [Roll updatePhotoCountForCurrentRollWithBlock:^(NSError *error) {
+                    
+                    }];
                 }
             }];
         }
@@ -79,24 +77,18 @@
 
 - (void)fetchRollPhotos{
         [Roll getRollPhotosWithBlock:^(NSError *error, NSArray *photosArray) {
-        self.photosArray = photosArray;
-        [self.rollCollectionView reloadData];
-        [self.fetchingRollIndicator stopAnimating];
+            [self.fetchingRollIndicator stopAnimating];
+            self.photosArray = photosArray;
+            [self.rollCollectionView reloadData];
     }];
 }
 
 - (void)setupCollectionView {
-    self.mainCollectionViewFlowLayout = [[PhotoGalleryCollectionViewFlowLayout alloc] init];
-    self.rollCollectionView = [self.rollCollectionView initWithFrame:CGRectZero collectionViewLayout:self.mainCollectionViewFlowLayout];
-    
     UINib *nib = [UINib nibWithNibName:self.photoGalleryCellClassName bundle:nil];
     [self.rollCollectionView registerNib:nib forCellWithReuseIdentifier:self.photoGalleryCellClassName];
     
     [self.mainCollectionViewFlowLayout invalidateLayout];
     [self.rollCollectionView setCollectionViewLayout:self.mainCollectionViewFlowLayout animated:YES];
-    
-    //setup collectioview header
-    [self.rollCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:@"CollectionViewHeaderView"];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -110,46 +102,34 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     PhotoGalleryCell *photoCell = (PhotoGalleryCell *)[collectionView dequeueReusableCellWithReuseIdentifier:self.photoGalleryCellClassName forIndexPath:indexPath];
     [photoCell setPhotoImage:self.photosArray[indexPath.item]];
-    
     return photoCell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    self.fullImageView = [[PFImageView alloc] initWithFrame:self.view.frame];
-    self.fullImageView.file = [self.photosArray[indexPath.item] objectForKey:@"imageFile"];
-    self.fullImageView.userInteractionEnabled = YES;
-    
-    [self.view addSubview:self.fullImageView];
-    
-    //for testing
-    UIPanGestureRecognizer *panGestureRec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dismissImage:)];
-    [self.fullImageView addGestureRecognizer:panGestureRec];
+    RollGalleryLayoutViewController *rollGalleryLayoutVC = [[RollGalleryLayoutViewController alloc] initWithPhotoArray:self.photosArray];
+    [self presentViewController:rollGalleryLayoutVC animated:YES completion:nil];
 }
 
-- (void)dismissImage:(UIPanGestureRecognizer *)panGestureRecognizer {
-    [self.fullImageView removeFromSuperview];
+//self.itemSize = CGSizeMake(100, 100);
+//self.sectionInset = UIEdgeInsetsMake(2, 8, 2, 8);
+//self.minimumInteritemSpacing = 2.0f;
+//self.minimumLineSpacing = 2.0f;
+//self.scrollDirection = UICollectionViewScrollDirectionVertical;
+//[self.collectionView setPagingEnabled:YES];
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(100, 100);
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(2, 8, 2, 8);
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    
-    if (kind == UICollectionElementKindSectionHeader) {
-        UICollectionReusableView *reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"CollectionViewHeaderView" forIndexPath:indexPath];
-        
-        if (reusableview == nil) {
-            reusableview = [[UICollectionReusableView alloc] initWithFrame:CGRectMake(0, 0, self.rollCollectionView.frame.size.width, 50)];
-        }
-        
-        return reusableview;
-    }
-    return nil;
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    return 2.0f;
 }
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(self.rollCollectionView.frame.size.width, 50);
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 2.0f;
 }
 
 - (IBAction)createNewRoll:(id)sender {
@@ -158,16 +138,9 @@
     }
 }
 
-- (void)setupGestureRecognizers {
-    
-}
-
-- (IBAction)onPhotoAlbumPulledDown:(id)sender {
-    self.startNewRollButton.hidden = NO;
-    [UIView animateWithDuration:0.5
-                     animations:^{
-                         self.collectionViewTopConstraint.constant = 75;
-                     }];
-    
+- (IBAction)dimissRollViewController:(id)sender {
+    if (self.delegate !=nil) {
+        [self.delegate didDismissRollViewController2];
+    }
 }
 @end
