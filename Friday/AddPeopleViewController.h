@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
-
 @protocol AddPeopleViewControllerDelegate;
 
 @interface AddPeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate, UITextViewDelegate>

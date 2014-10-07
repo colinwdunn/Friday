@@ -25,11 +25,21 @@
 
 @protocol FBGraphObject;
 
-typedef enum FBAdvertisingTrackingStatus {
+typedef NS_ENUM(NSUInteger, FBAdvertisingTrackingStatus) {
     AdvertisingTrackingAllowed,
     AdvertisingTrackingDisallowed,
     AdvertisingTrackingUnspecified
-} FBAdvertisingTrackingStatus;
+};
+
+typedef NS_ENUM(NSInteger, FBIOSVersion) {
+  FBIOSVersion_6_0,
+  FBIOSVersion_6_1,
+  FBIOSVersion_7_0,
+  FBIOSVersion_7_1,
+  FBIOSVersion_8_0,
+
+  FBIOSVersionCount
+};
 
 @interface FBUtility : NSObject
 
@@ -62,6 +72,7 @@ typedef enum FBAdvertisingTrackingStatus {
 + (NSBundle *)facebookSDKBundle;
 // Returns YES when the bundle identifier is for one of the native facebook apps
 + (BOOL)isFacebookBundleIdentifier:(NSString *)bundleIdentifier;
++ (BOOL)isSafariBundleIdentifier:(NSString *)bundleIdentifier;
 
 #pragma mark - Permissions
 
@@ -121,6 +132,8 @@ typedef enum FBAdvertisingTrackingStatus {
 + (BOOL)isRetinaDisplay;
 + (BOOL)isRegisteredURLScheme:(NSString *)urlScheme;
 + (BOOL)isMultitaskingSupported;
++ (BOOL)isUIKitLinkedOnOrAfter:(FBIOSVersion)version;
++ (BOOL)isRunningOnOrAfter:(FBIOSVersion)version;
 + (BOOL)isSystemAccountStoreAvailable;
 
 #pragma mark - Cookies

@@ -17,8 +17,16 @@
 #import "ContactCell.h"
 #import <Realm/Realm.h>
 #import "CachedBlurredImage.h"
+#import "FridayCamera.h"
+#import <GPUImage/GPUImage.h>
 
 @interface AddPeopleViewController ()
+
+@property (nonatomic) FridayCamera *camera;
+@property (strong, nonatomic) GPUImageVideoCamera *gpuImageVideoCamera;
+@property (weak, nonatomic) IBOutlet UIView *blurCameraView;
+
+
 
 @property (nonatomic) NSMutableArray *myContacts;
 @property (weak, nonatomic) IBOutlet UITableView *contactTableView;
@@ -67,6 +75,36 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
     tap.cancelsTouchesInView = false;
     [self.view addGestureRecognizer:tap];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    self.camera = [[FridayCamera alloc] init];
+    [self.camera initCameraSessionWithView:self];
+    
+    self.gpuImageVideoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
+    self.gpuImageVideoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+    
+    GPUImageGaussianBlurFilter *blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
+    GPUImageView *filteredVideoView = [[GPUImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    blurFilter.blurRadiusInPixels = 40.0;
+    [self disableAutoFocus];
+    
+    // Add the view somewhere so it's visible
+    [self.blurCameraView addSubview:filteredVideoView];
+    //[self.view bringSubviewToFront:self.blurCamera];
+    
+    [self.gpuImageVideoCamera addTarget:blurFilter];
+    [blurFilter addTarget:filteredVideoView];
+    
+    [self.gpuImageVideoCamera startCameraCapture];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.camera stopRunningCameraSession];
 }
 
 - (void)getContactsList {
@@ -282,7 +320,9 @@
 }
 
 - (IBAction)cancelButtonDidPress:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    if (self.delegate != nil) {
+        [self.delegate didDismissAddPeopleViewController];
+    }
 }
 
 - (void)dismissKeyboard:(id)sender {
@@ -338,6 +378,29 @@
                      animations:^{
                          [self.view setNeedsLayout];
                      }];
+}
+
+
+-(void)disableAutoFocus {
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    [device lockForConfiguration:nil];
+    [device setTorchMode:AVCaptureTorchModeOff];
+    [device setFlashMode:AVCaptureFlashModeOff];
+    
+    NSArray *devices = [AVCaptureDevice devices];
+    NSError *error;
+    for (AVCaptureDevice *device in devices) {
+        if (([device hasMediaType:AVMediaTypeVideo]) &&
+            ([device position] == AVCaptureDevicePositionBack) ) {
+            [device lockForConfiguration:&error];
+            if ([device isFocusModeSupported:AVCaptureFocusModeLocked]) {
+                device.focusMode = AVCaptureFocusModeLocked;
+                NSLog(@"Focus locked");
+            }
+            
+            [device unlockForConfiguration];
+        }
+    }
 }
 
 

@@ -11,26 +11,26 @@
 @interface FridayCamera()
 
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic, strong) AVCaptureSession *cameraSession;
 
 @end
 
 @implementation FridayCamera
 
-- (void)startRunningCameraSessionWithView:(UIViewController *)viewController {
-    
-    AVCaptureSession *session = [[AVCaptureSession alloc] init];
-    session.sessionPreset = AVCaptureSessionPresetHigh;
+- (void)initCameraSessionWithView:(UIViewController *)viewController {
+    self.cameraSession = [[AVCaptureSession alloc] init];
+    self.cameraSession.sessionPreset = AVCaptureSessionPresetHigh;
     
     AVCaptureDevice *inputDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     NSError *error = nil;
     AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:inputDevice error:&error];
     
-    if ([session canAddInput:deviceInput]) {
-        [session addInput:deviceInput];
+    if ([self.cameraSession canAddInput:deviceInput]) {
+        [self.cameraSession addInput:deviceInput];
     }
     
-    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
+    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.cameraSession];
     [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
     CALayer *rootLayer = viewController.view.layer;
@@ -41,9 +41,19 @@
     self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG, AVVideoCodecKey,nil];
     [self.stillImageOutput setOutputSettings:outputSettings];
-    [session addOutput:self.stillImageOutput];
+    [self.cameraSession addOutput:self.stillImageOutput];
     
-    [session startRunning];
+    [self startRunningCameraSession];
+}
+
+- (void)startRunningCameraSession{
+    NSLog(@"Camera Session Started");
+    [self.cameraSession startRunning];
+}
+
+- (void)stopRunningCameraSession{
+    NSLog(@"Camera Session Stopped");
+    [self.cameraSession stopRunning];
 }
 
 - (void)photoOnCompletion:(void (^)(UIImage *takenPhoto, NSData *photoData))onCompletion {

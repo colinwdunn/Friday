@@ -1,1 +1,1 @@
-../../Parse-iOS-SDK/Parse.framework/Versions/1.2.19/Headers/PFUser.h
+../../Parse-iOS-SDK/Parse.framework/Versions/A/Headers/PFUser.h

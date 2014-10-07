@@ -1,1 +1,1 @@
-../../Parse-iOS-SDK/Parse.framework/Versions/1.2.19/Headers/PF_EGORefreshTableHeaderView.h
+../../Parse-iOS-SDK/Parse.framework/Versions/A/Headers/PF_EGORefreshTableHeaderView.h

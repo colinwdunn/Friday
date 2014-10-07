@@ -10,7 +10,8 @@
 #import "Roll.h"
 #import "RollViewController.h"
 #import "AddPeopleViewController.h"
+#import "PeopleViewController.h"
 
-@interface CameraViewController : UIViewController <RollViewControllerDelegate, AddPeopleViewControllerDelegate>
+@interface CameraViewController : UIViewController <RollViewControllerDelegate, AddPeopleViewControllerDelegate, PeopleViewControllerDelegate>
 
 @end

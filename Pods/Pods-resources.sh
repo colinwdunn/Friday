@@ -42,6 +42,11 @@ install_resource()
   esac
 }
 install_resource "Facebook-iOS-SDK/src/FBUserSettingsViewResources.bundle"
+install_resource "GPUImage/framework/Resources/lookup.png"
+install_resource "GPUImage/framework/Resources/lookup_amatorka.png"
+install_resource "GPUImage/framework/Resources/lookup_miss_etikate.png"
+install_resource "GPUImage/framework/Resources/lookup_soft_elegance_1.png"
+install_resource "GPUImage/framework/Resources/lookup_soft_elegance_2.png"
 install_resource "VLBCameraView/VLBCameraView/VLBCameraView.xib"
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

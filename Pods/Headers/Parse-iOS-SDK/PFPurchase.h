@@ -1,1 +1,1 @@
-../../Parse-iOS-SDK/Parse.framework/Versions/1.2.19/Headers/PFPurchase.h
+../../Parse-iOS-SDK/Parse.framework/Versions/A/Headers/PFPurchase.h

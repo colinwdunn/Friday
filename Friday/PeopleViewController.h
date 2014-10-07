@@ -7,9 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AddPeopleViewController.h"
 
-@interface PeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@protocol PeopleViewControllerDelegate;
 
-- (id)initWithImage:(UIImage *)image;
+@interface PeopleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, AddPeopleViewControllerDelegate>
+
+@property (weak, nonatomic) id <PeopleViewControllerDelegate> delegate;
 
 @end
+
+@protocol PeopleViewControllerDelegate <NSObject>
+
+- (void)didDismissPeopleViewController;
+
+@end
+

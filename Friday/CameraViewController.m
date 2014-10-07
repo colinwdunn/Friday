@@ -30,7 +30,10 @@
 @property (weak, nonatomic) IBOutlet UIView *topView;
 @property (nonatomic, strong) RollViewController *rollVC;
 @property (nonatomic, strong) AddPeopleViewController *addPeopleVC;
+@property (nonatomic, strong) PeopleViewController *peopleVC;
 @property (nonatomic, assign) NSInteger numberOfMembers;
+
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 - (IBAction)takePhotoDidPress:(id)sender;
 - (IBAction)addPeopleButtonDidPress:(id)sender;
@@ -43,20 +46,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Do any additional setup after loading the view from its nib.
-    NSLog(@"In the camera view");
-    self.camera = [[FridayCamera alloc] init];
-    [self.camera startRunningCameraSessionWithView:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(displayNotificationView:for:) name:@"userJoined" object:nil];
-    
     
     //styling top view
     self.topView.layer.cornerRadius = 20;
     
+    
+    //view to add viewControllers on top of the camera view controller
+    self.contentView.hidden = YES;
+    
+    
     //calculating number of roll members
-    self.numberOfMembers = 1;
+    //self.numberOfMembers = 1;
+    
+    // Do any additional setup after loading the view from its nib.
+    NSLog(@"In the camera view");
+    self.camera = [[FridayCamera alloc] init];
+    [self.camera initCameraSessionWithView:self];
   
 }
 
@@ -65,6 +72,11 @@
     self.currentCount = [Roll currentRoll].photosRemaining;
     [self photoCountButtonControl];
     [self getMembersNumber];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.camera stopRunningCameraSession];
 }
 
 - (void)getMembersNumber {
@@ -182,17 +194,20 @@
 }
 
 - (void)didDismissAddPeopleViewController {
-    [self.addPeopleVC dismissViewControllerAnimated:NO completion:nil];
+    [self.camera startRunningCameraSession];
+    [self.addPeopleVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)onShowMembersButtonPressed:(id)sender {
-    self.topView.hidden = YES;
-    self.takePhotoImageView.hidden = YES;
-    self.currentPhotoCountButton.hidden = YES;
-    
-    UIImage *blurredSnapshotImage = [UIImage captureBlurImageForView:self.view inFrame:self.view.frame];
-    PeopleViewController *peopleVC = [[PeopleViewController alloc] initWithImage:blurredSnapshotImage];
-    [self presentViewController:peopleVC animated:YES completion:nil];
+    [self.camera stopRunningCameraSession];
+    self.peopleVC = [[PeopleViewController alloc] init];
+    self.peopleVC.delegate = self;
+    [self presentViewController:self.peopleVC animated:YES completion:nil];
+}
+
+- (void)didDismissPeopleViewController {
+    [self.camera startRunningCameraSession];
+    [self.peopleVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

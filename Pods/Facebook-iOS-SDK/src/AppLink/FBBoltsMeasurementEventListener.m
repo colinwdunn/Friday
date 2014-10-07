@@ -18,7 +18,6 @@
 
 #import "FBAppEvents+Internal.h"
 
-
 static NSString *const BoltsMeasurementEventNotificationName = @"com.parse.bolts.measurement_event";
 static NSString *const BoltsMeasurementEventName = @"event_name";
 static NSString *const BoltsMeasurementEventArgs = @"event_args";
@@ -41,10 +40,30 @@ static NSString *const BoltsMeasurementEventPrefix = @"bf_";
 }
 
 - (void)logFBAppEventForNotification:(NSNotification *)note{
+    // when catch al_nav_in event, we set source application for FBAppEvents.
+    if ([note.userInfo[BoltsMeasurementEventName] isEqualToString:@"al_nav_in"]) {
+        NSString *sourceApplication = note.userInfo[BoltsMeasurementEventArgs][@"sourceApplication"];
+        if (sourceApplication) {
+            [FBAppEvents setSourceApplication:sourceApplication isAppLink:YES];
+        }
+    }
+    NSDictionary *eventArgs = note.userInfo[BoltsMeasurementEventArgs];
+    NSMutableDictionary *logData = [[NSMutableDictionary alloc] init];
+    for(NSString *key in eventArgs.allKeys) {
+        NSError *error = nil;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[^0-9a-zA-Z _-]" options:0 error:&error];
+        NSString *safeKey = [regex stringByReplacingMatchesInString:key
+                                                            options:0
+                                                              range:NSMakeRange(0, [key length])
+                                                       withTemplate:@"-"];
+        safeKey = [safeKey stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" -"]];
+        logData[safeKey] = eventArgs[key];
+    }
     [FBAppEvents logImplicitEvent:[BoltsMeasurementEventPrefix stringByAppendingString:note.userInfo[BoltsMeasurementEventName]]
                        valueToSum:nil
-                       parameters:note.userInfo[BoltsMeasurementEventArgs]
+                       parameters:logData
                           session:nil];
+    [logData release];
 }
 
 - (void)dealloc {

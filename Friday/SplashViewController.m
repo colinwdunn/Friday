@@ -43,7 +43,7 @@
     
     //Setup AVCaptureSession for input video feed as background, and output still image
     self.camera = [[FridayCamera alloc] init];
-    [self.camera startRunningCameraSessionWithView:self];
+    [self.camera initCameraSessionWithView:self];
 
 }
 

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RollChoiceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 @end

@@ -1,1 +1,1 @@
-../../Parse-iOS-SDK/Parse.framework/Versions/1.2.19/Headers/PFAnalytics.h
+../../Parse-iOS-SDK/Parse.framework/Versions/A/Headers/PFAnalytics.h
