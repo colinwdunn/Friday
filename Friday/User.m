@@ -25,29 +25,3 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//- (id)initWithPFObject:(PFObject *)PFObjectUser{
-//    self.userId = PFObjectUser.objectId;
-//    self.firstName = PFObjectUser[@"username"];
-//    return self;
-//}
-//

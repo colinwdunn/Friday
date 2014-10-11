@@ -17,7 +17,6 @@
 
 @interface PeopleViewController ()
 
-@property (nonatomic) FridayCamera *camera;
 @property (nonatomic) GPUImageVideoCamera *gpuImageVideoCamera;
 @property (weak, nonatomic) IBOutlet UIView *blurCameraView;
 
@@ -25,6 +24,7 @@
 @property (nonatomic) AddPeopleViewController *addPeopleVC;
 @property (weak, nonatomic) IBOutlet UIButton *addPeopleButton;
 @property (weak, nonatomic) IBOutlet UITableView *groupTableView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @property (weak, nonatomic) UIImage *image;
 
@@ -52,38 +52,9 @@
     self.addPeopleButton.layer.borderWidth = 3;
     self.addPeopleButton.layer.cornerRadius = 20;
     [self.groupTableView reloadData];
-
-    self.camera = [[FridayCamera alloc] init];
-    [self.camera initCameraSessionWithView:self];
-    [self setupGPUImageBlurView];
-
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.camera startRunningCameraSession];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self.camera stopRunningCameraSession];
-}
-
-- (void)setupGPUImageBlurView {
-    self.gpuImageVideoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
-    self.gpuImageVideoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
     
-    GPUImageGaussianBlurFilter *blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
-    GPUImageView *filteredVideoView = [[GPUImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
-    blurFilter.blurRadiusInPixels = 40.0;
-    [self disableAutoFocus];
-    
-    [self.blurCameraView addSubview:filteredVideoView];
-    [self.gpuImageVideoCamera addTarget:blurFilter];
-    [blurFilter addTarget:filteredVideoView];
-    
-    [self.gpuImageVideoCamera startCameraCapture];
+    self.imageView.image = [CachedBlurredImage getBlurredImage];
+
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -102,30 +73,11 @@
     return cell;
 }
 
-- (void)disableAutoFocus {
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    [device lockForConfiguration:nil];
-    [device setTorchMode:AVCaptureTorchModeOff];
-    [device setFlashMode:AVCaptureFlashModeOff];
-    
-    NSArray *devices = [AVCaptureDevice devices];
-    NSError *error;
-    for (AVCaptureDevice *device in devices) {
-        if (([device hasMediaType:AVMediaTypeVideo]) &&
-            ([device position] == AVCaptureDevicePositionBack) ) {
-            [device lockForConfiguration:&error];
-            if ([device isFocusModeSupported:AVCaptureFocusModeLocked]) {
-                device.focusMode = AVCaptureFocusModeLocked;
-                NSLog(@"Focus locked");
-            }
-            
-            [device unlockForConfiguration];
-        }
-    }
+- (void)didDismissAddPeopleViewController {
+    [self.addPeopleVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)closeButtonDidPress:(id)sender {
-    [self.camera stopRunningCameraSession];
     if (self.delegate != nil) {
         [self.delegate didDismissPeopleViewController];
     }
@@ -137,7 +89,4 @@
     [self presentViewController:self.addPeopleVC animated:YES completion:nil];
 }
 
-- (void)didDismissAddPeopleViewController {
-    [self.addPeopleVC dismissViewControllerAnimated:YES completion:nil];
-}
 @end

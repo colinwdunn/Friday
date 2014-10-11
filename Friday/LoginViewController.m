@@ -16,19 +16,14 @@
 #import "FridayCamera.h"
 #import <GPUImage/GPUImage.h>
 
+
 @interface LoginViewController ()
-
-
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *phoneNumberField;
 
 @property (weak, nonatomic) IBOutlet UIView *blurCamera;
-@property (nonatomic) FridayCamera *camera;
 @property (strong, nonatomic) GPUImageVideoCamera *gpuImageVideoCamera;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
-
-- (IBAction)dimissKeyboardOnTap:(id)sender;
 
 - (void)signInWithUsername:(NSString *)username andPhoneNumber:(NSString *)phoneNumber;
 - (void)signUpWithUsername:(NSString *)username andPhoneNumber:(NSString *)phoneNumber;
@@ -42,27 +37,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.camera = [[FridayCamera alloc] init];
-    [self.camera initCameraSessionWithView:self];
+    [[FridayCamera sharedCameraInstance] initCameraSessionWithView:self];
     [self setupGPUImageBlurView];
-    
 }
 
-- (void)setupGPUImageBlurView {
-    self.gpuImageVideoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
-    self.gpuImageVideoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     
-    GPUImageGaussianBlurFilter *blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
-    GPUImageView *filteredVideoView = [[GPUImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
-    blurFilter.blurRadiusInPixels = 40.0;
-    [self disableAutoFocus];
-    
-    [self.blurCamera addSubview:filteredVideoView];
-    [self.gpuImageVideoCamera addTarget:blurFilter];
-    [blurFilter addTarget:filteredVideoView];
-    
-    [self.gpuImageVideoCamera startCameraCapture];
 }
 
 - (IBAction)onLoginButton:(id)sender {
@@ -99,11 +80,6 @@
    
     return YES;
 }
-- (IBAction)dimissKeyboardOnTap:(id)sender {
-    [self.nameField resignFirstResponder];
-    [self.phoneNumberField resignFirstResponder];
-}
-
 
 - (void)signInWithUsername:(NSString *)username andPhoneNumber:(NSString *)phoneNumber {
     [User logInWithUsernameInBackground:username password:@"asdf" block:^(PFUser *user, NSError *error) {
@@ -156,6 +132,23 @@
     }];
 }
 
+- (void)setupGPUImageBlurView {
+    self.gpuImageVideoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
+    self.gpuImageVideoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+    
+    GPUImageGaussianBlurFilter *blurFilter = [[GPUImageGaussianBlurFilter alloc] init];
+    GPUImageView *filteredVideoView = [[GPUImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    blurFilter.blurRadiusInPixels = 40.0;
+    [self disableAutoFocus];
+    
+    [self.blurCamera addSubview:filteredVideoView];
+    [self.gpuImageVideoCamera addTarget:blurFilter];
+    [blurFilter addTarget:filteredVideoView];
+    
+    [self.gpuImageVideoCamera startCameraCapture];
+}
+
 - (void)disableAutoFocus {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     [device lockForConfiguration:nil];
@@ -169,53 +162,17 @@
             ([device position] == AVCaptureDevicePositionBack) ) {
             [device lockForConfiguration:&error];
             if ([device isFocusModeSupported:AVCaptureFocusModeLocked]) {
-                device.focusMode = AVCaptureFocusModeLocked;
-                NSLog(@"Focus locked");
+                if (device.focusMode == AVCaptureFocusModeLocked) {
+                    device.focusMode = AVCaptureFocusModeLocked;
+                    NSLog(@"Focus locked");
+                } else {
+                    device.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+                     NSLog(@"Focus unlocked");
+                }
             }
-            
             [device unlockForConfiguration];
         }
     }
 }
 
-
 @end
-
-
-// for invited user/push notifications
-//[[[Roll alloc] init] getInvitedToRoll];
-
-//            [[[Roll alloc] init] getCurrentRoll:[User currentUser] withSuccess:^(Roll *currentRoll) {
-//                [User currentUser].currentRoll = currentRoll;
-//                SplashViewController *splashVC = [[SplashViewController alloc] init];
-//                splashVC.roll = currentRoll;
-//                [self presentViewController:splashVC animated:YES completion:nil];
-//            } andFailure:^(NSError *error) {
-//                //FAILED
-//            }];
-
-//            PFQuery *query = [PFQuery queryWithClassName:@"UserRolls"];
-//            [query whereKey:@"invitedUsername" equalTo:username];
-//            [query includeKey:@"roll"];
-//            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//                PFObject *userRoll = [objects firstObject];
-//                PFObject *currentRoll = [userRoll objectForKey:@"roll"];
-//                userRoll[@"user"] = [PFUser currentUser];
-//
-//                [User currentUser].currentRoll = (Roll *)currentRoll;
-//                [[User currentUser] saveInBackground];
-//
-//                //push notifications:
-//                NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:@"has joined.", @"message", username, @"name",  nil];
-//
-//                PFPush *push = [[PFPush alloc] init];
-//                [push setChannel:currentRoll.objectId];
-//                [push setData:data];
-//                [push sendPushInBackground];
-//
-//                [userRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//                    SplashViewController *splashVC = [[SplashViewController alloc] init];
-//                    splashVC.roll = currentRoll;
-//                    [self presentViewController:splashVC animated:YES completion:nil];
-//                }];
-//            }];

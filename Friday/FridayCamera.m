@@ -8,6 +8,7 @@
 
 #import "FridayCamera.h"
 
+
 @interface FridayCamera()
 
 @property (nonatomic) AVCaptureStillImageOutput *stillImageOutput;
@@ -16,6 +17,15 @@
 @end
 
 @implementation FridayCamera
+
+static FridayCamera *sharedFridayCamera = nil;
+
++ (id)sharedCameraInstance {
+    if (sharedFridayCamera == nil) {
+        sharedFridayCamera = [[self alloc] init];
+    }
+    return sharedFridayCamera;
+}
 
 - (void)initCameraSessionWithView:(UIViewController *)viewController {
     self.cameraSession = [[AVCaptureSession alloc] init];
@@ -44,6 +54,7 @@
     [self.cameraSession addOutput:self.stillImageOutput];
     
     [self startRunningCameraSession];
+
 }
 
 - (void)startRunningCameraSession{
@@ -55,6 +66,7 @@
     NSLog(@"Camera Session Stopped");
     [self.cameraSession stopRunning];
 }
+
 
 - (void)photoOnCompletion:(void (^)(UIImage *takenPhoto, NSData *photoData))onCompletion {
     AVCaptureConnection *videoConnection = nil;
@@ -71,8 +83,6 @@
     }
     
     NSLog(@"about to request a capture from: %@", self.stillImageOutput);
-    
-    
     
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
         CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);

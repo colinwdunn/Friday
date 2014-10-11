@@ -42,8 +42,7 @@
     self.takePhotoButton.layer.cornerRadius = 20;
     
     //Setup AVCaptureSession for input video feed as background, and output still image
-    self.camera = [[FridayCamera alloc] init];
-    [self.camera initCameraSessionWithView:self];
+    [[FridayCamera sharedCameraInstance] initCameraSessionWithView:self];
 
 }
 
@@ -51,7 +50,7 @@
 
 - (IBAction)onTakePhotoButton:(id)sender {
     __weak typeof(self) weakself = self;
-    [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
+    [[FridayCamera sharedCameraInstance] photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
         [weakself showImage:takenPhoto];
         [Photo createPhoto:takenPhoto];
     }];

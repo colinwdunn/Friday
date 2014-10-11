@@ -128,15 +128,6 @@
     return photoCell;
 }
 
-//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    if (indexPath.section == 0) {
-//        [self createNewRoll];
-//    } else {
-//        RollGalleryLayoutViewController *rollGalleryLayoutVC = [[RollGalleryLayoutViewController alloc] initWithPhotoArray:self.photosArray];
-//        [self presentViewController:rollGalleryLayoutVC animated:YES completion:nil];
-//    }
-//}
-
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
@@ -144,7 +135,6 @@
     } else {
         return CGSizeMake(100, 100);
     }
-    
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {

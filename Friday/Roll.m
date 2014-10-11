@@ -11,12 +11,6 @@
 #import "Photo.h"
 #import <Parse/PFObject+Subclass.h>
 
-//281-249-9718
-//Jim: 5742655062
-//3105928828
-
-//#define kUserNameValue @"serNameKey" > Have a constant.h/.m file for these and import them when needed
-
 static Roll *_currentRoll = nil;
 const NSInteger kMaxPhotos = 6;
 
@@ -112,22 +106,6 @@ const NSInteger kMaxPhotos = 6;
         }];
 }
 
-//+ (void)setCurrentRollFromUserRollWithBlock: (void (^) (NSError *error))block {
-//    PFQuery *invitedToRollQuery = [UserRoll query];
-//    [invitedToRollQuery includeKey:@"roll"];
-//    [invitedToRollQuery whereKey:@"invitedUserName" equalTo:[User currentUser].username];
-//    [invitedToRollQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//        _currentRoll = [(UserRoll *)objects[0] roll];
-//        _currentRoll.photosCount ++;
-//        [User currentUser].currentRoll = _currentRoll;
-//        [[User currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//            [Roll setCurrentRoll:_currentRoll];
-//                block(error);
-//            }];
-//        }];
-//}
-
-
 + (void)getNumberOfMembersInRollWithBlock:(void (^) (NSInteger membersNumber, NSError *error))block {
     PFQuery *memberQuery = [UserRoll query];
     [memberQuery whereKey:@"roll" equalTo:[Roll currentRoll]];
@@ -141,7 +119,6 @@ const NSInteger kMaxPhotos = 6;
 + (void)getMembersListInRollWithBlock: (void (^) (NSArray *membersArray, NSError *error))block {
     PFQuery *memberQuery = [UserRoll query];
     [memberQuery whereKey:@"roll" equalTo:[Roll currentRoll]];
-    //[memberQuery whereKey:@"status" equalTo:@"accepted"];
     [memberQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSArray *members = [[NSArray alloc] initWithArray:objects];
         block(members, error);
@@ -181,7 +158,4 @@ const NSInteger kMaxPhotos = 6;
 }
 
 @end
-
-//DO: initialize default values (in AppDelegate, NSDictionary* defaults = @{kUserNameKey:@"GreatUser", kLevel1ScoreKey:@0, kLevel1CompletedKey:@NO};
-//[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 

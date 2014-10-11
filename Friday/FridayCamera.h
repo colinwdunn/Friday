@@ -12,9 +12,11 @@
 #import <Parse/Parse.h>
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/CGImageProperties.h>
+#import <GPUImage/GPUImage.h>
 
 @interface FridayCamera : NSObject
 
++ (id)sharedCameraInstance;
 - (void)initCameraSessionWithView:(UIViewController *)viewController;
 - (void)startRunningCameraSession;
 - (void)stopRunningCameraSession;

@@ -52,18 +52,12 @@
     //styling top view
     self.topView.layer.cornerRadius = 20;
     
-    
     //view to add viewControllers on top of the camera view controller
     self.contentView.hidden = YES;
     
-    
-    //calculating number of roll members
-    //self.numberOfMembers = 1;
-    
     // Do any additional setup after loading the view from its nib.
     NSLog(@"In the camera view");
-    self.camera = [[FridayCamera alloc] init];
-    [self.camera initCameraSessionWithView:self];
+    [[FridayCamera sharedCameraInstance] initCameraSessionWithView:self];
   
 }
 
@@ -72,11 +66,6 @@
     self.currentCount = [Roll currentRoll].photosRemaining;
     [self photoCountButtonControl];
     [self getMembersNumber];
-}
-
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [self.camera stopRunningCameraSession];
 }
 
 - (void)getMembersNumber {
@@ -131,7 +120,7 @@
         [shutterView removeFromSuperview];
     }];
     
-    [self.camera photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
+    [[FridayCamera sharedCameraInstance] photoOnCompletion:^(UIImage *takenPhoto, NSData *photoData) {
         [Photo createPhoto:takenPhoto];
     }];
 }
@@ -151,7 +140,8 @@
         self.showRollButton.layer.cornerRadius = 20;
         self.showRollButton.layer.opaque = YES;
         [self.showRollButton setTitle: @"Show Roll" forState:UIControlStateNormal];
-        self.showRollButton.titleLabel.textColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1];
+        [self.showRollButton setTitleColor:[UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1] forState:UIControlStateHighlighted];
+        //self.showRollButton.titleLabel.textColor = [UIColor colorWithRed:251/255.0 green:211/255.0 blue:64/255.0 alpha:1];
         [self.showRollButton addTarget:self action:@selector(showRoll) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.showRollButton];
         self.takePhotoImageView.hidden = YES;
@@ -194,39 +184,17 @@
 }
 
 - (void)didDismissAddPeopleViewController {
-    [self.camera startRunningCameraSession];
     [self.addPeopleVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)onShowMembersButtonPressed:(id)sender {
-    [self.camera stopRunningCameraSession];
     self.peopleVC = [[PeopleViewController alloc] init];
     self.peopleVC.delegate = self;
     [self presentViewController:self.peopleVC animated:YES completion:nil];
 }
 
 - (void)didDismissPeopleViewController {
-    [self.camera startRunningCameraSession];
     [self.peopleVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
-
-//Roll *newRoll = [Roll object];
-//newRoll[@"user"] = [User currentUser];
-//newRoll[@"photosCount"] = @(0);
-//newRoll[@"maxPhotos"] = @(6);
-//[newRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//    PFObject *parseObjectRoll = [PFObject objectWithClassName:@"UserRolls"];
-//    parseObjectRoll[@"user"] = [PFUser currentUser];
-//    parseObjectRoll[@"roll"] = newRoll;
-//    parseObjectRoll[@"status"] = @"accepted";
-//    [parseObjectRoll saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//        // Roll *newRoll = [Roll currentRoll];
-//        //[User currentUser].currentRoll = newRoll;
-//        //self.roll = newRoll;
-//        [self updatePhotoCountView];
-//        //Hide show roll button
-//        //Show photo count button
-//         }];
-//}];
