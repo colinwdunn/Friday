@@ -32,12 +32,12 @@
     [Parse setApplicationId:@"7WlikSk0LVU1NrT9CCNQXbB30QSTsEo2umDCky86"
                   clientKey:@"UGx1Vym8ZDBa5nEJpluEb3VQs8LE6KISvAM48T5o"];
     
-    // Register for push notifications
-    [application registerForRemoteNotificationTypes:
-     UIRemoteNotificationTypeBadge |
-     UIRemoteNotificationTypeAlert |
-     UIRemoteNotificationTypeSound];
-    
+    // Register for push notifications - methods deprecated in iOS8
+//    [application registerForRemoteNotificationTypes:
+//     UIRemoteNotificationTypeBadge |
+//     UIRemoteNotificationTypeAlert |
+//     UIRemoteNotificationTypeSound];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     if ([PFUser currentUser]) {
         self.window.rootViewController = [[CameraViewController alloc] init];
