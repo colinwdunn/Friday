@@ -65,7 +65,6 @@
 		45A8922D19ABFA6000BBE973 /* InvitedToCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A8922C19ABFA6000BBE973 /* InvitedToCell.xib */; };
 		45A8922F19B11D0A00BBE973 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A8922E19B11D0A00BBE973 /* libc++.dylib */; };
 		45A8923219B11F4D00BBE973 /* CachedBlurredImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A8923119B11F4D00BBE973 /* CachedBlurredImage.m */; };
-		45A8923919BA4A2600BBE973 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A8923819BA4A2600BBE973 /* Crashlytics.framework */; };
 		45C5EE7A19889CE900A0D538 /* UserRoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C5EE7919889CE900A0D538 /* UserRoll.m */; };
 		45EC14A6196754610049D518 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45EC14A5196754610049D518 /* ContactCell.xib */; };
 		45EC14A9196760450049D518 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45EC14A8196760440049D518 /* MessageUI.framework */; };
@@ -182,7 +181,6 @@
 		45A8922E19B11D0A00BBE973 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		45A8923019B11F4D00BBE973 /* CachedBlurredImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CachedBlurredImage.h; sourceTree = "<group>"; };
 		45A8923119B11F4D00BBE973 /* CachedBlurredImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CachedBlurredImage.m; sourceTree = "<group>"; };
-		45A8923819BA4A2600BBE973 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		45C5EE7819889CE900A0D538 /* UserRoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRoll.h; sourceTree = "<group>"; };
 		45C5EE7919889CE900A0D538 /* UserRoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRoll.m; sourceTree = "<group>"; };
 		45EC14A5196754610049D518 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 				429B71261928698D00BAAE20 /* UIKit.framework in Frameworks */,
 				429B71221928698D00BAAE20 /* Foundation.framework in Frameworks */,
 				6A776A8540FD4AB39818DF6F /* libPods.a in Frameworks */,
-				45A8923919BA4A2600BBE973 /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +337,6 @@
 				451F5D7519BBCE3800CE66B9 /* QuartzCore.framework */,
 				451F5D7319BBCE1F00CE66B9 /* CoreText.framework */,
 				45A8922E19B11D0A00BBE973 /* libc++.dylib */,
-				45A8923819BA4A2600BBE973 /* Crashlytics.framework */,
 				45EC14A8196760440049D518 /* MessageUI.framework */,
 				429B71211928698D00BAAE20 /* Foundation.framework */,
 				429B71231928698D00BAAE20 /* CoreGraphics.framework */,
@@ -472,7 +468,6 @@
 				429B711B1928698D00BAAE20 /* Frameworks */,
 				429B711C1928698D00BAAE20 /* Resources */,
 				826CC4B9A1D7497E903DB6B1 /* Copy Pods Resources */,
-				45A8923319B6947600BBE973 /* ShellScript */,
 				45881E4419E120D2009605CE /* CopyFiles */,
 			);
 			buildRules = (
@@ -573,19 +568,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		45A8923319B6947600BBE973 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run 450870b0b9669cd4664005dbac58452654aa32b3 4b36ad9eca0a0cd4d280f1bbdd700284264b2c8a51afdb1ada61791041d818a9";
-		};
 		5F8FC3CAD6804CECA57E16B6 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

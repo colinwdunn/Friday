@@ -18,12 +18,15 @@
 
 @implementation FridayCamera
 
-static FridayCamera *sharedFridayCamera = nil;
+//static FridayCamera *sharedFridayCamera = nil;
 
 + (id)sharedCameraInstance {
-    if (sharedFridayCamera == nil) {
+    static id sharedFridayCamera = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         sharedFridayCamera = [[self alloc] init];
-    }
+    });
     return sharedFridayCamera;
 }
 
